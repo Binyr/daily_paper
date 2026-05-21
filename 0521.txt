@@ -1,0 +1,75 @@
+📰 HF Daily Papers 论文筛选 | 2026-05-21
+
+今日从 HF Daily Papers + arXiv 双源筛选，共 55 篇候选，精选以下 10 篇与世界模型/视频生成/3D-4D视觉/后训练方向本质相关的论文：
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 PhyWorld: Physics-Faithful World Model for Video Generation [arXiv]
+👤 Pu Zhao, Juyi Lin, Timothy Rupprecht et al. | Northeastern U / Sony AI
+💡 核心问题：视频生成模型作为世界模拟器时，生成内容不遵循物理规律。本文首次将物理一致性作为显式优化目标引入视频世界模型。
+🔧 两阶段后训练：(1) flow matching微调增强video-to-video续帧的视觉一致性；(2) 基于physics preference pairs的DPO对齐，让生成动态符合物理定律。VBench 0.769，物理评分 3.09 均超SOTA。
+🔗 arXiv: https://arxiv.org/abs/2605.19242
+
+📄 PanoWorld: A Generative Spatial World Model for Consistent Whole-House Panorama Synthesis [HF]
+👤 Jinrang Jia, Zhenjia Li, Yijiang Hu, Yifeng Shi
+💡 将全屋VR漫游建模为自回归全景生成的空间世界模型。纯2D方法换视角就重新想象场景，纯3D方法大尺度下纹理损失。
+🔧 用floorplan的3D shell作几何先验 + 动态3DGS cache作可渲染空间记忆。Panoramic LRM做metric-scale 360° lifting，Room-aware Group Attention抑制跨房间干扰。解耦几何引导和视觉记忆，兼顾2D质量与跨视点一致性。
+🔗 arXiv: https://arxiv.org/abs/2605.17916
+🌐 Project: https://jjrcn.github.io/PanoWorld-project-home/
+
+📄 UniT: Unified Geometry Learning with Group Autoregressive Transformer [HF]
+👤 Haotian Wang, Yusong Huang, Zhaonian Kuang, Hongliang Lu, Xinhu Zheng, Meng Yang, Gang Hua | SYSU / Wormpex AI
+💡 3D几何感知的各种能力（在线感知、离线重建、多模态融合、长程scalability、metric-scale估计）碎片化于不同范式。能否统一？
+🔧 提出Group Autoregressive Transformer，以观测组为自回归单位预测point maps，anchor-free + scale-adaptive。queue-style KV caching保证长序列恒定内存。scale-adaptive geometry loss从scale-invariant逐步过渡到metric-scale。10个benchmark 7个任务SOTA。
+🔗 arXiv: https://arxiv.org/abs/2605.21131
+🌐 Code: https://github.com/Wang-xjtu/UniT
+
+📄 Stream3D: Sequential Multi-View 3D Generation via Evidential Memory [HF+arXiv]
+👤 Kaichen Zhou, Zeyang Bai, Xinhai Chang, Mengyu Wang, Paul Liang, Fangneng Zhan
+💡 单视图3D生成器（TRELLIS/Hunyuan3D等）处理长序列单目视频流时帧间不一致。如何把冻结的3D生成器变成流式生成器？
+🔧 training-free方案：维护紧凑的evidential memory，基于evidence score选择性缓存最有信息量的历史帧，固定内存不随序列线性增长。无需重训练或架构改动。
+🔗 arXiv: https://arxiv.org/abs/2605.21472
+🌐 Project: https://anonymous-submission-20.github.io/streaming3D.github.io/
+
+📄 Latent Dynamics for Full Body Avatar Animation [arXiv]
+👤 Shichong Peng, ... ⭐ Jason Saragih, Ke Li, Christian Häne | Meta Reality Labs
+💡 pose-driven avatar中宽松衣物的动态取决于历史、惯性、接触，同一pose对应多种状态。现有方法的latent是静态的，没有建模自身动力学。
+🔧 在3DGS avatar上加transformer-based decoder + dynamics residual latent。学习latent dynamics模型将更新分解为driving/restoring/dissipative三种力，产生时间相干、历史依赖的rollout。
+🔗 arXiv: https://arxiv.org/abs/2605.21478
+
+📄 StitchVM: Stitched Value Model for Diffusion Alignment [arXiv]
+👤 Hyojun Go, Hyungjin Chung, Prune Truong, Goutam Bhat, ... ⭐ Serge Belongie, Federico Tombari, Konrad Schindler | ETH Zürich / Google / Pioneer Labs
+💡 扩散模型对齐的核心难题：reward定义在clean image上，但训练需要在noisy latent上估计value function。Tweedie有偏，MC rollout太贵。
+🔧 Model stitching：将预训练的pixel-space reward model截断，接上冻结的diffusion backbone。stitching + finetune仅需10 GPU-hours。DPS加速3.2×，DiffusionNFT加速2.3×。
+🔗 arXiv: https://arxiv.org/abs/2605.19804
+🌐 Code: https://github.com/prs-eth/StitchVM
+
+📄 Linear-DPO: Linear DPO for Diffusion and Flow-Matching Models [arXiv]
+👤 Kesong Li, Yixuan Xu, Kuo-kun Tseng et al.
+💡 标准DPO应用于T2I的两个问题：仅覆盖denoising diffusion忽视flow-matching；NLP的离散DPO目标与回归式生成任务存在objective mismatch。
+🔧 从统一reverse-time SDE框架推导覆盖diffusion和flow-matching的广义DPO目标。提出linear utility + EMA reference model。在SD1.5/SDXL/SD3-Medium上验证。
+🔗 arXiv: https://arxiv.org/abs/2605.21123
+
+📄 RankE: End-to-End Post-Training for Discrete T2I with Decoder Co-Evolution [arXiv]
+👤 Siyong Jian, Siyuan Li, Luyuan Zhang et al.
+💡 离散AR T2I后训练只优化policy冻结VQ decoder——policy演化后token分布偏移导致Latent Covariate Shift。
+🔧 首个端到端框架：co-evolve policy和decoder，交替优化ranking-based alignment + 稳定性正则。LlamaGen-XL上FID和CLIP同时改善。
+🔗 arXiv: https://arxiv.org/abs/2605.21195
+🌐 Code: https://github.com/syjmelody/RankE
+
+📄 StreamGVE: Training-Free Video Editing via Few-Step Streaming Video Generation [HF+arXiv]
+👤 Guanlong Jiao, Chenyangguang Zhang et al. | UBC
+💡 现有视频编辑走data-to-data范式，与现代生成模型的noise-to-data本质不兼容。
+🔧 基于预训练streaming generation模型，dual-branch fast sampling + self-attention bridge + cross-attention grounding/boosting。few-step设置下全面超越现有方法。
+🔗 arXiv: https://arxiv.org/abs/2605.21466
+🌐 Code: https://github.com/DSL-Lab/StreamGVE
+
+📄 From Seeing to Thinking: Decoupling Perception and Reasoning Improves Post-Training of VLMs [arXiv]
+👤 Juncheng Wu, Hardy Chen, ... ⭐ Cihang Xie, Yuyin Zhou | UCSC
+💡 VLM后训练瓶颈在感知而非推理。Perception需要针对性优化且应先于reasoning被巩固。
+🔧 三阶段staged training：visual perception → visual reasoning → textual reasoning。Perception用RL学比caption SFT更有效。推理准确率+1.5%同时推理链-20.8%。
+🔗 arXiv: https://arxiv.org/abs/2605.20177
+
+━━━━━━━━━━━━━━━━━━━━
+📊 今日统计: 55篇候选 → 10篇精选 | 来源: HF Daily Papers + arXiv cs.CV
+🏷️ 方向分布: 世界模型×2, 3D生成/重建×2, 后训练/对齐×4, 视频生成/编辑×1, 动态Avatar×1

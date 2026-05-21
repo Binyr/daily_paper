@@ -1,0 +1,75 @@
+📰 每日论文筛选 | 2026-05-12 (覆盖过去48h)
+来源: HuggingFace Daily Papers + arXiv cs.CV
+筛选方向: 世界模型/视频生成/3D-4D/深度估计/后训练
+
+📄 WorldReasonBench: Human-Aligned Stress Testing of Video Generators as Future World-State Predictors [来源:HF+arXiv]
+👤 作者: Keming Wu, Yijing Cui, Wenhan Xue et al. | 单位未明确
+💡 Motivation: 视频生成器越来越像"世界模拟器"，但缺少直接测试其世界推理能力的benchmark。现有评估只看视觉质量，不看因果/物理/逻辑一致性。
+🔧 方案: 提出WorldReasonBench，将视频生成评估重构为世界状态预测问题（给定初始状态+动作，生成未来视频是否保持物理/因果/逻辑一致），含436测试用例+4维度22子类+6K人工偏好标注对（WorldRewardBench），可用于reward model训练。
+🔗 arXiv: https://arxiv.org/abs/2605.10434
+🌐 Project: https://huggingface.co/datasets/WorldReasonBench/WorldReasonBench
+
+📄 Pixal3D: Pixel-Aligned 3D Generation from Images [来源:HF+arXiv] ⭐自家工作
+👤 作者: Dong-Yang Li, Wang Zhao, Yuxin Chen, Wenbo Hu, Meng-Hao Guo, Fang-Lue Zhang, Ying Shan, Shi-Min Hu | Tencent ARC + Tsinghua
+💡 Motivation: 现有3D生成器在canonical空间生成shape，通过attention注入image cues，导致pixel-to-3D对应关系模糊，fidelity是核心瓶颈。
+🔧 方案: 提出pixel-aligned 3D generation范式，通过pixel back-projection conditioning将多尺度image feature显式lift到3D feature volume，建立直接pixel-to-3D对应。可扩展到multi-view，也可用于scene synthesis。
+🔗 arXiv: https://arxiv.org/abs/2605.10922
+🌐 Project: https://github.com/TencentARC/Pixal3D (SIGGRAPH 2026)
+
+📄 ActCam: Zero-Shot Joint Camera and 3D Motion Control for Video Generation [来源:arXiv]
+👤 作者: Fabio Pizzati et al. | 单位未明确
+💡 Motivation: 视频生成需要同时精细控制表演（actor motion）和摄影（camera trajectory），现有方法难以同时做好。
+🔧 方案: 基于任意预训练I2V diffusion model，利用几何一致的pose+sparse depth双阶段conditioning schedule（early步骤enforce结构，后期仅用pose精修细节），zero-shot实现相机+运动联合控制，尤其在大视角变化下显著优于现有方法。
+🔗 arXiv: https://arxiv.org/abs/2605.06667
+🌐 Project: 有project page (SIGGRAPH 2026)
+
+📄 PV-VAE: Video Generation with Predictive Latents [来源:arXiv]
+👤 作者: Yian Zhao, Feng Wang, Qiushan Guo, Chang Liu, Xiangyang Ji, Jian Zhang, Jie Chen | 清华+北大
+💡 Motivation: Video VAE优化重建质量不必然提升生成性能。如何提升video latent的"可扩散性"是关键未解问题。
+🔧 方案: 受predictive world modeling启发，提出predictive reconstruction objective——随机丢弃未来帧，只编码部分过去观测，decoder同时重建已观测帧并预测未来帧。这迫使latent space编码temporally predictive结构。相比Wan2.2 VAE，收敛快52%，FVD提升34.42。
+🔗 arXiv: https://arxiv.org/abs/2605.02134
+🌐 Project: 暂无
+
+📄 X-WAM: Unified 4D World Action Modeling from Video Priors with Asynchronous Denoising [来源:arXiv]
+👤 作者: Jun Guo, Qiwei Li, Peiyan Li et al. | 清华
+💡 Motivation: 先前统一世界模型(如UWM)只建模2D像素空间，无法平衡动作效率和世界建模质量。
+🔧 方案: 统一框架同时实现实时机器人动作执行+高保真4D合成（video+3D重建）。通过复制DiT最后几层做depth prediction branch，提出Asynchronous Noise Sampling在推理时异步去噪——少step快速解码action，全step生成高保真video。在RoboCasa/RoboTwin上达79.2%/90.7%成功率。
+🔗 arXiv: https://arxiv.org/abs/2604.26694
+🌐 Project: 有project page
+
+📄 RoboAlign-R1: Distilled Multimodal Reward Alignment for Robot Video World Models [来源:arXiv]
+👤 作者: Hao Wu, Yuqi Li, Yuan Gao et al.
+💡 Motivation: Robot video world model用重建/感知相似度训练，与机器人决策所需的instruction following/物理合理性等能力poorly aligned，且长horizon自回归有误差累积。
+🔧 方案: 构建RobotWorldBench(10K标注视频-指令对)，训练多模态teacher judge提供6维评估，蒸馏为轻量reward model做RL post-training。提出Sliding Window Re-encoding解决长程drift。6维总分提升10.1%，Manipulation Accuracy +7.5%。
+🔗 arXiv: https://arxiv.org/abs/2605.03821
+🌐 Project: 暂无
+
+📄 FreeSpec: Training-Free Long Video Generation via Singular-Spectrum Reconstruction [来源:arXiv]
+👤 作者: Fangda Chen, Shanshan Zhao et al. | 国防科大
+💡 Motivation: 长视频扩展存在content drift和over-smoothed dynamics。现有global+local branch方法用predefined criteria分解appearance/dynamics，在camera motion等耦合场景不可靠。
+🔧 方案: 从singular-spectrum角度分析发现enlarged attention window导致spectral concentration（低秩主导）。提出SVD分解后用global branch做low-rank spectral guidance、local branch做high-rank reconstruction basis，spectrum-level fusion避免rigid特征分割。在Wan2.1/LTX-Video上显著提升temporal dynamics。
+🔗 arXiv: https://arxiv.org/abs/2605.06509
+🌐 Project: 有demo page
+
+📄 Reconstruction or Semantics? What Makes a Latent Space Useful for Robotic World Models [来源:arXiv]
+👤 作者: Nilaksh, Saurav Jha, Artem Zholus, Sarath Chandar | Mila
+💡 Motivation: Latent diffusion world model选什么latent space？VAE重建好≠世界模型好。
+🔧 方案: 系统对比6种encoder(VAE/Cosmos vs V-JEPA/DINO/SigLIP)在action-conditioned LDM上的表现，提出3轴评估(visual fidelity / policy performance / representation quality)。结论：visual fidelity不足以选world model，semantic encoder（V-JEPA 2.1最强）在policy和表示质量上全面优于reconstruction encoder。
+🔗 arXiv: https://arxiv.org/abs/2605.06388
+🌐 Project: 暂无
+
+📄 Spark3R: Asymmetric Token Reduction Makes Fast Feed-Forward 3D Reconstruction [来源:arXiv]
+👤 作者: Zecheng Tang, Jiaye Fu et al. | 北大
+💡 Motivation: 基于ViT的前馈3D重建模型（VGGT/π³/Depth-Anything-3）在长视频输入(1000帧)时全局attention计算量爆炸。
+🔧 方案: 发现query token编码view-specific几何请求（对压缩敏感），key-value token表示共享scene context（可大幅压缩）。提出非对称压缩：query做intra-group merging、KV做轻量pruning+自适应跨层调整。Training-free plug-and-play，1000帧输入加速28倍。
+🔗 arXiv: https://arxiv.org/abs/2605.06270
+🌐 Project: 暂无
+
+📄 Syn4D: A Multiview Synthetic 4D Dataset [来源:arXiv]
+👤 作者: Zeren Jiang, Yushi Lan, Yihang Luo, ..., Chuanxia Zheng, Andrea Vedaldi | Oxford VGG
+💡 Motivation: 单目视频4D重建受限于缺乏高质量dense geometric annotation的数据集。
+🔧 方案: 发布多视角合成4D动态场景数据集，含GT camera motion/depth maps/dense tracking/human pose。核心特性：任意pixel可unproject到3D到任意时刻任意相机。覆盖4D重建、3D point tracking、geometry-aware camera retargeting、pose estimation等下游任务。
+🔗 arXiv: https://arxiv.org/abs/2605.05207
+🌐 Project: https://github.com/jzr99/Syn4D
+
+以上为本次筛选结果，共10篇高相关论文。特别注意Pixal3D是咱们ARC自己的SIGGRAPH 2026工作。WorldReasonBench对world model方向的评估体系设计值得关注；PV-VAE的predictive latent思路与我们的causal video generation方向高度契合。

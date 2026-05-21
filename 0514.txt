@@ -1,0 +1,64 @@
+📰 每日论文筛选 | 2026-05-14 (覆盖 May 12-13 arXiv + HF Daily Papers)
+
+📄 AnyFlow: Any-Step Video Diffusion Model with On-Policy Flow Map Distillation [来源:两者]
+👤 作者: Yuchao Gu, Guian Fang, Yuxin Jiang, Weijia Mao, Song Han, Han Cai | MIT, NVIDIA, NUS
+💡 Motivation: Consistency distillation在多步采样时性能反而退化——本质原因是它替换了原始ODE轨迹，破坏了test-time scaling。
+🔧 方案: 提出flow map distillation替代endpoint consistency mapping，将蒸馏目标从zt→z0转为任意区间zt→zr，结合on-policy backward simulation减少离散化误差。支持causal和bidirectional架构(1.3B-14B)，实现真正的any-step推理。
+🔗 arXiv: https://arxiv.org/abs/2605.13724
+🌐 Project: https://anyflow-v1.github.io | Code: https://github.com/NVlabs/AnyFlow
+⭐ 强推：直接解决视频扩散模型的causal generation中exposure bias问题，对autoregressive video generation有启发。
+
+📄 Asymmetric Flow Models (AsymFlow) [来源:HF]
+👤 作者: Hansheng Chen, Jan Ackermann, Minseo Kim, Gordon Wetzstein, Leonidas Guibas | Stanford
+💡 Motivation: 高维空间的flow-based生成困难在于velocity需要建模高维噪声，但数据往往具有低秩结构——能否利用这种不对称性？
+🔧 方案: 提出rank-asymmetric velocity参数化：噪声预测限制在低秩子空间，数据预测保持全维，解析恢复全维velocity。在ImageNet达到1.57 FID（SOTA），首次实现从latent flow model微调到pixel-space model的路径（从FLUX.2 klein 9B微调）。
+🔗 arXiv: https://arxiv.org/abs/2605.12964
+🌐 Project: https://hanshengchen.com/asymflow/
+⭐ 强推：方法论深刻——发现并利用了生成模型中数据的低秩结构，对视频生成模型设计有潜在启发。Stanford大佬组(Guibas+Wetzstein)出品。
+
+📄 R-DMesh: Video-Guided 3D Animation via Rectified Dynamic Mesh Flow [来源:arXiv]
+👤 作者: Zijie Wu, Lixin Xu, Puhua Jiang, Sicong Liu, Chunchao Guo, Xiang Bai | Tencent Hunyuan, HUST
+💡 Motivation: Video-guided 3D animation面临pose misalignment困境——输入mesh初始姿态与视频起始帧几乎不可能对齐，强行对齐必导致几何畸变。
+🔧 方案: 设计VAE显式解耦条件mesh、相对运动轨迹和rectification jump offset，用Triflow Attention机制保持物理一致性，再通过Rectified Flow DiT从视频先验迁移时空信息。构建500K+动态mesh数据集。SIGGRAPH 2026 accepted。
+🔗 arXiv: https://arxiv.org/abs/2605.13838
+🌐 Code: https://github.com/Tencent-Hunyuan/R-DMesh
+⭐ 重点关注：腾讯混元出品，4D mesh生成+视频引导，与4D重建方向直接相关。SIGGRAPH 2026。
+
+📄 TrackCraft3R: Repurposing Video Diffusion Transformers for Dense 3D Tracking [来源:HF]
+👤 作者: Jisu Nam, Jahyeok Koo, Soowon Son, Jaewoo Jung, Honggyu An, Junhwa Hur, Seungryong Kim | KAIST
+💡 Motivation: 视频扩散模型蕴含丰富的运动先验，但其frame-anchored生成范式与reference-anchored 3D跟踪存在根本矛盾——如何弥合？
+🔧 方案: 首次将video DiT (Wan2.1-T2V) repurpose为单次前向传递的稠密3D tracker。通过dual-latent表示（逐帧几何+reference-anchored轨迹）和temporal RoPE alignment，用LoRA微调将生成范式转为跟踪范式。SOTA性能，速度快1.3x，内存少4.6x。
+🔗 arXiv: https://arxiv.org/abs/2605.12587
+🌐 Code: https://github.com/cvlab-kaist/TrackCraft3r
+⭐ 重点关注：用视频扩散模型做3D tracking——是"video foundation model做几何理解"的典范工作，与世界模型方向高度相关。
+
+📄 SyncDPO: Enhancing Temporal Synchronization in Video-Audio Joint Generation via Preference Learning [来源:arXiv]
+👤 作者: Xin Cheng, Xihua Wang, Ying Ba, Yuyue Wang, Kaisi Guan, Yinbo Wang
+💡 Motivation: Video-audio联合生成的时间同步问题——SFT的MSE loss对微妙的时间错位惩罚不足。
+🔧 方案: 首次将DPO应用于video-audio联合生成的后训练。设计on-the-fly rule-based negative construction策略，无需额外标注即可构造时间结构扭曲的负样本对，大幅提升时间对齐敏感度。
+🔗 arXiv: https://arxiv.org/abs/2605.12179
+🌐 Code: https://github.com/syncdpo/syncdpo
+⭐ 直接相关：DPO用于视频生成的后训练，是post-training for video generation的具体实践。
+
+📄 Qwen-Image-VAE-2.0 Technical Report [来源:HF]
+👤 作者: Zekai Zhang, Deqing Li, Kuan Cao, Yujia Wu, Chenfei Wu et al. | Alibaba
+💡 Motivation: 高压缩比VAE面临重建保真度和diffusability的矛盾，尤其在文字渲染场景表现差。
+🔧 方案: 采用Global Skip Connections + 扩展latent channels的改进架构，训练规模扩大到数十亿图像，引入合成渲染引擎增强文字场景表现。提出enhanced semantic alignment解决高维latent空间收敛困难。
+🔗 arXiv: https://arxiv.org/abs/2605.13565
+🌐 Model: https://www.modelscope.cn/models/Qwen/Qwen-Image
+⭐ 基础设施级工作：高压缩VAE是视频/图像生成模型的核心组件，设计思路对视频VAE有参考价值。
+
+📄 SenseNova-U1: Unifying Multimodal Understanding and Generation with NEO-unify [来源:arXiv]
+👤 作者: Haiwen Diao, Penghao Wu, ... Ziwei Liu, Dahua Lin et al. | SenseTime, CUHK, NTU
+💡 Motivation: VLM的理解与生成被当作独立问题处理是结构性局限，阻碍原生多模态智能涌现。
+🔧 方案: NEO-unify架构将理解和生成视为同一底层过程的协同视角。8B dense和30B-A3B MoE两个变体，在理解和生成上同时达SOTA。
+🔗 arXiv: https://arxiv.org/abs/2605.12500
+🌐 Code: https://github.com/OpenSenseNova/SenseNova-U1
+
+📄 BlitzGS: City-Scale Gaussian Splatting at Lightning Speed [来源:arXiv]
+👤 作者: Zhongtao Wang, Huishan Au, Yilong Li, Mai Su, Haojie Jin, Yisong Chen | PKU
+💡 Motivation: 城市级3DGS中空间分块方法存在跨块可见性冗余。
+🔧 方案: 按index parity分片Gaussian到多GPU，单次cross-GPU exchange路由，三层workload管理实现快速城市级重建。
+🔗 arXiv: https://arxiv.org/abs/2605.13794
+
+🏆 今日精读推荐: AnyFlow > AsymFlow > R-DMesh > TrackCraft3R > SyncDPO

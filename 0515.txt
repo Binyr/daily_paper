@@ -1,0 +1,109 @@
+📰 HF Daily Papers 论文筛选 | 2026-05-15
+来源: HuggingFace Daily Papers + arXiv cs.CV
+筛选方向: 世界模型 / Causal Video Gen / 记忆机制 / 3D-4D视觉 / 后训练
+
+共筛选出 10 篇高相关论文，按相关度排序：
+
+—————————————————
+
+📄 SANA-WM: Efficient Minute-Scale World Modeling with Hybrid Linear Diffusion Transformer [来源:两者]
+👤 Haoyi Zhu, Haozhe Liu, ... Tong He, Song Han, Enze Xie | NVIDIA
+💡 Motivation: 现有世界模型要么质量好但参数量巨大，要么效率高但无法生成长视频。如何用小模型（2.6B）原生训练分钟级720p视频并保持精确的相机控制？
+🔧 方案: 混合线性注意力（Gated DeltaNet + softmax）实现内存高效长上下文建模；双分支相机控制保证6-DoF轨迹精度；两阶段生成+鲁棒标注pipeline。仅213K公开视频训练，单GPU生成60s，蒸馏版RTX 5090上34s跑完
+🔗 arXiv: https://arxiv.org/abs/2605.15178
+🌐 Project: https://nvlabs.github.io/Sana/WM/
+⬆️ HF Upvotes: 28
+
+—————————————————
+
+📄 VGGT-Ω [来源:arXiv] ⭐ CVPR 2026 Oral
+👤 Jianyuan Wang, Minghao Chen, ... David Novotny, Andrea Vedaldi, Christian Rupprecht | Meta & Oxford VGG
+💡 Motivation: 前馈式3D重建模型能否像LLM一样通过scaling持续提升？VGGT-Ω验证了重建质量随模型/数据规模可预测地增长，并首次覆盖动态场景
+🔧 方案: 简化为单dense head + register attention限制帧间信息交换至compact registers，训练GPU内存降至30%，数据量15x，支持海量无标注视频自监督。Sintel相机估计精度提升77%，registers可迁移至VLA模型
+🔗 arXiv: https://arxiv.org/abs/2605.15195
+🌐 Project: http://vggt-omega.github.io/
+
+—————————————————
+
+📄 Causal Forcing++: Scalable Few-Step Autoregressive Diffusion Distillation for Real-Time Interactive Video Generation [来源:HF]
+👤 Min Zhao, Hongzhou Zhu, Kaiwen Zheng, ... Jun Zhu | 清华大学
+💡 Motivation: 现有chunk-wise 4步AR蒸馏的响应粒度粗、延迟高。能否做到逐帧自回归+仅1-2步采样的极端设定？关键瓶颈在few-step AR学生的初始化
+🔧 方案: Causal Consistency Distillation作为初始化——学习与causal ODE蒸馏相同的条件流映射，但仅需相邻时间步间单步teacher ODE监督，无需预计算完整轨迹。帧级2步超越SOTA chunk-wise 4步，首帧延迟降50%。进一步扩展到Genie3式action-conditioned世界模型
+🔗 arXiv: https://arxiv.org/abs/2605.15141
+🌐 Project: https://github.com/thu-ml/Causal-Forcing
+⬆️ HF Upvotes: 13
+
+—————————————————
+
+📄 Warp-as-History: Generalizable Camera-Controlled Video Generation from One Training Video [来源:两者]
+👤 Yifan Wang, Tong He | （Tong He 同为SANA-WM作者）
+💡 Motivation: 相机控制视频生成通常需大规模相机标注数据后训练，或test-time优化。能否零训练实现？
+🔧 方案: 将相机诱导的warp转换为伪历史帧，通过模型的视觉历史通路输入，对齐位置编码+移除无效token。冻结模型即展现非平凡的zero-shot相机跟随能力；仅1条视频的LoRA微调即可泛化到unseen视频
+🔗 arXiv: https://arxiv.org/abs/2605.15182
+🌐 Project: https://yyfz.github.io/warp-as-history/
+⬆️ HF Upvotes: 23
+
+—————————————————
+
+📄 RAVEN: Real-time Autoregressive Video Extrapolation with Consistency-model GRPO [来源:两者]
+👤 Yanzuo Lu, Ronglai Zuo, Jiankang Deng | MVP Lab / Imperial College
+💡 Motivation: Causal AR视频扩散的训练-推理history分布不一致导致长程质量退化。如何在蒸馏框架下解决这个根本矛盾？
+🔧 方案: Self-rollout重新打包为clean历史端点+noisy去噪状态的交错序列，对齐训练与推理注意力模式。CM-GRPO将一致性采样步重新表述为条件高斯转移，直接对该kernel做在线RL，避免Euler-Maruyama辅助过程
+🔗 arXiv: https://arxiv.org/abs/2605.15190
+🌐 Project: https://yanzuo.lu/raven/
+⬆️ HF Upvotes: 4
+
+—————————————————
+
+📄 PhyMotion: Structured 3D Motion Reward for Physics-Grounded Human Video Generation [来源:HF]
+👤 Yidong Huang, Zun Wang, Han Lin, ... Mohit Bansal | UNC Chapel Hill
+💡 Motivation: RL后训练在通用视频质量上有效，但人体运动的reward信号不靠谱——2D感知指标无法捕捉浮空、物理不合理等3D失败模式
+🔧 方案: 从生成视频恢复SMPL mesh → MuJoCo物理仿真器retarget → 沿运动学合理性、接触平衡一致性、动力学可行性三轴评分。作为RL reward优化后，AR和双向生成器均获显著提升（+68 Elo）
+🔗 arXiv: https://arxiv.org/abs/2605.14269
+🌐 Project: https://phy-motion.github.io/
+
+—————————————————
+
+📄 Quantitative Video World Model Evaluation for Geometric-Consistency (PDI-Bench) [来源:两者]
+👤 Jiaxin Wu, Yihao Pi, Yinling Zhang, Yuheng Li, Xueyan Zou
+💡 Motivation: 视频生成模型作为隐式世界模型，但缺乏量化几何一致性的评估方法。现有指标对几何失败不敏感
+🔧 方案: 分割+点跟踪→单目重建提升到3D世界坐标→计算投影几何残差，覆盖尺度-深度对齐、3D运动一致性、3D结构刚性三个维度。发现了SOTA视频生成器中被感知指标忽略的系统性几何失败模式
+🔗 arXiv: https://arxiv.org/abs/2605.15185
+🌐 Project: https://pdi-bench.github.io/
+
+—————————————————
+
+📄 Forcing-KV: Hybrid KV Cache Compression for Efficient Autoregressive Video Diffusion Models [来源:HF]
+👤 Yicheng Ji, Zhizhou Zhong, ... Wenhan Luo | 浙江大学
+💡 Motivation: AR视频扩散中历史帧KV cache的冗余导致内存爆炸和延迟瓶颈
+🔧 方案: 发现注意力头呈现稳定的功能分化（静态头管跨chunk过渡+帧内保真；动态头管帧间运动）。对静态头做结构化剪枝，动态头做基于segment相似度的动态剪枝。H200上达29 FPS，cache减30%，1080P加速2.82x
+🔗 arXiv: https://arxiv.org/abs/2605.09681
+🌐 Project: https://zju-jiyicheng.github.io/Forcing-KV-Page/
+⬆️ HF Upvotes: 4
+
+—————————————————
+
+📄 VGGT-Edit: Feed-forward Native 3D Scene Editing with Residual Field Prediction [来源:两者]
+👤 Kaixin Zhu, Yiwen Tang, Renrui Zhang, ... Wentao Zhang | 北京大学
+💡 Motivation: 现有3D编辑依赖2D-lifting：各视角独立编辑再提升到3D，导致模糊纹理和几何不一致
+🔧 方案: 基于VGGT的原生3D编辑框架：深度同步文本注入对齐语义引导与空间位姿，残差变换头直接预测3D几何位移。构建DeltaScene大规模数据集（自动pipeline + 3D一致性过滤）
+🔗 arXiv: https://arxiv.org/abs/2605.15186
+⬆️ HF Upvotes: 8
+
+—————————————————
+
+📄 EntityBench: Towards Entity-Consistent Long-Range Multi-Shot Video Generation [来源:arXiv]
+👤 Meng Wei, Ziyan Yang, Vicente Ordonez
+💡 Motivation: 多镜头视频生成中实体（角色/物体/场景）一致性随重现距离急剧退化，现有benchmark无法刻画这一核心问题
+🔧 方案: 构建140个episode(2491个镜头)的benchmark，显式跟踪跨镜头实体调度；提出EntityMem——生成前构建持久化实体记忆库存储经验证的视觉参考，显著提升角色保真度（Cohen's d=+2.33）
+🔗 arXiv: https://arxiv.org/abs/2605.15197
+🌐 GitHub: https://github.com/Catherine-R-He/EntityBench/
+
+—————————————————
+
+💬 今日观察:
+• 世界模型赛道持续火热：SANA-WM (NVIDIA) 和 Causal Forcing++ (清华) 分别从效率和蒸馏角度推进，SANA-WM的linear attention + 分钟级生成路线值得关注
+• Causal AR视频生成的后训练(RL)成为新焦点：RAVEN的CM-GRPO和PhyMotion的物理reward都在探索如何给AR视频生成做有效的RL优化
+• VGGT-Ω是CVPR Oral，Andrea Vedaldi组继续在前馈3D重建上scaling，动态场景+自监督训练值得跟进
+• 记忆机制在视频生成中开始受到重视：EntityBench刻画了跨镜头实体记忆的核心挑战
+• Warp-as-History的zero-shot相机控制想法很巧妙——利用AR模型本身的视觉历史通路作为相机条件注入接口

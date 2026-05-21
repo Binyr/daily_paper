@@ -1,0 +1,47 @@
+🗞️ HF Daily Papers 论文筛选 | 2026-05-19
+
+今日从 HF Daily Papers + arXiv 新提交中筛选出 7 篇与世界模型、视频生成、深度估计、4D重建高度相关的论文：
+
+📄 KVPO: ODE-Native GRPO for Autoregressive Video Alignment via KV Semantic Exploration [来源:HF]
+👤 Ruicheng Zhang, Kaixi Cong, Jun Zhou, Xiu Li 等 | 清华大学
+💡 Motivation: AR视频生成器的RLHF对齐很难做——现有方法用基于噪声的探索和SDE代理策略，跟蒸馏后AR模型的确定性ODE动力学完全不匹配，扰动的是低层外观而非高层语义叙事。
+🔧 方案: 提出KVPO，把探索源从随机噪声转移到历史KV cache的因果语义路由上，在flow-matching速度场空间中定义轨迹速度能量（TVE）作为策略似然度，实现与ODE原生一致的对齐目标。实验在多个蒸馏AR视频生成器上验证，视觉质量、运动质量和文本对齐均有一致提升。
+🔗 arXiv: https://arxiv.org/abs/2605.14278
+
+📄 Head Forcing: Long Autoregressive Video Generation via Head Heterogeneity [来源:arXiv]
+👤 Jiahao Tian 等
+💡 Motivation: AR视频扩散模型支持实时生成但长程有误差累积。作者发现attention head存在功能分化（local/anchor/memory head），但现有方法对所有head统一处理KV cache，导致分配不优。
+🔧 方案: 提出Head Forcing，无需训练，为每类head分配定制KV cache策略：local和anchor head只保留关键token，memory head用层次化记忆系统+动态episodic更新实现长程一致性。将生成从5秒扩展到分钟级，支持多prompt交互式合成。
+🔗 arXiv: https://arxiv.org/abs/2605.14487
+
+📄 Incantation: Natural Language as the Action Interface for Multi-Entity Video World Models [来源:HF]
+👤 Shangwen Zhu, Qianyu Peng, Ruili Feng 等
+💡 Motivation: 交互式视频世界模型缺乏细粒度多实体控制和跨实体泛化能力。问题根源在于动作接口——动画ID、设备输入等把动作语义绑死在特定实体/引擎上。
+🔧 方案: 用自然语言作为动作接口，实现per-latent-frame (0.25s) 的语言条件控制。搭配预训练双向视频backbone + frame-local text cross-attention，通过ODE-initialized Self-Forcing蒸馏+RoPE解耦滑动KV-cache实现实时长程流式生成。跨实体迁移89% vs 43%，OOV prompt 90% vs 0%。
+🔗 arXiv: https://arxiv.org/abs/2605.18601
+
+📄 LongLive-2.0: An NVFP4 Parallel Infrastructure for Long Video Generation [来源:HF]
+👤 Yukang Chen, ..., Enze Xie, Xiaojuan Qi, ⭐Song Han | MIT/NVIDIA/HKU
+💡 Motivation: 长视频生成的训练和推理都受限于速度和显存。现有Self-Forcing系列依赖ODE初始化+DMD蒸馏，流程复杂。
+🔧 方案: 全流程NVFP4方案——训练端提出序列并行AR训练（Balanced SP），直接微调为长程多镜头交互式AR扩散模型；推理端W4A4 NVFP4 + KV cache量化 + 异步流式VAE解码。训练加速2.15x，推理1.84x，5B模型45.7 FPS。Song Han组出品。
+🔗 arXiv: https://arxiv.org/abs/2605.18739
+
+📄 WorldString: Actionable World Representation [来源:HF]
+👤 Kunqi Xu, Jianglong Ye, Sifei Liu (NVIDIA), Xueyan Zou 等
+💡 Motivation: 物理世界模型中，物体是基本单元，具有由内禀属性决定的可变状态。但目前没有方法统一地显式建模"可操作的物体表示"。
+🔧 方案: 提出WorldString，从点云或RGB-D视频流直接学习真实物体的状态流形，作为通用数字孪生。完全可微结构可对接策略学习和神经动力学。思路很本质——从物体的actionable representation出发构建世界模型基础模块。
+🔗 arXiv: https://arxiv.org/abs/2605.18743
+
+📄 DepthVLM: Unlocking Dense Metric Depth Estimation in VLMs [来源:HF]
+👤 Hanxun Yu, Xuan Qu, Yuxin Wang, Jianke Zhu, Lei Ke | 浙大等
+💡 Motivation: VLM擅长2D但3D理解弱，文本监督范式制约稠密几何恢复。
+🔧 方案: 在LLM backbone上接轻量depth head，统一视觉-文本监督+两阶段训练，单次前向同时输出全分辨率深度图和语言输出。显著超越现有VLM，甚至超过纯视觉模型。
+🔗 arXiv: https://arxiv.org/abs/2605.15876
+
+📄 PDI-Bench: Quantitative Video World Model Evaluation for Geometric-Consistency [来源:arXiv]
+👤 Jiaxin Wu 等
+💡 Motivation: 视频生成模型的3D几何一致性评估依赖人类判断，对几何错误诊断能力弱。
+🔧 方案: 提出PDI-Bench，通过分割+点跟踪获取object-centric观测，单目重建提升到3D坐标，计算投影几何残差捕捉三类失败模式。在SOTA视频生成器上揭示常用感知指标抓不到的几何失败。
+🔗 arXiv: https://arxiv.org/abs/2605.15185
+
+💬 今日小结: 重头在AR视频生成——KVPO解决AR视频RLHF对齐（后训练），Head Forcing和LongLive-2.0分别从KV cache策略和系统工程推进长视频生成，Incantation用自然语言实现多实体交互式世界模型。WorldString从物体表示重新思考世界模型基础组件。DepthVLM把深度估计融入VLM。PDI-Bench为世界模型几何评估提供定量工具。

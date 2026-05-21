@@ -1,0 +1,62 @@
+📰 Daily Papers 论文筛选 | 2026-05-18 (覆盖 May 14-15 arXiv/HF)
+
+📄 SANA-WM: Efficient Minute-Scale World Modeling with Hybrid Linear Diffusion Transformer [来源: HF+arXiv]
+👤 Haozhe Liu, Yuyang Zhao, Tian Ye, Junsong Chen | NVIDIA (Tong He, Song Han, Enze Xie)
+💡 Motivation: 现有世界模型要么参数巨大要么只能生成短视频，如何用2.6B参数高效生成分钟级720p视频并精确跟随相机轨迹？
+🔧 方案: Hybrid Linear Attention (Gated DeltaNet + softmax)实现memory-efficient长序列建模 + Dual-Branch Camera Control + 鲁棒的metric-scale 6-DoF pose标注pipeline。64×H100训练15天，单卡生成60s视频。
+🔗 arXiv: https://arxiv.org/abs/2605.15178
+🌐 Project: https://nvlabs.github.io/Sana/WM/
+
+📄 Causal Forcing++: Scalable Few-Step Autoregressive Diffusion Distillation for Real-Time Interactive Video Generation [来源: HF+arXiv]
+👤 Hongzhou Zhu, Kaiwen Zheng, Zihan Zhou, Jun Zhu | 清华大学 + ShengShu (盛数)
+💡 Motivation: 自回归视频扩散蒸馏在frame-wise 1-2步设定下初始化是关键瓶颈——现有策略要么target-misaligned，要么无法few-step，要么太贵无法scale。
+🔧 方案: 提出causal consistency distillation (causal CD)初始化，从单步teacher ODE获得监督避免预计算完整PF-ODE轨迹。Frame-wise 2-step即超越4-step chunk-wise SOTA，首帧延迟降50%，训练成本降4×。还扩展到action-conditioned world model (Genie3路线)。
+🔗 arXiv: https://arxiv.org/abs/2605.15141
+🌐 Project: https://github.com/thu-ml/Causal-Forcing
+
+📄 RAVEN: Real-time Autoregressive Video Extrapolation with Consistency-model GRPO [来源: HF+arXiv]
+👤 Yanzuo Lu et al. | Imperial College London
+💡 Motivation: 自回归视频扩散模型的训练-推理分布不匹配（history distribution gap）制约长视频生成质量。同时，如何对consistency model做在线RL？
+🔧 方案: 将self-rollout重组为clean history + noisy states的interleaved序列，让下游chunk loss直接监督history表征。提出CM-GRPO将consistency sampling步建模为条件高斯转移，直接在此kernel上做RL，避免Euler-Maruyama辅助过程。
+🔗 arXiv: https://arxiv.org/abs/2605.15190
+🌐 Project: https://yanzuo.lu/raven
+
+📄 Flash-GRPO: Efficient Alignment for Video Diffusion via One-Step Policy Optimization [来源: arXiv]
+👤 Xiaoxuan He, Siming Fu, Zeyue Xue, Bohan Zhuang, Nan Duan | Microsoft + Monash
+💡 Motivation: GRPO对齐14B视频扩散模型需要数百GPU-day，现有滑动窗口加速方案牺牲优化质量且不稳定。
+🔧 方案: 单步训练框架——iso-temporal grouping消除timestep混淆方差，temporal gradient rectification消除不同timestep间梯度量级不一致。1.3B-14B模型上均显著加速且超越full-trajectory training对齐质量。
+🔗 arXiv: https://arxiv.org/abs/2605.15980
+
+📄 DepthVLM: Unlocking Dense Metric Depth Estimation in VLMs [来源: arXiv]
+👤 Hanxun Yu, Xuan Qu, Yuxin Wang, Jianke Zhu, Lei Ke | 浙江大学 + 腾讯混元LLM + HKUST
+💡 Motivation: VLM擅长2D任务但3D理解受限于纯文本监督范式，无法恢复dense geometry。
+🔧 方案: 在LLM backbone上接lightweight depth head，统一vision-text监督两阶段训练，单次前向推理同时输出full-resolution depth map和语言输出。超越现有VLM和纯视觉depth模型。
+🔗 arXiv: https://arxiv.org/abs/2605.15876
+🌐 Project: https://depthvlm.github.io/
+
+📄 Warp-as-History: Generalizable Camera-Controlled Video Generation from One Training Video [来源: HF+arXiv]
+👤 Yifan Wang, Tong He | 上海交通大学 + Shanghai AI Lab
+💡 Motivation: 现有相机控制方法要么需大规模camera-annotated数据后训练，要么训练free但依赖test-time优化。能否zero-shot实现相机控制？
+🔧 方案: 将camera warp转化为pseudo-history输入模型的visual-history pathway，对齐positional encoding到target frames并去除无效token。无需任何训练即揭示frozen video model的zero-shot相机跟随能力；仅用一个视频做LoRA微调即可泛化到新视频。
+🔗 arXiv: https://arxiv.org/abs/2605.15182
+🌐 Project: https://yyfz.github.io/warp-as-history/
+
+📄 WorldAct: Activating Monolithic 3D Worlds into Interactive-Ready Object-Centric Scenes [来源: arXiv]
+👤 Guo JiaWei et al. | SJTU DeepVision Lab
+💡 Motivation: 生成式3D世界（如Marble）输出的是静态整体资产，缺乏可编辑性和物理交互能力，限制了具身模拟应用。
+🔧 方案: 多模态agent引导场景分解→识别可交互物体→重建几何对齐的object-level mesh→3D inpainting恢复背景。支持object-level编辑、碰撞感知操作和具身任务执行。
+🔗 arXiv: https://arxiv.org/abs/2605.15843
+🌐 Project: https://sjtu-deepvisionlab.github.io/WorldAct
+
+📄 DiffusionOPD: A Unified Perspective of On-Policy Distillation in Diffusion Models [来源: HF+arXiv]
+👤 Quanhao Li et al. | (cs.LG+cs.CV)
+💡 Motivation: RL用于diffusion模型受限于单任务优化，多任务联合训练存在跨任务干扰，级联RL有灾难性遗忘。
+🔧 方案: Online Policy Distillation范式——独立训练task-specific teachers后沿student自身rollout轨迹蒸馏。推导continuous-state马尔科夫过程的闭式per-step KL目标，统一SDE和ODE路径，梯度方差更低。多benchmark SOTA。
+🔗 arXiv: https://arxiv.org/abs/2605.15055
+
+💡 本期亮点总结：
+• 自回归视频生成领域爆发：Causal Forcing++、RAVEN 两篇从不同角度解决AR video的核心问题（初始化 vs. 训练-推理gap），都做到实时生成
+• 世界模型：SANA-WM (NVIDIA) 证明2.6B小模型+精心设计即可做到分钟级世界模型
+• 后训练/对齐：Flash-GRPO + RAVEN的CM-GRPO + DiffusionOPD，三篇分别从效率/consistency model/多任务角度推进视频扩散模型的后训练
+• 深度估计：DepthVLM将metric depth直接嵌入VLM，和我们DepthCrafter路线互补
+• 相机控制：Warp-as-History揭示video model内隐含的zero-shot相机控制能力，insight很深

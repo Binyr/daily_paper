@@ -1,0 +1,50 @@
+📰 HF Daily Papers 论文筛选 (2026-05-20)
+来源: Hugging Face Daily Papers + arXiv cs.CV
+
+📄 Incantation: Natural Language as the Action Interface for Multi-Entity Video World Models [来源:HF]
+👤 作者: Shangwen Zhu, Qianyu Peng, Zhao Pu et al.
+💡 Motivation: 现有交互式视频世界模型缺乏细粒度多实体控制能力，根本原因在于 action interface 设计——标准控制协议（动画ID、设备输入）在设计时就绑定了特定实体/引擎。
+🔧 方案: 提出以自然语言作为 action interface，实现 per-latent-frame (0.25s) 文本条件控制。通过 frame-local text cross-attention + ODE-initialized Self-Forcing distillation + RoPE-decoupled sliding KV-cache 实现实时长程流式生成。跨实体迁移 89% vs 43%，OOV prompt 90% vs 0%，19.7 FPS@480p 稳定运行2小时。
+🔗 arXiv: https://arxiv.org/abs/2605.18601
+🌐 Project: 数据集预览已在 GitHub 发布
+
+📄 Echo-Forcing: A Scene Memory Framework for Interactive Long Video Generation [来源:HF]
+👤 作者: Mingqiang Wu, Weilun Feng, Zhefeng Zhang, Haotong Qin et al.
+💡 Motivation: 自回归视频扩散模型在交互场景（prompt切换、旧场景遗忘、历史场景recall）中表现差，核心瓶颈是历史 KV states 功能纠缠——稳定anchor和近期动态共用同一 cache 策略。
+🔧 方案: 提出 training-free 的三层记忆框架：(1) Hierarchical Temporal Memory 解耦 stable anchors / compressed history / recent window; (2) Scene Recall Frames 将历史场景压缩为空间结构化KV表示; (3) Difference-aware Memory Decay 自适应遗忘冲突token。VBench-Long SOTA。
+🔗 arXiv: https://arxiv.org/abs/2605.16003
+🌐 Project: https://github.com/mingqiangWu/Echo-Forcing
+
+📄 CogOmniControl: Reasoning-Driven Controllable Video Generation via Creative Intent Cognition [来源:HF]
+👤 作者: Hongji Yang, Songlian Li, Yucheng Zhou et al.
+💡 Motivation: 现有视频生成模型在抽象、稀疏条件（如分镜草图、clay render）下表现脆弱——adapter注入或VLM耦合都无法真正理解用户创意意图。
+🔧 方案: 将可控视频生成分解为"创意意图认知 + 生成"两步。训练专用 CogVLM 理解稀疏抽象条件，CogOmniDiT 通过 in-context generation 统一多条件控制，RL对齐VLM推理输出，并利用 VLM 驱动 Best-of-N 选择，形成闭环 harness 架构。
+🔗 arXiv: https://arxiv.org/abs/2605.19995
+🌐 Project: https://github.com/um-lab/CogOmniControl
+
+📄 Depth2Pose: A Pose-Based Benchmark for Monocular Depth Estimation without Ground-Truth Depth [来源:arXiv]
+👤 作者: Gabrielle Flood et al.
+💡 Motivation: 单目深度估计模型通常用全局depth误差评估，但这不反映深度在下游几何任务中的实际有用性。且标准benchmark依赖昂贵的稠密GT depth。
+🔧 方案: 提出将 depth predictions 与 feature correspondences 结合到 depth-aware geometric solver 中，用相对相机位姿估计精度作为 task-driven 代理指标。引入 D2P 数据集覆盖传统训练分布外的挑战场景（大尺度、重遮挡/植被环境），只需相机位姿作GT。结论：标准benchmark上的好表现不一定泛化到挑战场景。
+🔗 arXiv: https://arxiv.org/abs/2605.19797
+
+📄 SafeDiffusion-R1: Online Reward Steering for Safe Diffusion Post-Training [来源:HF]
+👤 作者: Komal Kumar, Ankan Deria, Abhishek Basu et al.
+💡 Motivation: 扩散模型安全性后训练面临两难——离线RL/SFT有灾难性遗忘，监督方法需要昂贵配对数据。
+🔧 方案: 首次将 GRPO（Group Relative Policy Optimization）用于扩散模型在线后训练。创新性的 steering reward 利用 CLIP embedding 空间方向引导（无需训练专门的safe/unsafe reward model）。在正负prompt上同时在线训练，不安全内容 48.9%→18.07%，GenEval 42.08%→47.83%，且泛化到 OOD unsafe prompts。
+🔗 arXiv: https://arxiv.org/abs/2605.18719
+🌐 Project: GitHub 已开源
+
+📄 MSAVBench: Comprehensive Evaluation of Multi-Shot Audio-Video Generation [来源:HF]
+👤 作者: Yujie Wei, Yujin Han, Zhekai Chen et al.
+💡 Motivation: 视频生成正从单镜头走向复杂多镜头音视频叙事，但现有评测 benchmark 范围有限、pipeline 僵化。
+🔧 方案: 首个多镜头音视频生成综合 benchmark，覆盖 video/audio/shot/reference 四个维度，最多15镜头，含非真实场景。评估19个SOTA模型，发现 director-level control 和精细音视频同步仍是瓶颈，模块化/agentic pipeline 是缩小开闭源差距的有效路径。Spearman与人类判断对齐 91.5%。
+🔗 arXiv: https://arxiv.org/abs/2605.20183
+
+📄 RLFTSim: Realistic and Controllable Multi-Agent Traffic Simulation via RL Fine-Tuning [来源:arXiv]
+👤 作者: Ehsan Ahmadi et al. | CVPR 2026 Highlight
+💡 Motivation: 监督式开环训练的交通仿真无法捕捉多智能体动态交互。本质上是世界模型如何通过后训练对齐真实数据分布的问题。
+🔧 方案: 在预训练仿真模型上用 RL fine-tuning，设计平衡 fidelity 和 controllability 的奖励，实现 SOTA realism。与启发式搜索方法相比，低方差密集奖励信号大幅减少所需样本量。通过 goal conditioning 蒸馏可控性。方法论对视频世界模型后训练有启发。
+🔗 arXiv: https://arxiv.org/abs/2605.19033
+
+💭 编辑点评：今天最值得关注的是 Incantation 和 Echo-Forcing，前者用自然语言作为世界模型的 action interface 实现多实体控制和跨实体迁移，本质上回答了"世界模型如何支持 open-set interaction"；后者直接解决视频生成中的"记忆"问题，提出的层次化时序记忆和场景recall机制与我们关注的 memory for world models 方向高度一致。Depth2Pose 对我们 DepthCrafter 的评估方法论有参考价值——用 pose 作为 depth 的 proxy metric 可以避免稠密GT的依赖。SafeDiffusion-R1 的 GRPO for diffusion 框架是视觉模型后训练的又一验证。
