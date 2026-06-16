@@ -1,0 +1,65 @@
+🗓️ HF Daily Papers 论文筛选 | 2026-06-01
+
+今日从 HuggingFace Daily Papers + arXiv (cs.CV) 筛选出以下与世界模型/视频生成/3D-4D视觉高度相关的论文，按相关度排序：
+
+📄 DecMem: Towards Minute-Long Consistent World Generation with Decoupled Memory [来源:arXiv]
+👤 作者: Zhenhao Yang, Xiaoshi Wu, Zhengyao Lv, Xiaoyu Shi, Xintao Wang | HKU + 快手Kolors
+💡 Motivation: 现有世界模型在长程生成中难以保持细粒度时空一致性，显式3D记忆和粗粒度帧级隐式记忆都不够用
+🔧 方案: 提出解耦记忆架构——分离空间细节和时序动态，使可学习记忆模块能高效扩展到分钟级世界生成，显著优于现有SOTA
+🔗 arXiv: https://arxiv.org/abs/2605.31336
+🌐 Project: https://jeffreyyzh.github.io/DecMem-Page
+
+📄 Light Interaction: Training-Free Inference Acceleration for Interactive Video World Models [来源:HF]
+👤 作者: Jiacheng Lu, Haoyi Zhu, Sipei Yi, Enze Xie, Yu Li | 浙大 + HKU
+💡 Motivation: 交互式视频世界模型在长轨迹交互时推理成本随上下文增长暴增（二次注意力+重复去噪），制约实时应用
+🔧 方案: 设计 training-free 推理加速框架，通过 KV-cache 裁剪、注意力稀疏化和去噪步骤复用，实现长程交互加速而不牺牲质量
+🔗 arXiv: https://arxiv.org/abs/2605.31158
+🌐 Project: https://2843721358l-del.github.io/Light-Interaction-Project/
+
+📄 C4G: Learning Global Motion with Compact Gaussians for Feed-Forward 4D Reconstruction [来源:arXiv]
+👤 作者: Mungyeom Kim, Minkyeong Jeon, Honggyu An, Jaewoo Jung, Seungryong Kim | KAIST + Sony
+💡 Motivation: 现有前馈式4D重建逐像素预测Gaussian导致重复和视角偏差，无法有效学习全局运动
+🔧 方案: 用紧凑的时间戳条件可学习Gaussian query token聚合全时序特征，实现跨帧全局运动建模，大幅减少冗余Gaussian同时提升重建质量
+🔗 arXiv: https://arxiv.org/abs/2605.31595
+🌐 Project: https://cvlab-kaist.github.io/C4G
+
+📄 SurGe: Improved Surface Geometry in Point Maps [来源:arXiv]
+👤 作者: Karim Knaebel, Gonzalo Martin Garcia, Christian Schmidt, Bastian Leibe | RWTH Aachen
+💡 Motivation: 前馈3D重建的 point map 方法（如DUSt3R/MASt3R）全局几何好但局部表面几何差，现有metric无法体现这一问题
+🔧 方案: 1) 提出 point map normal metric 评估局部表面方向；2) 设计两种互补策略改善表面几何——直接改进point map方法本身的训练
+🔗 arXiv: https://arxiv.org/abs/2605.31577
+🌐 Project: https://vision.rwth-aachen.de/surge
+
+📄 Representation Forcing for Bottleneck-Free Unified Multimodal Models [来源:两者]
+👤 作者: Yuqing Wang, Zhijie Lin, Ceyuan Yang, Haoqi Fan, Xihui Liu | HKU + 上海AI Lab
+💡 Motivation: 统一多模态模型仍依赖冻结的VAE做图像生成，形成结构瓶颈；去掉VAE则质量下降
+🔧 方案: Representation Forcing——让decoder先自回归预测视觉表征token再生成像素，将表征预测变为生成的原生能力，彻底消除外部生成latent space依赖。像素空间模型匹配SOTA VAE-based方法
+🔗 arXiv: https://arxiv.org/abs/2605.31604
+🌐 Project: https://yuqingwang1029.github.io/RepresentationForcing/
+
+📄 Lumos-Nexus: Efficient Frequency Bridging with Homogeneous Latent Space for Video Unified Models [来源:两者]
+👤 作者: Jiazheng Xing, Hangjie Yuan, Lingling Cai | 阿里达摩院 + 浙大
+💡 Motivation: 基于connector的视频统一模型在联合训练大型高保真生成器时计算成本过高，限制视觉质量
+🔧 方案: 通过同质化latent space + 高效频率桥接，在不进入生成器完整训练循环的前提下实现推理驱动生成的高保真输出
+🔗 arXiv: https://arxiv.org/abs/2605.31603
+🌐 Project: https://jiazheng-xing.github.io/nexus-lumos-home/
+
+📄 SANA-Streaming: Real-time Streaming Video Editing with Hybrid Diffusion Transformer [来源:HF]
+👤 作者: Yuyang Zhao, Yicheng Pan, Qiyuan He, Enze Xie, Song Han | NVIDIA + MIT
+💡 Motivation: 实时流式视频编辑需要同时满足时序一致性和高吞吐，现有方法难以在消费级GPU实现
+🔧 方案: 系统-算法协同设计：Hybrid DiT（选择性注意力+高效token管理）+ 流式pipeline优化，实现消费级GPU上高分辨率实时V2V编辑
+🔗 arXiv: https://arxiv.org/abs/2605.30409
+🌐 Project: https://nvlabs.github.io/Sana/Streaming/
+
+📄 TunerDiT: Training-free Progressive Steering of Diffusion Transformer for Multi-Event Video Generation [来源:arXiv]
+👤 作者: Ruotong Liao, Guangyao Zhai, Daniel Cremers, Volker Tresp | TUM + 慕尼黑大学
+💡 Motivation: T2V生成多事件长视频时，如何让不同时段对应不同文本条件是开放问题
+🔧 方案: 发现DiT去噪轨迹中存在内在"转折点"（从全局布局→细粒度细节），据此设计渐进式条件切换策略，无需额外训练实现多事件视频生成
+🔗 arXiv: https://arxiv.org/abs/2605.31590
+
+📄 RayDer: Scalable Self-Supervised Novel View Synthesis from Real-World Video [来源:arXiv]
+👤 作者: Ulrich Prestel, Stefan Andreas Baumann, Nick Stracke, Björn Ommer | CompVis, LMU Munich
+💡 Motivation: 自监督NVS从真实视频学习难以scale——多网络系统设计脆弱、scaling行为难预测
+🔧 方案: 将相机估计+场景重建+渲染统一到单一前馈transformer中，将自监督NVS转化为单模型scaling问题，配合动态状态模块处理动态场景
+🔗 arXiv: https://arxiv.org/abs/2605.31535
+🌐 Project: https://compvis.github.io/rayder

@@ -1,0 +1,47 @@
+📰 HF Daily Papers 论文筛选 (2026-05-29)
+
+今日共从 HF Daily Papers 筛选出 6 篇高度相关论文（arXiv API 因 rate limit 未能补充，以 HF 来源为主）。
+
+📄 minWM: A Full-Stack Open-Source Framework for Real-Time Interactive Video World Models [来源:HF]
+👤 作者: Min Zhao, Hongzhou Zhu, Bokai Yan, ..., Fan Bao, Jun Zhu | 清华大学（朱军组）
+💡 Motivation: 将双向视频扩散模型转化为实时可交互的世界模型，需要因果、可控、低延迟的 rollout 管线，但目前缺乏完整开源方案
+🔧 方案: 提出 4 阶段全栈管线——camera-controllable fine-tuning → Causal Forcing AR 训练 → 一致性蒸馏（few-step）→ 流式推理。在 Wan2.1/HunyuanVideo 上验证，开源框架
+🔗 arXiv: https://arxiv.org/abs/2605.30263
+🌐 Project: https://github.com/shengshu-ai/minWM
+
+📄 YoCausal: How Far is Video Generation from World Model? A Causality Perspective [来源:HF]
+👤 作者: You-Zhe Xie, Yu-Hsuan Li, Jie-Ying Lee, Kaipeng Zhang, Yu-Lun Liu, Zhixiang Wang
+💡 Motivation: VDM 是否真正理解因果关系？现有 benchmark 依赖合成数据，sim-to-real gap 大。通过认知科学的 VoE 范式，用时间反转视频作为免费反事实样本来评估因果推理
+🔧 方案: 双层 benchmark——Level 1 (RSI) 量化时间箭头感知；Level 2 (CCI) 用 VLM 分离因果推理与时序偏差。在 13 个 SOTA VDM 上评测，揭示"感知时间方向≠理解因果"
+🔗 arXiv: https://arxiv.org/abs/2605.30346
+🌐 Project: 暂未找到
+
+📄 NeuROK: Generative 4D Neural Object Kinematics [来源:HF]
+👤 作者: Chen Geng, Guangzhao He, Yue Gao, Yunzhi Zhang, Shangzhe Wu, Jiajun Wu ⭐ | Stanford（吴佳俊组）
+💡 Motivation: 从静态 3D 物体生成物理可信的 4D 动态变形是构建世界模型的关键，但现有方法依赖预设物理模型和 system identification，难以泛化
+🔧 方案: 学习 data-driven 的运动学状态参数化（NeuROK）——学一个隐空间表示物体所有可能状态 + 解码器从隐变量映射到变形形状，在大规模 4D 数据集上训练 transformer encoder-decoder
+🔗 arXiv: https://arxiv.org/abs/2605.30347
+🌐 Project: https://chen-geng.com/neurok
+
+📄 AdaState: Self-Evolving Anchors for Streaming Video Generation [来源:HF]
+👤 作者: Yusuf Dalva, Pinar Yanardag
+💡 Motivation: AR 视频扩散模型结构性地锚定在第一帧，KV cache 中首帧引起过度 attention，抑制了运动动态和镜头变化，导致时间深度浅
+🔧 方案: 用自适应隐状态替代静态首帧锚点——模型在每个 chunk 同时去噪一个"场景锚"隐变量（不渲染），该锚随生成内容共同演化，使参考不再冻结
+🔗 arXiv: https://arxiv.org/abs/2605.30349
+🌐 Project: 暂未找到
+
+📄 Beyond 3D VQAs: Injecting 3D Spatial Priors into VLMs (GASP) [来源:HF]
+👤 作者: Chun-Hsiao Yeh, Shengyi Qian, Manchen Wang, Yi Ma, Joseph Tighe, Fanyi Xiao | Meta + UC Berkeley
+💡 Motivation: VLM 的 3D 空间推理能力弱，VQA fine-tuning 容易过拟合，专用 3D encoder 笨重。真正的空间理解应源于几何先验而非高层 QA 监督
+🔧 方案: GASP 在 LLM 每层注入几何先验——correspondence head 做深度监督，用 ground-truth 几何做对比学习（点对应 2D 视角不变性 + 深度一致性），将内部对应匹配精度从 <5% 大幅提升
+🔗 arXiv: https://arxiv.org/abs/2605.30231
+🌐 Project: https://danielchyeh.github.io/GASP/
+
+📄 WorldMemArena: Evaluating Multimodal Agent Memory Through Action-World Interaction [来源:HF]
+👤 作者: Chengzhi Liu, Yuzhe Yang, ..., Songyou Peng, Xin Eric Wang | UCSB + ETH
+💡 Motivation: 长时域 agent 的记忆需要追踪演化世界、修正过期信息、在决策时呈现正确证据，但现有 benchmark 只测静态对话中的回忆能力
+🔧 方案: 将多模态 agent 记忆形式化为 Action-World Interaction Loop（四阶段生命周期），构建 400 个多会话多模态任务，支持 stage-level 诊断和自管理 vs 手工管线的对比
+🔗 arXiv: https://arxiv.org/abs/2605.29341
+🌐 Project: https://github.com/UCSB-AI/WorldMemArena
+
+💬 点评: 今日最值得关注的是 minWM（清华朱军组的完整世界模型开源框架，直接对标我们的方向）和 NeuROK（Stanford 吴佳俊组做 4D 动力学生成，方法论精巧）。YoCausal 和 AdaState 分别从评估和架构角度推进了 causal video generation 的理解。GASP 用几何先验提升 VLM 空间推理，和 depth 方向有交叉。

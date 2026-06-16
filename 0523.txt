@@ -1,0 +1,112 @@
+📰 AI/CV 每日论文精选 (2026-05-22/23, 周末合刊)
+
+来源: HuggingFace Daily Papers + arXiv cs.CV
+筛选方向: 世界模型、因果视频生成、记忆机制、后训练、3D/4D视觉
+
+📄 Geo-Align: Video Generation Alignment via Metric Geometry Reward [来源:HF+arXiv]
+👤 Zizun Li, Haoyu Guo, Chunhua Shen, Tong He | 中国科学技术大学 & 上海AI Lab
+💡 Motivation: 相机控制视频生成用SFT在合成数据上训练泛化差，无法保证物理尺度和轨迹精度。提出首个将RL引入camera-controlled video re-rendering的框架。
+🔧 方案: 引入metric 3D estimator提取生成视频的精确相机轨迹，设计scale-aware perceptual reward惩罚旋转和平移偏差，无需配对真实数据。
+🔗 arXiv: https://arxiv.org/abs/2605.23903
+🌐 Project: 暂无
+
+📄 SCOPE: Simulating Cross-game Operations in Playable Environments for FPS World Models [来源:HF+arXiv]
+👤 Zizhao Tong, Hongfeng Lai, Zeqing Wang, Zhaohu Xing | —
+💡 Motivation: 现有交互式世界模型全局注入动作信号，无法处理FPS游戏中高频重叠控制信号。核心洞察：FPS动作是空间选择性的——射击/换弹仅影响局部（scope），而相机移动控制全局。
+🔧 方案: 在预训练视频扩散模型的每个transformer block中插入conditioning module，分离in-scope和out-of-scope视觉效果。发布CrossFPS大规模多游戏数据集。
+🔗 arXiv: https://arxiv.org/abs/2605.23345
+🌐 Project: https://scopeanon.github.io/SCOPE/
+
+📄 LaMo: Self-Supervised Latent Motion Priors for Physical Realism in Video Generation [来源:arXiv]
+👤 Bo Jiang, Depu Meng, Yihan Hu, Yichen Xie, Wei Zhan | —
+💡 Motivation: 视频生成器仍难以保证物理一致性，限制了作为世界模拟器的应用。现有方法依赖外部模拟器或教师模型。关键思路：从训练视频本身自监督提取运动先验。
+🔧 方案: 提出latent motion prior，建模帧间latent变化的条件分布，通过两个轻量正则项（motion consistency loss + motion-guided sampling）引导生成过程，无需改动主模型。
+🔗 arXiv: https://arxiv.org/abs/2605.23878
+🌐 Project: https://lamo-ai.github.io/
+
+📄 EM-Vid: Training-Free Entity-Centric Memory for Efficient and Consistent Multi-Shot Video Generation [来源:arXiv]
+👤 Jente Vandersanden, Matheus Gadelha, Chun-Hao P. Huang, Hyeonho Jeong, Yulia Gryaditskaya | Adobe Research
+💡 Motivation: 多镜头视频生成需保持角色外观一致性。现有自回归方法用全帧做memory，纠缠了持久实体信息和瞬态场景上下文，导致信息泄漏和高计算开销。
+🔧 方案: 提出entity-centric memory（实体索引的latent patch bank），引入sparse token conditioning兼容预训练模型，仅通过self-attention子集注入实体信息，training-free。
+🔗 arXiv: https://arxiv.org/abs/2605.23610
+🌐 Project: 暂无
+
+📄 HorizonStream: Long-Horizon Attention for Streaming 3D Reconstruction [来源:arXiv]
+👤 Chong Cheng, Peilin Tao, Xiaoyang Guo, Wei Yin | —
+💡 Motivation: 在线3D重建需因果性和有限内存，现有方法在长序列上出现漂移/抖动/崩溃。根本原因：流式几何具有时间异构性（短期对应vs长期全局尺度），而现有架构强加了均匀的影响模式。
+🔧 方案: 设计长期注意力机制，对不同时间尺度的证据施加不同的存储和衰减策略，解决滑动窗口的hard cutoff和无门控递归的cache saturation问题。
+🔗 arXiv: https://arxiv.org/abs/2605.23889
+🌐 Project: 暂无
+
+📄 RiGS: Rigid-aware 4D Gaussian Splatting from a Single Monocular Video [来源:arXiv]
+👤 Chenyu Wu, Wanhua Li, Zhu-Tian Chen, Hanspeter Pfister | Harvard University
+💡 Motivation: 从单目视频重建动态3D场景时，长期平滑变换和短期复杂变形难以同时捕获。
+🔧 方案: 引入三类Gaussian primitives（static、rigid、transient），分别建模不同时间尺度的运动。Rigid primitives用刚体变换处理长期运动，transient用可变形场处理高频动态。
+🔗 arXiv: https://arxiv.org/abs/2605.23672
+🌐 Code: https://github.com/ladvu/RiGS
+
+📄 CRONOS: Benchmarking Counterfactual Physical Consistency in Video Models [来源:arXiv]
+👤 León Begiristain, Olaf Dünkel, Adam Kortylewski | —
+💡 Motivation: 视频预测被视为通用世界模型的路径，但不清楚这些系统是否真正学到了因果结构。现有评估无法区分"学到物理"和"利用视觉相关性"。
+🔧 方案: 基于intervention的benchmark，在UE中构建反事实场景（改变上下文/视角/物体外观/类别），测试模型预测是否对物理相关变化做出正确响应。
+🔗 arXiv: https://arxiv.org/abs/2605.23699
+🌐 Project: 暂无 (HF dataset: neurips-author/CRONOS-Benchmark-preview)
+
+📄 Q-ARVD: Quantizing Autoregressive Video Diffusion Models [来源:HF+arXiv]
+👤 Siao Tang, Xinyin Ma, Gongfan Fang, Xingyi Yang, Xinchao Wang | NUS
+💡 Motivation: 自回归视频扩散模型（ARVD）是流式视频生成和世界建模的有前景架构，但推理代价巨大。直接套用标准DiT量化方案效果差——ARVD的自回归误差累积使量化更脆弱。
+🔧 方案: 首个系统研究ARVD量化的工作，分析误差累积特性并提出针对性量化策略。
+🔗 arXiv: https://arxiv.org/abs/2605.21072
+🌐 Project: 暂无
+
+📄 Learning Spatiotemporal Sensitivity in Video LLMs via Counterfactual Reinforcement Learning [来源:arXiv]
+👤 Dazhao Du, Jian Liu, Jialong Qin, Tao Han | —
+💡 Motivation: Video LLM虽然benchmark准确率高，但常通过单帧线索和语言先验走捷径，RL后训练的correctness-only reward进一步强化了这种shortcut policy。
+🔧 方案: 提出反事实RL：如果视觉世界改变而问题不变，答案是否应该改变？设计CRPO（Counterfactual RPO）训练Video LLM真正追踪时空动态。
+🔗 arXiv: https://arxiv.org/abs/2605.21988
+
+🌐 Project: https://ddz16.github.io/crpo.github.io/
+
+📄 GenRecon: Bridging Generative Priors for Multi-View 3D Scene Reconstruction [来源:HF+arXiv]
+👤 Katharina Schmid, Nicolas von Lützow, Angela Dai, Matthias Nießner | TU Munich ⭐
+💡 Motivation: 多视角3D重建与生成式3D先验脱节——重建方法不利用生成模型的完整性，生成方法不利用观测约束。
+🔧 方案: 将场景重建转化为空间局部化、重叠chunk上的条件3D生成（用Trellis.2），通过projection-based conditioning将多视角RGB约束lift到3D生成空间，可扩展到大场景。
+🔗 arXiv: https://arxiv.org/abs/2605.23888
+🌐 Project: https://kasothaphie.github.io/GenRecon/
+
+📄 Learning a Particle Dynamics Model with Real-world Videos [来源:arXiv, CVPR 2026 Findings]
+👤 Chanho Kim, Suhas V. Sumukh, Li Fuxin | Oregon State University
+💡 Motivation: 粒子动力学世界模型通常只能在模拟环境训练（需完美状态标注）。如何从真实视频学习物理模拟？
+🔧 方案: 直接在dense Gaussians上操作，通过rendering supervision从真实视频学习粒子动力学，无需particle-level标注。
+🔗 arXiv: https://arxiv.org/abs/2605.23845
+🌐 Code: https://github.com/chkim403/gs-particle-dynamics
+
+📄 RankE: End-to-End Post-Training for Discrete Text-to-Image Generation with Decoder Co-Evolution [来源:HF]
+👤 Siyong Jian, Siyuan Li, Luyuan Zhang, Zedong Wang, Xin Jin, Ying Li | —
+💡 Motivation: 离散AR T2I模型的后训练只优化policy而冻结VQ decoder，导致Latent Covariate Shift——policy分布偏移后decoder解码质量下降。这是AR视觉生成后训练的本质瓶颈。
+🔧 方案: 首次提出decoder和policy端到端协同进化的后训练范式（类似diffusion领域的REPA-E思路在discrete AR上的对应）。
+🔗 arXiv: https://arxiv.org/abs/2605.21195
+🌐 Project: 暂无
+
+📄 Good Token Hunting: A Hitchhiker's Guide to Token Selection for Visual Geometry Transformers [来源:arXiv]
+👤 Shuhong Zheng, Michael Oechsle, Erik Sandström, Marie-Julie Rakotosaona, Federico Tombari, Igor Gilitschenski | Google & U of Toronto
+💡 Motivation: Visual geometry transformers（如DUSt3R）计算成本随输入序列长度二次增长，限制了可扩展性。
+🔧 方案: 限制每个query在全局attention中交互的key/value token数，引入两级（帧级+帧内）token选择策略，在500图场景上加速85%且保持/提升精度。
+🔗 arXiv: https://arxiv.org/abs/2605.23892
+🌐 Project: https://zsh2000.github.io/good-token-hunting.github.io
+
+📄 PiD: Fast and High-Resolution Latent Decoding with Pixel Diffusion [来源:HF+arXiv]
+👤 Yifan Lu, Jay Zhangjie Wu, Zian Wang, Huan Ling, Sanja Fidler, Xuanchi Ren | NVIDIA ⭐
+💡 Motivation: Latent diffusion的decoder是重建导向的，不生成新细节，且在高分辨率下代价高。需要更expressive且高效的解码范式。
+🔧 方案: 将latent解码重新定义为条件pixel-space diffusion，统一解码和超分为一个生成模块。支持4x/8x上采样，RTX 5090上512→2048仅需<1s。用DMD2蒸馏到4步。
+🔗 arXiv: https://arxiv.org/abs/2605.23902
+🌐 Project: https://research.nvidia.com/labs/sil/projects/pid/
+
+⭐ = 知名研究者标注 (Matthias Nießner - TUM 3D视觉大佬; Sanja Fidler - NVIDIA/UofT; Federico Tombari - Google; Hanspeter Pfister - Harvard; Xinchao Wang - NUS)
+
+今日重点关注：
+1. Geo-Align — RL用于视频生成对齐，与我们的geometric/depth方向高度相关
+2. LaMo — 自监督latent motion prior，世界模型物理一致性的新路径
+3. EM-Vid — 视频生成中的entity-centric memory，与记忆机制方向直接相关
+4. CRONOS — 反事实物理一致性benchmark，评估世界模型是否真正理解因果
+5. RiGS — 单目4D GS，static/rigid/transient分离思路值得借鉴

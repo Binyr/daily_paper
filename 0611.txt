@@ -1,0 +1,58 @@
+📰 每日论文筛选 | 2026-06-11 (覆盖过去48h)
+来源: HuggingFace Daily Papers + arXiv cs.CV
+筛选方向: 世界模型 / 因果视频生成 / 记忆机制 / 4D重建 / 深度估计
+
+📄 Next Forcing: Causal World Modeling with Multi-Chunk Prediction [来源:arXiv]
+👤 作者: Gangwei Xu, Qihang Zhang, Jiaming Zhou, Xing Zhu, Yujun Shen | HUST + Ant Group
+💡 Motivation: AR视频生成的World Action Model训练收敛慢且精度受限——核心问题是当前chunk的监督信号缺乏对未来动态的显式约束；推理也因逐帧去噪而慢
+🔧 方案: 提出Multi-Chunk Prediction (MCP)，引入轻量辅助MCP模块同时去噪未来多个chunk，形成跨预测深度的因果链；训练更快、精度更高、推理可加速
+🔗 arXiv: https://arxiv.org/abs/2606.11187
+
+📄 Making Foresight Actionable: Repurposing Representation Alignment in World Action Models [来源:arXiv]
+👤 作者: Lu Qiu, Yizhuo Li, Yi Chen, Yuying Ge, Yixiao Ge | Shanghai AI Lab / HKU
+💡 Motivation: WAM能生成合理的视觉未来，但生成的隐表征并不天然适合action decoder——存在"表征错配"，action head关注了错误的区域
+🔧 方案: 提出AGRA (Action-Grounded Representation Alignment)，通过attention分析和因果干预诊断问题，将隐表征重新对齐到动作相关的交互区域
+🔗 arXiv: https://arxiv.org/abs/2606.12217
+
+📄 World Model Self-Distillation: Training World Models to Solve General Tasks [来源:两者]
+👤 作者: Sebastian Stapf, Pablo Acuaviva Huertos, Aram Davtyan, Paolo Favaro | University of Bern
+💡 Motivation: 预训练视频生成器作为world model有涌现的任务解决能力，但依赖详细文本描述，无法直接用于规划决策；现有方法要么外包推理给VLM，要么需要昂贵的配对数据
+🔧 方案: 自蒸馏+RL框架：VLM生成任务候选方案→视频扩散模型(Demonstrator)生成演示→蒸馏给轻量Executor→VLM-based评估作为reward信号训练
+🔗 arXiv: https://arxiv.org/abs/2606.12072
+🌐 Code: https://github.com/sebastian-stapf/world-model-self-distillation
+
+📄 FadeMem: Distance-Aware Memory Consolidation for Autoregressive Video Diffusion [来源:arXiv]
+👤 作者: Yu Lu, Junjie Yang, Piotr Koniusz, YuXin Song, Yi Yang
+💡 Motivation: AR视频生成器的KV cache随视频长度线性增长；现有bounded-cache方法对历史信息做固定角色分配，不适应动态重要性变化
+🔧 方案: 提出距离感知的KV记忆层次结构——新历史以细粒度存入，旧历史逐步合并，灵感来自频率依赖的时间衰减（细节快速去相关，粗粒度结构长期有效）。固定cache预算下提升长视频一致性
+🔗 arXiv: https://arxiv.org/abs/2606.10671
+
+📄 BiWM: Advancing Open-Source Interactive Video World Models with Bidirectional Autoregression [来源:arXiv]
+👤 作者: Shaohao Rui, Xiaofeng Mao, Zhanyu Zhang, Peijia Lin, Yansong Zhu
+💡 Motivation: 将双向视频扩散模型转为AR范式可提升交互性，但现有因果管线质量不如双向模型且存在误差累积；双向AR(如Yume-1.5, Matrix-Game-3.0)更优但缺乏开源框架
+🔧 方案: 首个完整开源双向AR交互式视频世界模型框架，联合优化生成质量和推理速度，支持action/camera控制
+🔗 arXiv: https://arxiv.org/abs/2606.10135
+🌐 Code: https://github.com/qian5683/BiWM
+
+📄 AnchorEdit: Maintaining Temporal Consistency in Multi-turn Image Editing via Causal Memory [来源:arXiv]
+👤 作者: Hang Xu, Xiaoxiao Ma, Guohui Zhang, Yu Hu, Siming Fu
+💡 Motivation: 多轮图像编辑中身份漂移和误差累积严重；现有利用视频先验的方法依赖双向attention，与编辑的因果序列性本质矛盾
+🔧 方案: 首个AR扩散多轮编辑框架：三阶段训练(身份保持预训练→因果AR forcing微调+self-rollout→一致性蒸馏) + 推理时memory机制锚定初始身份
+🔗 arXiv: https://arxiv.org/abs/2606.11751
+🌐 Code: https://github.com/xuhang07/AnchorEdit
+
+📄 DynaTok: Token-Based 4D Reconstruction from Partial Point Clouds [来源:arXiv] ⭐ICML 2026
+👤 作者: Weirong Chen, Keisuke Tateno, Hidenobu Matsuki, Michael Niemeyer, Daniel Cremers, Federico Tombari | TUM + Google
+💡 Motivation: 从不完整、无序、无时间对应关系的深度传感器点云做4D重建——几何only设置下现有方法多依赖图像或假设完整输入
+🔧 方案: 将帧编码为紧凑latent tokens，用Transformer时空编码器聚合不完整观测，解耦几何与运动；flow-matching解码器重建完整时间一致的4D点云序列
+🔗 arXiv: https://arxiv.org/abs/2606.12189
+🌐 Project: https://wrchen530.github.io/dynatok/
+
+📄 WorldOlympiad: Can Your World Model Survive a Triathlon? [来源:arXiv]
+👤 作者: Yuke Zhao, Wangbo Zhao, Weijie Wang, Zeyu Zhang, Dakai An | ZJU + Alibaba DAMO Academy + HKUST
+💡 Motivation: 现有benchmark关注视觉质量/语义对齐/短期时间一致性，无法诊断世界模型是否遵守物理规则、保持3D几何一致、维持可控交互
+🔧 方案: 三维度统一评估：物理忠实度(分割+MLLM-as-judge)、几何一致性(3DGS重建)、交互保真度；覆盖游戏/机器人/真实视频场景
+🔗 arXiv: https://arxiv.org/abs/2606.11129
+🌐 Project: https://alibaba-damo-academy.github.io/WorldOlympiad/
+
+💬 今日总结: 世界模型方向持续火热。Next Forcing把LLM的multi-token prediction思想迁移到视频世界模型，是很自然但有效的扩展。FadeMem和AnchorEdit都在解决AR视频生成中"记忆"的核心问题，前者是KV cache层面的工程优雅解，后者是编辑场景的因果记忆。DynaTok (ICML 2026, Cremers组) 的token化4D重建对我们PointMapDiffuse方向有直接参考价值。WorldOlympiad提供了评估世界模型的系统化框架，值得关注。

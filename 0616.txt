@@ -1,0 +1,66 @@
+📰 HF Daily Papers 论文筛选 | 2026-06-16
+
+来源覆盖 Hugging Face Daily Papers + arXiv (cs.CV)，按相关度排序。
+
+📄 DreamX-World 1.0: A General-Purpose Interactive World Model [来源:两者]
+👤 DreamX Team, Yancheng Bai, Rui Chen, Xiangxiang Chu | AMAP-ML
+💡 Motivation: 现有 world model 无法同时支持相机导航、场景重访和可控事件生成。长程自回归生成中风格/色彩漂移严重。
+🔧 方案: 提出 E-PRoPE（投影位置编码轻量变体）做相机控制；用 causal forcing + DMD 蒸馏将双向视频生成器转为 few-step 自回归世界模型；Memory-Conditioned Scene Persistence 通过几何检索保持场景一致性；RL alignment 恢复蒸馏后的控制精度。8×RTX5090 达 16 FPS。
+🔗 arXiv: https://arxiv.org/abs/2606.16993
+🌐 Project: https://amap-ml.github.io/DreamX_World
+⭐ HF Upvotes: 51
+
+📄 Kairos: A Native World Model Stack for Physical AI [来源:arXiv]
+👤 Kairos Team, Fei Wang, Shan You, Qiming Zhang | ⚠️ 大佬: Dacheng Tao, Xiaogang Wang
+💡 Motivation: World model 正从被动视觉生成器转向 Physical AI 的基础设施——需要从异构经验中学习、维持长程持久状态、在真实部署约束下高效运行。
+🔧 方案: 三层设计——(1) Cross-Embodiment Data Curriculum 渐进式预训练；(2) Hybrid Linear Temporal Attention（滑动窗口+膨胀窗口+门控线性注意力维持全局记忆），并给出误差传播的理论上界；(3) Deployment-Aware 系统协同设计支持低延迟 rollout。
+🔗 arXiv: https://arxiv.org/abs/2606.16533
+
+📄 PermaVid: Consistent Video Generation Across Edits via Disentangled Context Memory [来源:arXiv]
+👤 Shuai Yang, Bingjie Gao | ⚠️ 大佬: Ziwei Liu (NTU S-Lab), Jiaqi Wang (上海AI Lab), Dahua Lin (CUHK/上海AI Lab)
+💡 Motivation: 视频生成在编辑后需要保持时序/视角一致性，但现有 memory 设计在场景外观/布局改变后容易失效——存储的上下文变得过时。
+🔧 方案: 多模态 context memory 将空间上下文解耦为 RGB appearance memory 和 depth geometry memory；edit-aware memory 更新与检索策略使 memory 演化与后续观察对齐。直击"视频生成中的记忆机制"这一核心问题。
+🔗 arXiv: https://arxiv.org/abs/2606.16449
+🌐 Project: https://ys-imtech.github.io/projects/PermaVid/
+
+📄 Qwen-RobotWorld: Unifying Embodied World Modeling through Language-Conditioned Video Generation [来源:两者]
+👤 Jie Zhang, Xiaoyue Chen, Chenfei Wu | ⚠️ Jingren Zhou (阿里VP/Qwen团队) | 阿里 Qwen 团队
+💡 Motivation: 用自然语言作为统一动作接口，跨机器人操作/自动驾驶/室内导航/人-机迁移预测视觉轨迹。
+🔧 方案: 60层 Double-Stream MMDiT + 冻结 Qwen2.5-VL 语义编码；8.6M 视频-文本语料(200M+帧)覆盖 20+ embodiment；General+Expert 渐进式课程训练。思路是把 world model 和 MLLM 深度耦合。
+🔗 arXiv: https://arxiv.org/abs/2606.17030
+
+📄 BadWorld: Adversarial Attacks on World Models [来源:两者]
+👤 Linghui Shen, Mingyue Cui, Xingyi Yang
+💡 Motivation: 视觉世界模型在安全关键场景部署前，鲁棒性是否可靠？标准对抗攻击因缺乏未来 GT 和无法预测用户控制而失效。
+🔧 方案: 提出 label-free 对抗框架——self-supervised velocity attack 直接干扰早期去噪动力学；trajectory-adaptive 双层优化挖掘 hard control sequence 生成控制无关扰动。揭示了当前 VWM 严重的结构脆弱性。对 world model 安全性研究有启发。
+🔗 arXiv: https://arxiv.org/abs/2606.16519
+🌐 Project: https://linghuiishen.github.io/BadWorld/
+⭐ HF Upvotes: 13
+
+📄 BRDFusion: Physics Meets Generation for Urban Scene Inverse Rendering [来源:两者]
+👤 Yi-Ruei Liu, Jie-Ying Lee, Zheng-Hui Huang, Yu-Lun Liu, Chih-Hao Lin
+💡 Motivation: 物理渲染有精确控制但有伪影，生成模型逼真但不可控——能否统一两者？
+🔧 方案: 物理模型恢复显式场景属性 + 生成先验缓解优化模糊；正向渲染时物理模型提供可控渲染，生成模型去噪修复伪影。支持 novel-view relighting、夜间模拟、动态物体编辑。对城市场景重建和驾驶仿真有价值。
+🔗 arXiv: https://arxiv.org/abs/2606.17049
+🌐 Project: https://shigon255.github.io/brdfusion-page/
+⭐ HF Upvotes: 14
+
+📄 SurroundNEXO: Ego-Centric Metric Bridging for Spatially Consistent Geometry in Autonomous Driving [来源:arXiv]
+👤 Shuai Yuan, Runxi Tang, Yuzhou Ji 等
+💡 Motivation: 车载环视相机视角重叠少，传统多视图几何的对应点假设失效，metric depth 预测不一致。
+🔧 方案: Ego-Ray Positional Encoding 赋予图像 token 全局可比的自车坐标系视线方向；稀疏 LiDAR 作为度量锚点传播绝对尺度；渐进式从局部到全局的时空推理。NuScenes/Waymo/DDAD 上单视图误差降 33.2%，跨视图一致性提升 10.5%。与 DepthCrafter 系列的 metric depth 方向直接相关。
+🔗 arXiv: https://arxiv.org/abs/2606.16960
+
+📄 MMDiff: Extending Diffusion Transformers for Multi-Modal Generation [来源:arXiv]
+👤 Yagmur Akarken, Orest Kupyn, Christian Rupprecht (Oxford VGG)
+💡 Motivation: Diffusion transformer 去噪过程中计算了丰富的感知表征，但渲染完就丢弃了——能否复用？
+🔧 方案: 冻结 DiT backbone + 轻量 decoder heads 联合生成图像和 dense perceptual modalities（语义分割、深度估计、显著性检测）。核心发现：感知信息在去噪轨迹上是时间分布的，多时间步特征融合比单步提取 mIoU 提升达 28.7%。方法论 insight 很强。
+🔗 arXiv: https://arxiv.org/abs/2606.16673
+
+📄 RealityBridge: Bridging Editable 3DGS Driving Simulations and Real-World Videos [来源:arXiv]
+👤 Zhenhua Wu, Yun Pang, Mingkun Chang 等
+💡 Motivation: 3DGS 可编辑驾驶仿真的 Sim-to-Real gap（渲染伪影、前景退化、光照不一致、时序闪烁）阻碍了实际应用。
+🔧 方案: 结构保持 + 资产感知的 Sim-to-Real 框架；多模态控制（渲染视频+前景mask+边缘图+语义mask）+ GateNet 自适应条件分配；reward-guided post-training 抑制幻觉。对 3DGS 场景重建到仿真的落地有直接价值。
+🔗 arXiv: https://arxiv.org/abs/2606.16278
+
+💡 总结: 今天世界模型方向爆发——DreamX-World、Kairos、Qwen-RobotWorld 三篇重量级工作同时出现，分别代表通用交互世界模型、Physical AI 基础设施、embodied world model 三条路线。PermaVid 直击视频生成中的记忆一致性问题，与我们的 memory for world model 方向高度相关。BadWorld 开辟了 world model 安全性的新方向。

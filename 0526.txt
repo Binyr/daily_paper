@@ -1,0 +1,80 @@
+📰 HF Daily Papers 论文筛选 | 2026-05-26
+来源: HuggingFace Daily Papers + arXiv (cs.CV)
+覆盖过去48h（含周末），共分析100+篇，精选8篇。
+
+━━━━━━━━━━━━━━━━━━
+
+📄 WBench: A Comprehensive Multi-turn Benchmark for Interactive Video World Model Evaluation [来源:两者]
+👤 Kaining Ying, Hengrui Hu, Siyu Ren et al. | 美团
+💡 Motivation: 交互式世界模型缺乏统一评测标准，现有benchmark只覆盖部分能力维度。WBench提出五维评测框架（视频质量、设定遵循、交互遵循、一致性、物理合规），289个测试用例×1058轮交互。
+🔧 方案: 多轮交互评测pipeline，覆盖多样场景/风格/主体/物理定律，填补世界模型系统性评测空白。对做世界模型的人来说是重要的evaluation资源。
+🔗 arXiv: https://arxiv.org/abs/2605.25874
+⬆️ HF Upvotes: 39
+
+━━━━━━━━━━━━━━━━━━
+
+📄 On-Policy Adversarial Flow Distillation for Autoregressive Video Generation [来源:两者]
+👤 Yang Luo, Shengju Qian, Xiaohang Tang et al. | NUS (Yang You组)
+💡 Motivation: 自回归视频生成在流式/交互场景很有吸引力，但从黑盒teacher蒸馏到causal student极难——student必须在自己的rollout分布下学习，而teacher可能架构完全不同。SFT是off-policy的，score distillation不可用，直接adversarial又太sparse。
+🔧 方案: 提出Adversarial Flow Distillation (AFD)，on-policy对抗蒸馏框架，解决AR视频生成中teacher-student架构不对齐的核心问题。对causal video generation方向直接相关。
+🔗 arXiv: https://arxiv.org/abs/2605.26105
+
+━━━━━━━━━━━━━━━━━━
+
+📄 Helix4D: Complex 4D Mesh Generation [来源:两者]
+👤 Jiraphon Yenphraphai, Jianqi Chen, Jian Wang, Sergey Tulyakov, Peter Wonka et al. | Snap Research + KAUST
+⭐ 知名作者: Peter Wonka (KAUST), Sergey Tulyakov (Snap Research)
+💡 Motivation: 现有video-to-4D方法在拓扑变化、透明材质、薄结构、内表面等复杂场景上严重失败。核心难点是如何让预训练的3D model感知时序信息。
+🔧 方案: 继承Trellis2的表达能力，从image-to-3D适配到video-conditioned 4D生成。关键设计：(a) frame-local attention跨帧共享信息但保留预训练质量，(b) 纯3D位置编码中注入时序信息。直接推进4D重建前沿。
+🔗 arXiv: https://arxiv.org/abs/2605.26109
+
+━━━━━━━━━━━━━━━━━━
+
+📄 TriSplat: Simulation-Ready Feed-Forward 3D Scene Reconstruction [来源:两者]
+👤 Weijie Wang, Zimu Li, Marc Pollefeys, Bohan Zhuang et al. | Monash + ETH
+⭐ 知名作者: Marc Pollefeys (ETH/Microsoft)
+💡 Motivation: 现有feed-forward 3D重建都用Gaussian primitive，提取可用mesh需要昂贵的后处理，破坏了feed-forward的承诺。在pose-free设置下问题更严重。
+🔧 方案: 用oriented triangle primitive替代Gaussian，单次前向直接输出simulation-ready mesh。从表示层面解决3DGS→mesh的gap，对embodied/physics reasoning场景意义重大。
+🔗 arXiv: https://arxiv.org/abs/2605.26115
+🌐 GitHub: https://github.com/ziplab/TriSplat
+⬆️ HF Upvotes: 12
+
+━━━━━━━━━━━━━━━━━━
+
+📄 Global Structure-from-Motion Meets Feedforward Reconstruction [来源:arXiv]
+👤 Linfei Pan, Johannes Schönberger, Marc Pollefeys | ETH
+⭐ 知名作者: Marc Pollefeys (ETH), Johannes Schönberger (COLMAP作者)
+💡 Motivation: Feedforward 3D重建在低纹理/少重叠/对称场景超越经典SfM，但在scalability和精度上仍有局限；经典SfM在这些challenging case又容易失败。两者互补但从未统一。
+🔧 方案: 将global SfM与feedforward reconstruction统一，COLMAP作者亲自操刀。这篇是3D重建基础设施级别的工作，对所有依赖SfM pipeline的下游任务都有影响。CVPR 2026。
+🔗 arXiv: https://arxiv.org/abs/2605.26103
+
+━━━━━━━━━━━━━━━━━━
+
+📄 RTDMD: Reinforcing Few-step Generators via Reward-Tilted Distribution Matching [来源:arXiv]
+👤 Yushi Huang, Xiangxin Zhou, Tianyu Pang et al.
+💡 Motivation: Few-step diffusion distillation已能高效生图，但用reward对齐人类偏好仍然困难。核心insight：最小化到reward-tilted teacher分布的KL散度，可以自然分解为distribution matching项+reward最大化项。
+🔧 方案: 两阶段框架RTDMD，统一distribution matching distillation与reward-guided RL。这是post-training for visual generation的直接进展，方法论可迁移到视频。
+🔗 arXiv: https://arxiv.org/abs/2605.26108
+🌐 GitHub: https://github.com/Harahan/RTDMD
+
+━━━━━━━━━━━━━━━━━━
+
+📄 Pantheon360: Taming Digital Twin Generation via 3D-Aware 360° Video Diffusion [来源:两者]
+👤 Ting-Hsuan Chen, Cho-Ying Wu, Yu-Lun Liu, Yue Wang, Liu Ren et al. | Bosch Research + NYCU
+💡 Motivation: 从视频生成完整数字孪生需要精确相机控制+全局场景覆盖+时空一致性，perspective video generator的窄FoV是根本瓶颈。360°视频是天然解法：全景覆盖简化轨迹设计，提供全局context维持一致性。
+🔧 方案: 3D-aware 360° video diffusion，可控全景视频生成用于digital twin creation。CVPR 2026。对世界模型的场景表示和视频生成都有启发。
+🔗 arXiv: https://arxiv.org/abs/2605.25449
+⬆️ HF Upvotes: 12
+
+━━━━━━━━━━━━━━━━━━
+
+📄 SKILD: Scale-Invariant K-Space Image Learning Diffusion [来源:arXiv]
+👤 Zixin Jessie Chen, William T. Freeman, Congyue Deng, Marin Soljačić et al. | MIT
+⭐ 知名作者: William T. Freeman (MIT, 计算摄影/视觉先驱)
+💡 Motivation: 生成和超分本质上都是逆转跨尺度的信息损失。自然图像和物理系统都展现尺度不变性，但现有diffusion模型没有利用这一点。
+🔧 方案: 在K-space（频域）设计forward process，逐层衰减频率分量，实现单一unconditional模型同时做生成和任意倍率连续超分。理论优雅，对理解diffusion的本质有启发。
+🔗 arXiv: https://arxiv.org/abs/2605.26032
+
+━━━━━━━━━━━━━━━━━━
+
+💬 点评: 今天最值得关注的是WBench（世界模型终于有系统benchmark了）、AFD（causal video gen的蒸馏新范式）、Helix4D（4D mesh前沿）和COLMAP作者的SfM+Feedforward统一（基础设施级）。RTDMD的reward-tilted分解思路对视频后训练也有参考价值。

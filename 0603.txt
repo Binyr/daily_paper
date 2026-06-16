@@ -1,0 +1,58 @@
+📰 Daily Paper Digest | 2026-06-03
+来源: HuggingFace Daily Papers + arXiv (过去24h)
+
+📄 Video-Mirai: Autoregressive Video Diffusion Models Need Foresight [arXiv]
+👤 Yonghao Yu, Lang Huang, Runyi Li, Zerun Wang, Toshihiko Yamasaki | 东京大学
+💡 Motivation: Causal视频生成器的表征只被训练去解释当前segment，却丢掉了未来所需的identity/layout/motion信息——作者称之为"representation-level planning gap"
+🔧 方案: 提出训练时引入non-causal foresight encoder读取完整rollout，通过lightweight predictor将stop-gradient target蒸馏进causal states，推理时保持纯causal不增加开销
+🔗 arXiv: https://arxiv.org/abs/2606.03971
+🌐 Code: https://github.com/y0urOy/Video-Mirai
+
+📄 AAD-1: Asymmetric Adversarial Distillation for One-Step Autoregressive Video Generation [arXiv] ⭐ICML 2026
+👤 Haobo Li, Yanhong Zeng, Yunhong Lu, Jiapeng Zhu, Hao Ouyang, Qiuyu Wang, Ka Leong Cheng, Yujun Shen, Zhipeng Zhang | 上海交大 & 蚂蚁
+💡 Motivation: 现有AR视频蒸馏方法因generator和discriminator对称设计导致motion collapse和训练不稳定
+🔧 方案: 打破对称性——generator保持causal保留AR能力，discriminator用bidirectional attention对全视频给holistic realism score；配合渐进式训练策略解决训练不稳定
+🔗 arXiv: https://arxiv.org/abs/2606.03972
+🌐 Code: https://github.com/AutoLab-SAI-SJTU/AAD-1
+
+📄 NVIDIA OmniDreams: Real-Time Generative World Model for Closed-Loop AV Simulation [arXiv]
+👤 Sanja Fidler, Huan Ling, Jun Gao, Zan Gojcic 等 | NVIDIA (Toronto Lab)
+💡 Motivation: 重建型仿真器受限于采集数据无法泛化到新场景；需要能实时生成action-conditioned multi-camera video的world model
+🔧 方案: 基于Cosmos diffusion model做mid/post-training，支持autoregressive action-conditioned视频生成，实现实时闭环驾驶仿真
+🔗 arXiv: https://arxiv.org/abs/2606.03159
+🌐 Code: https://github.com/nv-tlabs/omni-dreams
+
+📄 World Models Meet Language Models: On the Complementarity of Concrete and Abstract Reasoning [HF Daily]
+👤 Yucheng Zhou, Wei Tao, Yiwen Guo, Jianbing Shen | MBZUAI
+💡 Motivation: World model生成的visual rollout是随机的、可能task-incorrect，需要学会何时invoke、如何verify、怎样integrate视觉仿真与抽象推理
+🔧 方案: 提出Privileged-Future On-Policy Self-Distillation (PF-OPSD)，训练时用ground-truth future视频做privileged teacher，让模型学会controlled concrete reasoning
+🔗 arXiv: https://arxiv.org/abs/2606.03603
+
+📄 GARDEN: Gravity-Aligned Reconstruction of Disentangled Environments from RGB [arXiv]
+👤 Jiahao Sun, Dingkun Wei, Zehong Shen, Hongyu Zhou, Yujun Shen, Liang Li | 蚂蚁
+💡 Motivation: 现有重建方法产出monolithic scene缺乏物理结构——全局旋转任意、前景背景纠缠，无法做物理交互
+🔧 方案: 用gravity作为universal physical prior统一坐标系，然后做object-centric rigid mesh恢复，输出structured hybrid scene representation可直接用于物理仿真
+🔗 arXiv: https://arxiv.org/abs/2606.03921
+
+📄 MLP Splatting: Object-Centric Neural Fields [arXiv]
+👤 Shinjeong Kim, Yuzhou Cheng, Xin Kong, Paul Kelly, Andrew Davison | Imperial College London
+💡 Motivation: 3DGS和NeRF做NVS很好但无法自然分解场景为语义primitive；需要既能decompose又能photorealistic的表征
+🔧 方案: 每个primitive用独立compact MLP+localized spatial support预测radiance和opacity，在low-level Gaussian和single global NeRF之间找到sweet spot，支持场景编辑
+🔗 arXiv: https://arxiv.org/abs/2606.03877
+
+📄 PixVOD: Pixel-Distributed Direct Visual Odometry and Depth Estimation [arXiv]
+👤 Shinjeong Kim, Ignacio Alzugaray, Callum Rhodes, Paul Kelly, Andrew Davison | Imperial College London
+💡 Motivation: 将VO和depth estimation的计算分布到每个pixel——面向focal-plane sensor-processor硬件的全新计算范式
+🔧 方案: 通过Gaussian Belief Propagation (GBP)让像素间交换信息达成camera motion和depth共识，完全可并行化
+🔗 arXiv: https://arxiv.org/abs/2606.03989
+
+📄 SimuScene: Simulation-Ready Compositional 3D Scene Reconstruction from a Single Image [arXiv]
+👤 Inhee Lee, Sangwon Baik, Sungjoo Kim, Hyeonwoo Kim, Hyunsoo Cha, Hanbyul Joo | 首尔国立大学
+💡 Motivation: Single-image 3D重建的shape组合在物理仿真中会坍塌（穿透/悬浮/下沉），现有方法只做post-hoc layout correction
+🔧 方案: 将physics engine作为generative process中的diagnostic tool，在shape和layout estimation过程中使用物理引擎做诊断性仿真并反馈修正
+🔗 arXiv: https://arxiv.org/abs/2606.03994
+🌐 Code: https://github.com/snuvclab/SimuScene
+
+💡 今日点评：
+· Video-Mirai和AAD-1都直接推进causal/AR视频生成，思路互补——前者改training target引入foresight，后者改discriminator架构解决蒸馏瓶颈
+· OmniDreams代表world model在AV closed-loop仿真的工程落地（NVIDIA级别资源投入）

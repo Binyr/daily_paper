@@ -1,0 +1,56 @@
+📰 每日论文筛选 | 2026-06-09 (世界模型/视频生成/3D视觉)
+
+今日共筛选出 8 篇高度相关论文，世界模型方向大爆发（5篇），来源覆盖 HF Daily Papers + arXiv。
+
+📄 Latent Spatial Memory for Video World Models [来源:HF+arXiv] ⭐强推
+👤 Weijie Wang, Haoyu Zhao, Yifan Yang et al. | Microsoft Research
+💡 Motivation: 现有视频世界模型用RGB空间的点云记忆做3D一致性，需要反复渲染+VAE编码，既慢又有信息损失。核心洞察：为什么不直接在latent space做空间记忆？
+🔧 方案: 提出Mirage，在diffusion latent space直接构建3D空间记忆——通过深度引导的back-projection将latent tokens提升到3D，通过latent-space warping合成新视角。端到端加速10.57×，显存减少55×，WorldScore SOTA。
+🔗 arXiv: https://arxiv.org/abs/2606.09828
+🌐 Project: https://aka.ms/latent-spatial-memory | Code: https://github.com/microsoft/LatentSpatialMemory
+
+📄 Echo-Memory: A Controlled Study of Memory in Action World Models [来源:HF+arXiv] ⭐强推
+👤 Wayne King, Zeyue Xue, Yuxuan Bian, Nan Duan et al. | Microsoft Research
+💡 Motivation: Action world model的核心failure不是局部图像合成，而是记忆——相机离开再回来时场景会悄然改变。但现有记忆设计无法公平比较（backbone/训练/检索都不同）。
+🔧 方案: 固定video diffusion backbone，只变记忆模块的存储/读取方式。对比raw context、压缩记忆、空间summary、SSM递归等。首次在受控条件下分离四个容易混淆的维度。
+🔗 arXiv: https://arxiv.org/abs/2606.09803
+
+📄 AnchorWorld: Embodied Egocentric World Simulation [来源:HF]
+👤 Yu Li, Menghan Xia, Xintao Wang, Lei Ke et al. | Kuaishou/Tencent/清华
+💡 Motivation: 交互式世界模型缺乏可控性。第一人称视角下肢体常常截断/出视野，导致交互建模不完整。
+🔧 方案: 用3D人体运动作为交互模态，引入辅助的外部视角监督补全第一人称看不到的肢体；提出anchor view机制，在统一世界坐标系中定义锚定视角+文本描述来定制场景演化。
+🔗 arXiv: https://arxiv.org/abs/2606.07326
+
+📄 StreamForce: Streaming Video Generation with Streaming Force Control [来源:HF+arXiv]
+👤 Hanhui Wang, Yiming Xie, Haiwen Feng, Zhaoyang Lv, Shenlong Wang, Huaizu Jiang | UIUC/Northeastern
+💡 Motivation: 现有物理控制的视频模型要么对每种力训单独模型，要么假设恒力，要么用非因果处理。缺一个统一、因果、实时的力控制视频生成框架。
+🔧 方案: 设计统一力表示作为控制信号，开发蒸馏pipeline实现力可控视频生成。因果自回归架构，单GPU 16.6 FPS，力响应和运动真实性均SOTA。
+🔗 arXiv: https://arxiv.org/abs/2606.07508
+🌐 Project: https://neu-vi.github.io/StreamForce/
+
+📄 Physics in 2-Steps: Locking Motion Priors Before Visual Refinement Erases Them [来源:HF] 🏆ICML 2026
+👤 Woojung Han, Min-Hung Chen, Fu-En Yang, Seong Jae Hwang et al. | Yonsei/NVIDIA
+💡 Motivation: 惊人发现——Image-to-Video扩散模型的2步生成比50步更符合物理！通过频谱分析发现是去噪过程中相位退化导致的（phase从step 2到50降了18%，magnitude基本不变）。
+🔧 方案: PhaseLock——从2步推理提取运动先验，通过Latent Delta Guidance在高保真生成中锁定该先验。Training-free，物理一致性平均+6.2分，开销可忽略（1.06×时间）。
+🔗 arXiv: https://arxiv.org/abs/2606.06361
+
+📄 AHA-WAM: Asynchronous Horizon-Adaptive World-Action Modeling [来源:arXiv]
+👤 Jisong Cai, Yao Mu, Xiaokang Yang et al. | SJTU/HKU
+💡 Motivation: 现有world-action模型把世界预测和动作执行绑在同一时间分辨率，迫使视频分支建模冗余的近期帧变化。洞察：世界预测和动作执行天然不同频。
+🔧 方案: 双DiT架构——低频video DiT做世界规划（维护rolling KV memory），高频action DiT通过layer-wise joint attention查询world context执行短动作chunk。异步解耦突破了同步建模的天花板。
+🔗 arXiv: https://arxiv.org/abs/2606.09811
+
+📄 DIRECT: 3D-Aware Object Insertion via Decomposed Visual Proxies [来源:HF] 🏆ICML 2026
+👤 Jingbo Gong, Yikai Wang, Yushi Lan et al. | 清华/字节
+💡 Motivation: Diffusion-based物体插入方法把问题退化为2D inpainting，没有3D pose的显式控制。
+🔧 方案: 将插入条件分解为三路：appearance（参考物体外观）、geometry（用户调整的3D proxy）、context（目标背景），分别注入避免特征纠缠。既能控制3D pose又保持视觉质量。
+🔗 arXiv: https://arxiv.org/abs/2606.06601
+🌐 Project: https://gong1130.github.io/DIRECT/
+
+📄 Z-Reward: Beyond Scalar Rewards by Internalizing Reasoning into Score Distributions [来源:arXiv]
+👤 Xin Jin, Ming-Ming Cheng, Steven C.H. Hoi et al. | Nankai/Salesforce
+💡 Motivation: Text-to-image后训练的reward model用标量过度压缩了视觉偏好的主观性。Reasoning-based reward有效但推理成本高。
+🔧 方案: Teacher-student框架——大VLM teacher用reasoning推断rubric-aligned score distribution（GDSO训练），小VLM student通过RISD蒸馏，推理时无需显式reasoning chain。27B teacher达89.6%人类偏好准确率。
+🔗 arXiv: https://arxiv.org/abs/2606.09076
+
+💬 点评：今天是世界模型的大日子。Latent Spatial Memory和Echo-Memory都直接命中"视频世界模型中的记忆机制"方向，前者提出在latent space做3D记忆（vs RGB空间点云），后者做了严格受控的记忆机制对比实验。Physics in 2-Steps的phase erosion发现很有意思，对理解扩散模型的去噪动力学有启发。StreamForce展示了因果视频生成+物理交互的新可能。

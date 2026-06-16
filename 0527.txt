@@ -1,0 +1,69 @@
+📰 Daily Paper Digest | 2026-05-27 (覆盖最近48h)
+来源: HuggingFace Daily Papers + arXiv cs.CV
+筛选方向: 世界模型 / 视频生成 / 记忆机制 / 3D-4D视觉 / 后训练
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📄 G3T Up! Gravity Aligned Coordinate Frames Simplify Pointmap Processing [arXiv]
+👤 Bharath Raj Nagoor Kani, Noah Snavely⭐ | Cornell
+💡 Motivation: 现有前馈3D重建方法（如VGGT）在相机坐标系下预测pointmap，但相机坐标系不是最优选择——不同视角间需要完整的旋转对齐。提出用重力对齐坐标系，共享垂直轴，将视角间对齐从3-DoF降到1-DoF。
+🔧 方案: 提出G3T，在VGGT基础上微调，预测重力对齐的pointmap和相机-重力位姿；进一步提出G3T-Long，利用重力对齐的低自由度优势做增量式长序列3D重建，显著提升精度。
+🔗 arXiv: https://arxiv.org/abs/2605.27372
+⭐ Noah Snavely出品，直接关联pointmap和3D重建。用物理先验（重力方向）简化几何问题，对point map diffusion有直接启发。
+
+📄 Q-GeoMem: Question-Guided Geometric Memory for Video Spatial Reasoning [arXiv]
+👤 Xianqiang Gao, Qizhi Chen, Delin Qu 等
+💡 Motivation: 视频空间推理需要随时间积累视角依赖的证据，但现有方法将记忆当作通用时间缓存，引入冗余几何信息。核心问题：如何让记忆机制对"问题"敏感？
+🔧 方案: 注入相机条件几何到视觉token，维护双互补记忆：Fine-Grained Context Bank + Semantic-Geometric Evidence Bank。用问题相关性×新颖性评分筛选帧。
+🔗 arXiv: https://arxiv.org/abs/2605.27318
+⭐ 几何感知+问题引导的双记忆设计，对world model中如何维护长期空间记忆有参考价值。
+
+📄 PARE: Pruning and Adaptive Routing for Efficient Video Generation [arXiv]
+👤 Yutong Wang, Yunke Wang, Tianfan Xue, Yu Qiao, Yaohui Wang 等 | 上海AI Lab
+💡 Motivation: Video DiT（Wan2.1-14B）计算量巨大。关键发现：attention head分化为空间头和时间头，简单裁剪会误删运动关键的时间头。
+🔧 方案: 结构感知宽度裁剪（区分空间/时间head重要性）+ 轻量路由器按timestep和视觉内容动态选block。可与step蒸馏叠加。
+🔗 arXiv: https://arxiv.org/abs/2605.27336
+🌐 Code: https://github.com/hhhh1138/PARE
+
+📄 SpatialBench: Is Your Spatial Foundation Model an All-Round Player? [arXiv+HF]
+👤 Haosong Peng, Hao Li 等 | HF 20↑
+💡 Motivation: 空间基础模型跨范式、跨场景泛化能力未被系统评估。19个数据集、546场景、41个模型、6种范式。
+🔧 方案: 关键发现：域对齐和数据质量远比数据规模重要。贡献DA-Next-5M数据集和DA-Next模型。
+🔗 arXiv: https://arxiv.org/abs/2605.27367
+🌐 Project: https://ropedia.github.io/SpatialBench/
+
+📄 How and What to Imagine? Visual Thinking for Cross-View Spatial Reasoning [arXiv]
+👤 Qian Yang, Ankur Sikarwar 等
+💡 Motivation: VLM的"图像思考"被模型忽略。如何让视觉思考真正有效？
+🔧 方案: View Dropout——训练时隐藏部分输入视角，迫使模型依赖思考图像。全景视觉思考+VDrop跨域泛化最佳。
+🔗 arXiv: https://arxiv.org/abs/2605.27310
+⭐ VDrop强制模型利用生成图像的思路，对world model中的想象力机制有启发。
+
+📄 PartFlow: Feedforward 3D Editing from Semantic-Part Transformation [arXiv]
+👤 Jiawei Weng 等 | Tsinghua (Hao Zhao)
+💡 Motivation: 3D编辑缺高质量配对数据。核心洞察：前馈3D编辑应从语义部件变换学习。
+🔧 方案: Pxform数据集（10万+一致编辑对）+ PartFlow网络。推理时不需要3D编辑mask。
+🔗 arXiv: https://arxiv.org/abs/2605.27351
+🌐 Project: https://dennis-jwweng.github.io/pxform/
+
+📄 ASAP: DPO for Anatomically Plausible Human Generation [arXiv]
+👤 Bao Li, Yuliang Xiu⭐, Zhen Liu
+💡 Motivation: T2I模型人体解剖结构频繁出错，标准DPO无法聚焦局部问题。
+🔧 方案: 受控局部退化合成解剖偏好对 + 局部化边界约束DPO变体 + HAF-Bench评测。
+🔗 arXiv: https://arxiv.org/abs/2605.25759
+⭐ "受控合成偏好对+局部化DPO"范式对视频生成后训练有直接参考价值。
+
+📄 LongCat-Video-Avatar 1.5 [arXiv]
+👤 Meituan LongCat Team | 美团
+💡 RLHF训练实现视频avatar风格化泛化 + step distillation到8 NFE。开源，达到/超过HeyGen等闭源系统。
+🔗 arXiv: https://arxiv.org/abs/2605.26486
+🌐 https://github.com/MeiGen-AI/LongCat-Video-Avatar-1.5-Page
+
+📄 Recursive Flow Matching [HF]
+👤 Jiahe Huang, Rose Yu | UCSD
+💡 自一致性约束对齐不同离散化尺度轨迹，首次实现1-4步高保真动态生成。比扩散emulator加速20x。
+🔗 arXiv: https://arxiv.org/abs/2605.26535
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 扫描HF 50篇 + arXiv 80篇 → 筛出 9 篇
+🔥 重点: G3T (Noah Snavely, pointmap) | Q-GeoMem (几何记忆) | ASAP (视觉DPO)

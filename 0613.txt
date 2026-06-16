@@ -1,0 +1,55 @@
+📰 HF Daily Papers + arXiv 论文筛选 (2026-06-12/13)
+══════════════════════════════════════════
+
+⚠️ 注：今日周一，HF Daily Papers 周末未更新，覆盖 6/10-6/12 最新论文。arXiv 覆盖近 3 天。
+
+📄 Memento: Reconstruct to Remember for Consistent Long Video Generation [arXiv+HF]
+👤 Xuan Wei, Longbin Ji, Zhenyu Zhang | Xiamen U + Baidu ERNIE Team
+💡 Motivation: 长视频生成中重复出现的主体（人/物）会随生成推进被 memory 稀释或遗忘。核心洞察：如果 memory bank 真正保留了主体身份，那应该能仅从 memory 重建该主体。
+🔧 方案: 提出 subject-reconstruction-guided 框架，联合训练 autoregressive next-shot 生成与 memory-based subject reconstruction。引入 dual-query memory 机制分离长程身份证据与短程上下文线索。
+🔗 arXiv: https://arxiv.org/abs/2606.14667
+🌐 Project: https://ernie-research.github.io/Memento/
+
+📄 RepFusion: Leveraging Multimodal Priors for Denoising in Representation Space [HF+arXiv]
+👤 Xichen Pan, Saining Xie⭐ 等 | Meta AI + NYU
+⭐ Saining Xie (ConvNeXt, MAE 等知名工作)
+💡 Motivation: 当前 T2I 系统中 LLM 仅做 text encoder，denoising 靠全新训练的骨干网络。RAE (Representation Autoencoder) 让生成目标转向语义结构化表征空间，能否直接复用 MLLM 做 denoiser？
+🔧 方案: 将 MLLM 重新定位为 noisy representation encoder，从 clean 扩展到 noisy 输入。RepFusion 用 MLLM 输出作为 DiT 的 conditioning signal，在同等推理预算下超越新初始化 denoiser。
+🔗 arXiv: https://arxiv.org/abs/2606.14700
+🌐 Project: https://xichenpan.com/repfusion/
+
+📄 μ₀: A Scalable 3D Interaction-Trace World Model [HF]
+👤 Seungjae Lee, Yoonkyo Jung, Jia-Bin Huang⭐, Furong Huang | UMD + Seoul National U
+⭐ Jia-Bin Huang (视频补全/修复/生成领域知名研究者)
+💡 Motivation: Pixel-space video world model 把容量花在稠密外观重建上，action model 又依赖 embodiment-specific 标签难以 scale。能否找到一种紧凑、embodiment-agnostic 的 motion interface？
+🔧 方案: 提出基于 3D traces 的 world model：预测物体/手/接触点的平滑 3D 轨迹（B-spline 表示），从异构视频中自动提取 3D supervision。冻结后可搭配下游 action expert，性能比肩 π₀。
+🔗 arXiv: https://arxiv.org/abs/2606.13769
+🌐 Project: https://mu0-wm.github.io/
+
+📄 OmniDirector: General Multi-Shot Camera Cloning without Cross-Paired Data [HF] 🔥87 upvotes
+👤 Jiwen Liu, Shujuan Li, Yu-Shen Liu, Pengfei Wan | Tsinghua + Kuaishou
+💡 Motivation: 视频生成中的相机运动控制：参数化表示无法处理 multi-shot，cross-paired 数据合成又面临数据稀缺。如何从任意参考视频中克隆复杂相机运动？
+🔧 方案: 提出 camera grid 表示（将相机参数编码为 grid motion video），支持多镜头轨迹整合。在百万级数据上训练 OmniDirector，统一 character/action/camera 的 director-level 控制。
+🔗 arXiv: https://arxiv.org/abs/2606.13432
+🌐 Project: https://ymlinfeng.github.io/OmniDirector.github.io/
+
+📄 HYDRA-X: Native Unified Multimodal Models with Holistic Visual Tokenizers [HF] 🔥28 upvotes
+👤 Guozhen Zhang, Yutao Cui, Limin Wang⭐, Liefeng Bo | Alibaba DAMO + Nanjing U
+⭐ Limin Wang (TSN/TSM/VideoMAE, 视频理解领域核心人物)
+💡 Motivation: 统一多模态模型需要一个能同时处理 image 和 video 的 tokenizer。如何在单个 ViT 中注入时空重建能力并嵌入语义感知？
+🔧 方案: 首个单 ViT 统一 image+video tokenization 的 UMM。关键发现：frame-level causal temporal attention 足以重建视觉（full spatiotemporal attention 反而降质）；hierarchical temporal compression 大幅优于 single-step。编辑时 source-target 交互应在 tokenizer latent 层而非 LLM semantic 层。
+🔗 arXiv: https://arxiv.org/abs/2606.13289
+
+📄 Instruct-Particulate: Scaling Feed-Forward 3D Object Articulation with Kinematic Control [arXiv]
+👤 Ruining Li, Shangzhe Wu, Andrea Vedaldi⭐ | Oxford + Cambridge + NTU
+⭐ Andrea Vedaldi (VGGNet团队核心, Oxford VGG Group)
+💡 Motivation: 3D 铰接物体重建受限于标注数据稀缺。如何从 mesh 直接推断运动学结构（关节类型、运动参数）并泛化到新类别？
+🔧 方案: 输入 mesh + kinematic specification（部件描述/关节类型/连接关系），预测 part segmentation + joint parameters。构建 15 万+ 异构铰接 3D 数据集，测试时由 VLM 自动生成 specification，可处理 AI-generated mesh。
+🔗 arXiv: https://arxiv.org/abs/2606.14699
+🌐 Project: https://instruct-particulate.github.io/
+
+📄 HPSv3++: Scaling Reward Models Across the Full Spectrum of Diffusion Model Capabilities [arXiv]
+👤 Yijun Liu, Jie Huang, Zeyue Xue | Mizzen AI
+💡 Motivation: Reward model 训练数据来自旧模型，无法适配新生成模型的能力提升和 RL 迭代后的质量变化。如何让 reward model 覆盖完整的 capability-iteration 光谱？
+🔧 方案: 两阶段训练：Stage 1 用 orthogonal gradient projection 融入新偏好数据同时保留原有知识；Stage 2 引入 capability-iteration conditioned signal + 标准差驱动的无监督引导。SOTA preference prediction + 可直接用于 T2I RL training 提升 GenEval。
+🔗 arXiv: https://arxiv.org/abs/2606.14657

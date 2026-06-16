@@ -1,0 +1,85 @@
+🗞️ HF Daily Papers 论文筛选 | 2026-06-08 (Mon)
+
+覆盖来源：HuggingFace Daily Papers (June 4-5 batch) + arXiv cs.CV 定向检索
+筛选标准：世界模型 / Causal Video Gen / 记忆机制 / Open-set Interaction / 后训练 / 3D-4D 视觉 / 方法论 insight
+
+📄 Cosmos 3: Omnimodal World Models for Physical AI [来源:两者]
+👤 NVIDIA团队 (大规模合作) | ⭐ NVIDIA
+💡 Motivation: 将 VLM、视频生成、世界模拟、动作模型统一到一个全模态世界模型中，解决 Physical AI 需要多个独立模型的碎片化问题。
+🔧 方案: 基于 mixture-of-transformers 架构，联合处理语言/图像/视频/音频/动作序列；开源，在 T2I、I2V、策略模型多个榜单 SOTA。
+🔗 arXiv: https://arxiv.org/abs/2606.02800
+🌐 Project: https://research.nvidia.com/labs/cosmos-lab/cosmos3/
+
+📄 NVIDIA OmniDreams: Real-Time Generative World Model for Closed-Loop AV Simulation [来源:arXiv]
+👤 NVIDIA (Aarti Basant, Amlan Kar, Haithem Turki, Huan Ling 等) | ⭐ NVIDIA
+💡 Motivation: 重建型神经模拟器受限于原始数据，无法泛化到动态/极端场景；需要生成式世界模型实现闭环自动驾驶仿真。
+🔧 方案: 从 Cosmos 扩散模型做 mid/post-training，自回归生成 action-conditioned 视频，实时运行。WAM 版本超越 Alpamayo 1.5 VLA 策略且仅 1/5 参数量。
+🔗 arXiv: https://arxiv.org/abs/2606.03159
+🌐 Project: https://github.com/nv-tlabs/omni-dreams
+
+📄 StreamForce: Streaming Video Generation with Streaming Force Control [来源:arXiv]
+👤 Hanhui Wang, Yiming Xie, ..., Shenlong Wang (UIUC), Huaizu Jiang (Northeastern) | 🏷️ UIUC
+💡 Motivation: 现有视频模型针对不同力类型训练独立模型，且非因果处理，无法实时响应连续力输入——这本质上是 causal video generation 的物理交互控制问题。
+🔧 方案: 统一力表示作为控制信号 + 蒸馏流水线，因果自回归 + 力响应，单 GPU 16.6 FPS。
+🔗 arXiv: https://arxiv.org/abs/2606.07508
+🌐 Project: https://neu-vi.github.io/StreamForce/
+
+📄 Thinking with Imagination: Agentic Visual Spatial Reasoning with World Simulators (Astra) [来源:HF]
+👤 Chenming Zhu, ..., Tai Wang, Jiangmiao Pang (上海AI Lab), Xihui Liu (HKU)
+💡 Motivation: VLM 空间推理受限于已观测图像，无法从未见视角推理——核心问题是如何让模型学会"何时想象、想象什么"。
+🔧 方案: Astra-VL (RL训练的VLM) + Astra-WM (Bagel-based世界模拟器)，world-simulator-in-the-loop 两阶段 RL 课程学习，让模型主动调用模拟器获取想象视觉证据。
+🔗 arXiv: https://arxiv.org/abs/2606.06476
+🌐 Project: https://github.com/ZCMax/Thinking-With-Imagination
+
+📄 AnchorWorld: Embodied Egocentric World Simulation with View-based Evolution Customization [来源:arXiv]
+👤 Yu Li, Menghan Xia, ..., Xintao Wang (Real-ESRGAN作者), Pengfei Wan, Kun Gai | 🏷️ 快手
+💡 Motivation: 交互式世界建模缺乏灵活的可控性——尤其是第一人称视角下身体部分被截断/遮挡，难以建立完整的人-世界交互空间感知。
+🔧 方案: 用3D人体运动作为交互模态 + 外源视角辅助监督补全第一人称看不到的身体部分；提出 anchor views + 文本描述实现世界自演化定制。
+🔗 arXiv: https://arxiv.org/abs/2606.07326
+
+📄 MemDreamer: Decoupling Perception and Reasoning for Long Video via Hierarchical Graph Memory [来源:arXiv]
+👤 Cong Chen, ..., Chunhua Shen | 🏷️ Zhejiang Univ
+💡 Motivation: VLM 处理小时级长视频时 token 爆炸、注意力稀释——核心 insight 是将感知和推理解耦，把长视频理解变成 agentic 探索过程。
+🔧 方案: 流式构建三层层级图记忆(语义抽象 → 时空因果图)，推理时用工具增强 Observation-Reason-Action 循环检索，上下文窗口压缩到 2% 且精度提升 12.5 点。
+🔗 arXiv: https://arxiv.org/abs/2606.07512
+
+📄 GeoVR: Learning Geometric Representations from Videos for Spatial Intelligent MLLMs [来源:HF]
+👤 Haibo Wang, Lifu Huang | 🏷️ Virginia Tech
+💡 Motivation: MLLM 缺乏内在 3D 感知，大规模 3D 数据稀缺——如何仅用 2D 视频让 MLLM 获得几何空间智能？
+🔧 方案: 从预训练 3D 基础模型蒸馏几何知识到 MLLM 内部表示，四个互补目标（帧间相机位姿 + 稠密深度 + 度量尺度 + 多尺度3D特征对齐），不加外部3D分支而是改造内部表示。
+🔗 arXiv: https://arxiv.org/abs/2606.05833
+
+📄 Dash2Sim: Closed-Loop Driving Simulation from in-the-wild Dashcam Videos [来源:arXiv]
+👤 Anurag Ghosh, Francesco Pittaluga, ..., Manmohan Chandraker (UCSD), Srinivasa Narasimhan (CMU) ⭐
+💡 Motivation: 自动驾驶仿真依赖少量城市采集数据/手工合成场景，行车记录仪视频覆盖广泛长尾场景但单目视频难以恢复精确 4D 场景。
+🔧 方案: 将野外单目行车记录仪视频转化为有度量、地理参考的 4D 驾驶日志；构建 ROADWork4D 基准 (4244场景/2.7M 3D物体/17城市)；深度恢复使新视角合成感知指标提升 19%。
+🔗 arXiv: https://arxiv.org/abs/2606.07366
+
+📄 Dream.exe: Can Video Generation Models Dream Executable Robot Manipulation? [来源:HF]
+👤 Rui Zhao, ..., Mike Zheng Shou (NUS ShowLab) | 🏷️ NUS
+💡 Motivation: 视频生成模型产出视觉上逼真的内容，但其输出是否真正反映物理世界？提出用机器人操作作为可测量的验证窗口。
+🔧 方案: video-to-execution 流水线：生成操作视频 → 转换运动轨迹 → 物理模拟器执行。评测 8 个模型/101 任务，揭示视觉质量≠可执行性这一关键 gap。
+🔗 arXiv: https://arxiv.org/abs/2606.04811
+🌐 Project: https://github.com/showlab/Dream.exe
+
+📄 Complexity-Balanced Diffusion Splitting (CBS) [来源:HF]
+👤 Noam Issachar, Dani Lischinski (Hebrew Univ) ⭐, Raanan Fattal
+💡 Motivation: 扩散模型用统一大网络处理从噪声到数据的全过程，不同时间步的生成复杂度差异巨大——统一分配算力本质上是浪费。
+🔧 方案: 基于 de Boor 等分布原理，用 Dirichlet 能量和轨迹加速度作为复杂度度量，将时间线分割为等复杂度段并分配专用子网络。SiT-XL 上 FID 提升 ~35%，推理成本不变。
+🔗 arXiv: https://arxiv.org/abs/2606.06477
+🌐 Project: https://noamissachar.github.io/CBS/
+
+📄 P²-DPO: Grounding Hallucination in Perceptual Processing via Calibration DPO [来源:arXiv]
+👤 Ruipeng Zhang, Zhihao Li, ..., Tong Zhang
+💡 Motivation: 现有 DPO 用于 LVLM 去幻觉时偏好对是 vision-agnostic 且 off-policy 的，未触及感知瓶颈本质。
+🔧 方案: on-policy 偏好对构造（Focus-and-Enhance + Visual Robustness）+ Calibration Loss 精确对齐视觉信号与文本因果生成。
+🔗 arXiv: https://arxiv.org/abs/2606.03376
+🌐 Code: https://github.com/ZrpChuang/P2-DPO
+
+📄 ExMesh: Explicit Mesh Reconstruction with Topology Adaptation [来源:arXiv]
+👤 Chuanjin Fan, Lifan Wu, ..., Tianzhu Zhang | 🏷️ USTC
+💡 Motivation: 现有多视图重建依赖 Marching Cubes 等后处理，直接优化显式网格面临拓扑自适应和 UV 一致性两大难题。
+🔧 方案: 将离散拓扑操作（顶点分裂/合并）融入连续可微优化流水线，首次实现无后处理的端到端显式网格重建，兼顾精度和效率。
+🔗 arXiv: https://arxiv.org/abs/2606.07288
+
+以上 12 篇，按相关度排序。今日主要亮点：NVIDIA 发布 Cosmos 3 + OmniDreams 双弹定义世界模型新范式；StreamForce/AnchorWorld/Astra 三篇从不同角度推进可控世界模拟；CBS 给扩散模型提出了优雅的时间步复杂度均衡方案。

@@ -1,0 +1,68 @@
+📰 Daily Paper Digest (2026-05-28)
+来源: HuggingFace Daily Papers + arXiv cs.CV
+筛选方向: 世界模型 / 因果视频生成 / 深度估计 / 4D重建 / 后训练 / 记忆机制
+
+📄 Gamma-World: Generative Multi-Agent World Modeling Beyond Two Players [来源:两者]
+👤 Fangfu Liu, Kai He, Tianchang Shen, Tianshi Cao, ⭐Sanja Fidler | NVIDIA + 清华
+💡 Motivation: 现有世界模型只支持单agent控制，多agent场景（多人游戏、多机器人）缺乏原理性设计——需要独立可控、置换对称、且推理高效。
+🔧 方案: 提出 Simplex Rotary Agent Encoding（正则单纯形+3D RoPE实现无参数agent identity编码）+ Sparse Hub Attention（线性跨agent注意力）+ 因果蒸馏实现24FPS实时rollout，支持2→4 agent零样本泛化。
+🔗 arXiv: https://arxiv.org/abs/2605.28816
+🌐 Project: https://research.nvidia.com/labs/sil/projects/gamma-world/
+💬 评价: 世界模型方向核心工作。NVIDIA重量级团队，Sanja Fidler组。因果蒸馏+KV cache的实时生成思路值得关注。
+
+📄 DriveWAM: Video Generative Priors Enable Scalable World-Action Modeling for Autonomous Driving [来源:arXiv]
+👤 Chen Shi, Jinrui Xu, Shaoshuai Shi, Kehua Sheng, Bo Zhang, Li Jiang | 上海AI Lab
+💡 Motivation: 视频生成模型天然具备时序动态先验，比VLM更适合驾驶场景——如何将预训练video diffusion transformer转化为自回归video-action policy？
+🔧 方案: 将视频流和动作流统一为temporal token序列，用joint flow-matching训练；引入selective KV memory实现长horizon有界推理；VLM提供chunk级语义引导。从4k到100k数据展示scaling law。
+🔗 arXiv: https://arxiv.org/abs/2605.28544
+🌐 Project: 暂无
+💬 评价: World-Action Model范式，视频生成先验→动作生成的统一建模，selective KV memory与因果视频生成的memory机制高度相关。
+
+📄 SeeGroup: Multi-Layer Depth Estimation of Transparent Surfaces via Self-Determined Grouping [来源:arXiv] 🏆CVPR 2026
+👤 Hongyu Wen, ⭐Jia Deng | Princeton
+💡 Motivation: 透明物体的多层深度估计中，现有方法强制预定义层分组策略（前到后排序），但多层几何本身允许多种合法分组——固定策略限制了模型能力。
+🔧 方案: 将逐像素多层深度建模为点过程（point process），把深度层视为相机射线上的无序事件，推导出permutation-invariant likelihood作为loss，让模型自适应分组。SOTA +8.75%。
+🔗 arXiv: https://arxiv.org/abs/2605.28735
+🌐 Code: https://github.com/princeton-vl/SeeGroup
+💬 评价: 深度估计方向，Jia Deng（ImageNet作者）组新作。将多层深度重新formulate为点过程的insight很优雅，与DepthCrafter处理复杂场景深度直接相关。
+
+📄 DeGO: Deformable Gaussian Occupancy — Decoupling Rigid and Nonrigid Motion with Factorized Distillation [来源:arXiv]
+👤 Yang Gao, Wuyang Li, Po-Chien Luan, Alexandre Alahi | EPFL
+💡 Motivation: 动态3D场景理解中，现有弱监督occupancy方法假设刚体运动，无法捕捉人体等非刚性形变，时序一致性差。
+🔧 方案: 提出deformable Gaussian occupancy——解耦刚性+非刚性运动让每个Gaussian同时通过deformation和offset更新；再用factorized 4D distillation从VGGT基础模型蒸馏跨视角跨帧特征。人体实例+13.5%，整体+10.9%。
+🔗 arXiv: https://arxiv.org/abs/2605.28587
+🌐 Code: https://github.com/vita-epfl/DeGO
+💬 评价: 4D动态场景重建方向，将VGGT foundation model引入occupancy prediction的思路值得借鉴。与Crafter4D的动态场景建模有交集。
+
+📄 OSP-Next: Efficient High-Quality Video Generation with Sparse Sequence Parallelism, HiF8 Quantization, and RL [来源:两者]
+👤 Yunyang Ge, Xianyi He, Bin Lin, Bin Zhu, Li Yuan | 北大
+💡 Motivation: Video DiT的全注意力计算量二次增长，限制长视频高分辨率生成效率。
+🔧 方案: Skiparse-2D稀疏注意力 + 基于局部等价性的Sparse Sequence Parallelism（单次All-to-All通信，通信量减75%）+ HiF8联合量化训练 + Mix-GRPO后训练。VBench 83.73%超Wan2.1，单卡1.64x加速。
+🔗 arXiv: https://arxiv.org/abs/2605.28691
+🌐 Code: https://github.com/PKU-YuanGroup/OSP-Next
+💬 评价: 视频生成系统工程力作。Mix-GRPO后训练用于sparse model是后训练技术在视频生成中的新应用。
+
+📄 GEM: Generative Supervision Helps Embodied Intelligence [来源:HF]
+👤 Ruowen Zhao, Fangfu Liu, Zhengyi Wang, Xumin Yu, ⭐Yongming Rao, ⭐Han Hu, Jun Zhu | 清华 + Tencent Hunyuan
+💡 Motivation: VLA框架中，标准text预训练关注高层语义，缺乏执行所需的底层空间物理知识。
+🔧 方案: 将深度图生成任务直接集成到VLM预训练中作为生成式监督（generative supervision）——depth作为spatial reasoning的代理任务。发布GEM-4M大规模数据集（grounding+reasoning+planning+depth）。
+🔗 arXiv: https://arxiv.org/abs/2605.28548
+🌐 Project: https://zhaorw02.github.io/GEM/
+💬 评价: 深度生成作为预训练辅助任务提升空间理解——与我们用depth作为视频生成中geometric grounding的思路一脉相承。Han Hu（Swin Transformer）参与。
+
+📄 BiDPO: Compositional T2I Generation Via Region-aware Bimodal DPO [来源:arXiv] 🏆CVPR 2026
+👤 Zhuohan Liu, Wujian Peng, Yitong Chen, Zuxuan Wu | 复旦
+💡 Motivation: T2I模型在复杂组合prompt（属性绑定、对象关系、计数）上仍然困难，现有DPO方法缺乏区域级细粒度反馈。
+🔧 方案: 构建大规模region-aware偏好数据集，提出双模态DPO——同时在图像空间和文本空间进行preference optimization，实现区域级组合对齐。
+🔗 arXiv: https://arxiv.org/abs/2605.28615
+🌐 Project: 暂无（CVPR 2026 poster）
+💬 评价: DPO用于扩散模型的细粒度控制，是后训练技术在视觉生成中的典型应用。
+📄 Timestep-Aware SVDQuant-GPTQ for W4A4 Quantization of Wan2.2-I2V [来源:arXiv]
+👤 Junhao Wu, Dezhong Yao, Hai Jin | 华科
+💡 Motivation: 视频扩散Transformer的W4A4量化面临两个挑战：稀疏大幅值activation outlier + 强timestep依赖的activation分布。MoE架构更加复杂。
+🔧 方案: SVDQuant低秩outlier补偿 + GPTQ重构感知残差权重量化 + per-expert per-timestep-bin activation clipping搜索。峰值显存减59.3%，VBench仅降0.9%。
+🔗 arXiv: https://arxiv.org/abs/2605.27003
+🌐 Project: 暂无
+💬 评价: Video DiT高效部署的实用工作。Timestep-aware量化思路对Wan系列模型部署有直接参考价值。
+
+总计筛选 8 篇（从70+候选中）。今日亮点：Gamma-World（多agent世界模型，NVIDIA）和 SeeGroup（多层深度估计，Princeton/Jia Deng）最值得深读。

@@ -1,0 +1,65 @@
+📰 HF Daily Papers 论文筛选 (2026-05-22)
+来源：HF Daily Papers + arXiv cs.CV new listings
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 WorldKV: Efficient World Memory with World Retrieval and Compression [来源:HF+arXiv]
+👤 作者: Jung Yi, Minjae Kim, Paul Hyunbin Cho | KAIST CVLAB
+💡 Motivation: 自回归视频扩散模型能实时生成世界，但长序列rollout时维持场景一致性（重访同一位置看到一致内容）与实时性不可兼得。Full KV-cache保持一致但内存线性增长，滑窗推理丢失长期记忆。
+🔧 方案: 提出training-free的WorldKV框架：World Retrieval通过camera/action对应关系从已驱逐的KV chunk中检索场景相关chunk插回attention window；World Compression用key-key相似度剪枝冗余token，预算不变可存2x历史。在Matrix-Game和LingBot-World-Fast上匹配full-KV保真度，吞吐提升2x。
+🔗 arXiv: https://arxiv.org/abs/2605.22718
+🌐 Project: https://cvlab-kaist.github.io/WorldKV/
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 Bernini: Latent Semantic Planning for Video Diffusion [来源:HF+arXiv]
+👤 作者: Bernini Team (Zehuan Yuan等) | ByteDance
+💡 Motivation: MLLM擅长语义推理，Diffusion擅长渲染像素，如何让两者优势互补？核心insight是用ViT embedding space作为规划与渲染的接口，MLLM做semantic planning，DiT做pixel rendering。
+🔧 方案: MLLM planner在ViT embedding空间预测目标语义表示，DiT renderer基于此plan+text+source VAE features生成像素。提出SA-3D RoPE处理多视觉输入，planner中引入chain-of-thought推理。Planner和renderer可独立训练、轻量co-train。视频生成和编辑SOTA。
+🔗 arXiv: https://arxiv.org/abs/2605.22344
+🌐 Project: https://bernini-ai.github.io/
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 Stream3D: Sequential Multi-View 3D Generation via Evidential Memory [来源:HF+arXiv]
+👤 作者: Kaichen Zhou, Zeyang Bai, Xinhai Chang, Mengyu Wang, Paul Liang, Fangneng Zhan
+💡 Motivation: 单视图3D生成器（TRELLIS, Hunyuan3D等）在流式单目视频上逐帧独立使用会导致严重时间不一致。如何在不修改原始生成器的前提下实现流式3D生成？
+🔧 方案: 提出training-free的evidential memory机制，基于evidence score选择性缓存最有信息量的历史帧，内存固定大小、动态更新，避免线性增长和长序列退化。冻结底层3D生成器，无需重训练或架构修改。超越KV-cache复用和flow-based feature editing基线。
+🔗 arXiv: https://arxiv.org/abs/2605.21472
+🌐 Project: https://anonymous-submission-20.github.io/streaming3D.github.io/
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 Sensor2Sensor: Cross-Embodiment Sensor Conversion for Autonomous Driving [来源:HF+arXiv]
+👤 作者: Jiahao Wang, Bo Sun, Yijing Bai, Vincent Casser, Songyou Peng, ..., Dragomir Anguelov, Chiyu Max Jiang | Waymo
+💡 Motivation: AV训练需要大规模多模态传感器数据，但专有数据规模有限。海量dashcam视频格式不兼容。如何把单目dashcam视频转为多视角相机+LiDAR的完整AV log？
+🔧 方案: 用4D Gaussian Splatting从真实AV log渲染dashcam风格视频构造训练对，再训练diffusion模型做逆向转换。从单目dashcam生成多视角图像+LiDAR点云。CVPR 2026 accepted。
+🔗 arXiv: https://arxiv.org/abs/2605.22809
+🌐 Project: 无
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 RankE: End-to-End Post-Training for Discrete Text-to-Image Generation with Decoder Co-Evolution [来源:arXiv]
+👤 作者: Siyong Jian, Siyuan Li, Luyuan Zhang 等
+💡 Motivation: 离散AR T2I模型后训练只优化policy而冻结VQ decoder，导致Latent Covariate Shift：policy演化后token分布偏移，reward提升但解码质量下降。这是后训练的关键瓶颈。
+🔧 方案: 首个端到端后训练框架，通过交替优化co-evolve policy和decoder，用ranking-based对齐目标+稳定性正则化。在LlamaGen-XL上同时提升FID和CLIP（打破frozen decoder的fidelity-alignment trade-off）。
+🔗 arXiv: https://arxiv.org/abs/2605.21195
+🌐 Project: 无
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 Linear-DPO: Linear Direct Preference Optimization for Diffusion and Flow-Matching Generative Models [来源:arXiv]
+👤 作者: Kesong Li, Yixuan Xu 等 | Alibaba
+💡 Motivation: DPO在LLM对齐上成功但用于T2I生成面临两个问题：(1) 现有工作局限于denoising diffusion忽略flow-matching；(2) 离散NLP的sigmoid目标与连续回归任务存在目标不匹配。
+🔧 方案: 通过统一reverse-time SDE框架推导出覆盖diffusion和flow-matching的广义DPO目标。从梯度角度论证标准DPO对T2I次优，提出Linear-DPO用线性utility替代sigmoid+EMA reference model。在SD1.5/SDXL/SD3-Medium上超越现有基线。
+🔗 arXiv: https://arxiv.org/abs/2605.21123
+🌐 Project: https://github.com/Whynot0101/Linear-DPO
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 RiT: Vanilla Diffusion Transformers Suffice in Representation Space [来源:HF+arXiv]
+👤 作者: Le Zhang, Ning Mang, Aishwarya Agrawal
+💡 Motivation: 在DINOv2表示空间做flow matching是否比在pixel/VAE空间更友好？通过4个几何轴的分析发现DINOv2空间虽然内在维度与pixel相当(~33)，但effective rank高7.3x、条件数好35x、超额峰度低11.5x。
+🔧 方案: 提出Representation Image Transformer (RiT)：在frozen DINOv2特征上训练vanilla DiT做x-prediction，仅需dimension-aware noise schedule + [CLS]-patch联合建模。ImageNet 256上FID 1.45 (无guidance)/1.14 (CFG)，5 Heun steps即达FID 2.0，无需蒸馏。方法论insight深刻。
+🔗 arXiv: https://arxiv.org/abs/2605.21981
+🌐 Project: https://github.com/lezhang7/RiT

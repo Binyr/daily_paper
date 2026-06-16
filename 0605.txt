@@ -1,0 +1,72 @@
+🦞 HF Daily Papers 论文筛选 — 2026.06.05
+
+今日从 HuggingFace Daily Papers (50篇) + arXiv cs.CV 筛选出以下与世界模型/视频生成/3D视觉方向本质相关的论文，按相关度排序：
+
+📄 Imagine Before You Predict: Interleaved Latent Visual Reasoning for Video Event Prediction [来源:HF]
+👤 作者: Tianxiang Jiang, ..., Ziang Yan, Yu Qiao, Yi Wang | OpenGVLab / 上海AI Lab
+💡 Motivation: 视频事件预测中，现有MLLM把视觉推理全部文本化，导致运动/几何/交互的细粒度信息丢失。核心洞察：未来预测需要在latent视觉空间保留中间推理状态，而非全部翻译成文本。
+🔧 方案: Future-L1 让MLLM在autoregressive解码中交替输出语言token和连续latent视觉span，通过LA-DAPO（latent-aware RL + outcome-contrastive reward）优化latent轨迹。FutureBench上Qwen3-VL-8B从61.0提升到85.4。
+🔗 arXiv: https://arxiv.org/abs/2606.05769
+🌐 Code: https://github.com/OpenGVLab/Future-L1
+
+📄 World-Language-Action Model for Unified World Modeling, Language Reasoning, and Action Synthesis [来源:HF]
+👤 作者: Yi Yang, Zhihong Liu, ..., Pengfei Liu, Zhijie Deng | 上海交大
+💡 Motivation: 现有embodied模型要么有world modeling能力（WAM）但缺语言推理，要么有语言能力（VLA）但不建模世界动态。WLA首次统一三者。
+🔧 方案: AR Transformer骨干联合预测文本subtask、subgoal图像和机器人动作。World Expert监督物理动态，Action Expert利用动态预测简化状态-动作关联建模。2B active参数，单次推理40ms（RTX 5090）。
+🔗 arXiv: https://arxiv.org/abs/2606.05979
+
+📄 Discrete-WAM: Unified Discrete Vision-Action Token Editing for World-Policy Learning [来源:HF]
+👤 作者: Ziyang Yao, Haochen Liu, ..., Guang Chen, Hangjun Ye | 同济等
+💡 Motivation: 自动驾驶中端到端方法只学状态→动作映射，缺乏对动作如何影响世界演化的因果建模。连续latent世界模型又缺乏组合结构做反事实推理。
+🔧 方案: 将未来视觉状态和ego动作统一为对齐的离散token，建立共享的discrete diffusion框架，支持world modeling、world-action policy和层次决策。支持可控生成和反事实推理。
+🔗 arXiv: https://arxiv.org/abs/2606.05645
+
+📄 Flash-WAM: Modality-Aware Distillation for World Action Models [来源:HF]
+👤 作者: Arman Akbari, Ci Zhang, ..., Yanzhi Wang | Northeastern University
+💡 Motivation: WAM（世界动作模型）联合生成视频+动作需要几十步扩散，无法实时控制。直接做step distillation会失败——因为视频流和动作流的noise schedule完全不同。
+🔧 方案: Flash-WAM为每个模态选择匹配其noise regime的consistency function参数化，压缩到单步推理。延迟从8.1s降到348ms（23×加速），真实世界humanoid robot上恢复60%成功率。
+🔗 arXiv: https://arxiv.org/abs/2606.05254
+
+📄 LoomVideo: Unifying Multimodal Inputs into Video Generation and Editing [来源:HF]
+👤 作者: Jianzong Wu, ..., Yunhai Tong, Hao Jiang | 北大 & 阿里
+💡 Motivation: 统一视频生成+编辑框架通常依赖13B+大模型，且编辑时token拼接导致序列翻倍、注意力复杂度4倍。
+🔧 方案: 5B参数架构，用MLLM替代text encoder + Deepstack注入对齐多层特征。关键创新：Scale-and-Add零额外开销conditioning——直接将clean源视频latent缩放加到noised目标latent，免除token拼接。推理速度比同类快5.41×。
+🔗 arXiv: https://arxiv.org/abs/2606.06042
+🌐 Code: https://github.com/MSALab-PKU/LoomVideo
+
+📄 ZipSplat: Fewer Gaussians, Better Splats [来源:HF+arXiv]
+👤 作者: Alexander Veicht, Sunghwan Hong, Dániel Baráth, Marc Pollefeys ⭐ | ETH Zürich CVG
+💡 Motivation: 前馈式3DGS方法每个像素预测一个Gaussian，表示预算被绑定在相机分辨率上而非场景复杂度——平墙和复杂物体Gaussian数量一样多，本质上是不合理的。
+🔧 方案: Token-based前馈模型，先提取多视角dense token再用k-means聚类压缩为scene token，MLP解码为unconstrained 3D位置的Gaussian组。无需GT pose，DL3DV/RE10K上SOTA且Gaussian数减少~6×。
+🔗 arXiv: https://arxiv.org/abs/2606.05102
+🌐 Project: https://veichta.com/zipsplat
+
+📄 Video2LoRA: Parametric Video Internalization for Vision-Language Models [来源:HF]
+👤 作者: Manan Suri, Sarvesh Baskar, Dinesh Manocha ⭐ | UMD
+💡 Motivation: VLM处理视频极贵（每帧数百token），且每次query都要重新编码。能否把视频"内化"到模型参数里，推理时零视觉token？
+🔧 方案: Perceiver hypernetwork读取VLM逐层编码视频的中间表征，一次前传生成LoRA adapter。查询时仅用adapter、无视觉token输入。视觉token负载降低1500×，TTFT降低6-80×，且不同片段的adapter可在rank空间组合。
+🔗 arXiv: https://arxiv.org/abs/2606.04351
+
+📄 Complexity-Balanced Diffusion Splitting [来源:HF]
+👤 作者: Noam Issachar, Dani Lischinski ⭐, Raanan Fattal | Hebrew University
+💡 Motivation: 扩散模型全时间线用同一个大网络是浪费——不同noise level的建模难度差异巨大。之前的时间分割靠启发式搜索。
+🔧 方案: 基于函数逼近理论和de Boor等分布原则，按"逼近负担"均匀分割扩散时间线，高复杂度区域分配更多参数。提出两个复杂度度量（Dirichlet energy + 轨迹加速度）。SiT-XL上FID改善~35%，无额外推理开销。
+🔗 arXiv: https://arxiv.org/abs/2606.06477
+🌐 Project: https://noamissachar.github.io/CBS/
+
+📄 Stable-Layers: Fine-Tuning Image Layer Decomposition with VLM-Scored RL [来源:HF]
+👤 作者: Ciara Rowles, ..., Vikram Voleti, Mark Boss
+💡 Motivation: 图像层分解缺乏paired监督。核心insight：VLM独立打分时分数区分度太低，GRPO没有足够方差学习。
+🔧 方案: Flow-GRPO + LoRA微调预训练分解模型，设计两阶段评估（per-sample结构化打分 + grid-based校准），使VLM reward信号有足够区分度。这是RL-from-VLM-feedback用于视觉生成的有趣探索。
+🔗 arXiv: https://arxiv.org/abs/2605.30257
+
+不在今日HF Daily Papers中但值得关注：
+
+📄 YoCausal: How Far is Video Generation from World Model? A Causality Perspective
+👤 作者: Yu-Lun Liu 等
+💡 Motivation: 视频扩散模型真的理解因果吗？还是只是过拟合了统计时序模式？通过认知科学的VoE范式（时间反转视频作为反事实样本）评估13个SOTA VDM。
+🔧 方案: 两级benchmark——Level 1: Reverse Surprise Index量化时间箭头感知; Level 2: CCI用VLM分层提取因果/非因果子集。结论：感知时间方向≠理解因果。
+🔗 arXiv: https://arxiv.org/abs/2605.30346
+🌐 Project: https://www.youzhexie.me/papers/YoCausal/index.html
+
+今日总结：世界模型方向井喷（WLA/Discrete-WAM/Flash-WAM三篇WAM系列），视频理解中latent visual reasoning是新趋势（Future-L1），3DGS效率问题有ZipSplat的优雅解法，扩散模型理论层面CBS提出了principled的时间分配方案。

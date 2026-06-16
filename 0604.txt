@@ -1,0 +1,69 @@
+📰 每日论文筛选 | 2026-06-04
+来源：HuggingFace Daily Papers + arXiv (cs.CV)
+筛选方向：世界模型 / 因果视频生成 / 记忆机制 / 后训练 / 3D-4D视觉
+
+📄 Cosmos 3: Omnimodal World Models for Physical AI [来源:两者]
+👤 作者: NVIDIA (291人团队) | ⭐ Jim Fan, Sanja Fidler, Jan Kautz, Song Han, Marco Pavone 等
+💡 Motivation: 将 VLM、视频生成器、世界模拟器、world-action model 统一为单一全模态框架，实现 Physical AI 的通用世界模型
+🔧 方案: Mixture-of-Transformers 架构，联合处理和生成 text/image/video/audio/action，支持灵活 I/O 配置，在理解和生成任务上全面 SOTA
+🔗 arXiv: https://arxiv.org/abs/2606.02800
+🌐 Project: https://research.nvidia.com/labs/cosmos-lab/cosmos3/
+🌐 GitHub: https://github.com/NVIDIA/Cosmos
+
+📄 NVIDIA OmniDreams: Real-Time Generative World Model for Closed-Loop AV Simulation [来源:arXiv]
+👤 作者: NVIDIA (Sanja Fidler, Amlan Kar, Huan Ling, Jun Gao 等) | NVIDIA Toronto
+💡 Motivation: 自动驾驶闭环仿真中，重建式模拟器受限于初始数据无法泛化到新场景；需要生成式世界模型实时合成 multi-camera 光真实视频
+🔧 方案: 基于 Cosmos 的生成式世界模型，输入单帧+文本+布局即可实时生成多相机驾驶场景视频，支持闭环 policy 交互；并展示 world-action model post-training
+🔗 arXiv: https://arxiv.org/abs/2606.03159
+🌐 GitHub: https://github.com/nv-tlabs/omni-dreams
+
+📄 Echo-Infinity: Learning Evolving Memory for Real-Time Infinite Video Generation [来源:两者]
+👤 作者: Yuxuan Bian, Zeyue Xue, ..., Nan Duan, Qiang Xu | CUHK + Microsoft
+💡 Motivation: AR 视频生成的核心瓶颈是长程记忆——现有方法用固定 KV-cache/启发式压缩，不可避免地丢失信息并累积误差。如何实现常量代价下的无限长视频生成？
+🔧 方案: 受人类记忆巩固启发，提出 learnable Memory Query 通过注意力+门控机制动态过滤/抽象/压缩历史；Unified Relative RoPE Recipe 消除 train-test RoPE 外推 gap。首次实现 24 小时(>130万帧)实时 rollout
+🔗 arXiv: https://arxiv.org/abs/2606.04527
+🌐 Project: https://yxbian23.github.io/echo-infinity/
+
+📄 AAD-1: Asymmetric Adversarial Distillation for One-Step Autoregressive Video Generation [来源:HF]
+👤 作者: Haobo Li, Yanhong Zeng, ..., ⭐Yujun Shen, Zhipeng Zhang | Ant Research
+💡 Motivation: 对抗蒸馏实现单步 AR 视频生成时，因果生成器+因果判别器的对称结构导致 motion collapse 和训练不稳定
+🔧 方案: 打破 generator-discriminator 对称性：判别器用非因果结构看到未来帧，分阶段训练策略（先学外观再学运动）。ICML 2026 接收，VBench 单步 SOTA
+🔗 arXiv: https://arxiv.org/abs/2606.03972
+
+📄 WALL-WM: Carving World Action Modeling at the Event Joints [来源:HF]
+👤 作者: Shalfun Li 等 (31人) | 自变量机器人
+💡 Motivation: 现有 World Action Model 以固定长度 chunk 为学习单元，造成动作粒度不匹配——跨事件边界的 chunk 混杂不同语义动作
+🔧 方案: 以语义连贯的 action event 为原子学习单元，VLA预训练从 chunk-centric 转向 event-grounded，实现更精准的动作-视频对齐
+🔗 arXiv: https://arxiv.org/abs/2606.01955
+
+📄 M³Eval: Multi-Modal Memory Evaluation through Cognitively-Grounded Video Tasks [来源:两者]
+👤 作者: Jie Huang, Ruixun Liu, ..., Yixin Zhu, Yiwu Zhong | PKU + Wisconsin
+💡 Motivation: 多模态模型走向长视频理解，但缺乏系统评估其"记忆能力"的方法——模型保留了什么、信息保真度如何、记忆在干扰下是否鲁棒？
+🔧 方案: 基于认知心理学设计的首个多维度多模态记忆评测框架，隔离评估 working memory / episodic memory / semantic memory 等关键维度
+🔗 arXiv: https://arxiv.org/abs/2606.05008
+🌐 Project: https://m3eval.github.io/
+
+📄 αDepth: Learning Single-Pass Soft Boundary Decomposition for Stereo Conversion [来源:HF]
+👤 作者: Xiang Zhang, Yang Zhang, Lukas Mehl, Karlis Briedis, ⭐Markus Gross, Christopher Schroers | ETH Zürich + Disney Research
+💡 Motivation: 立体转换中软边界(头发、散焦模糊)处前背景混合导致深度模糊，现有单层深度预测无法建模透明度
+🔧 方案: 单次前向通过同时预测 layered depth + alpha matte 实现软边界分解，无需用户交互即可处理复杂多目标场景
+🔗 arXiv: https://arxiv.org/abs/2606.00386
+
+📄 Anchor3R: Streaming 3D Reconstruction with Transient Anchors for Long-Horizon Visual Mapping [来源:arXiv]
+👤 作者: Peilin Tao, ..., ⭐Wei Yin, Weiqiang Ren, Qian Zhang, Shuhan Shen
+💡 Motivation: 流式3D重建的 fixed-gauge 设计（固定首帧坐标系）导致 train-test 不匹配、注意力偏向早期锚点、长序列累积漂移
+🔧 方案: Transient Anchors 机制——动态更新局部坐标系锚点，避免对首帧的依赖，实现长程序列下 bounded memory 的在线 visual mapping
+🔗 arXiv: https://arxiv.org/abs/2606.05035
+
+📄 MeshWeaver: Sparse-Voxel-Guided Surface Weaving for Autoregressive Mesh Generation [来源:HF]
+👤 作者: Jiale Xu, Wang Zhao, ⭐Ying Shan | Tencent (CVPR 2026)
+💡 Motivation: AR mesh 生成的两大瓶颈：token 化效率低(序列过长无法高多边形)；仅靠全局 shape embedding 缺乏局部几何引导
+🔧 方案: 将 mesh 生成视为 surface weaving——直接预测 next vertex 而非独立坐标；多级 sparse-voxel encoder 注入局部几何 context 引导生成过程
+🔗 arXiv: https://arxiv.org/abs/2606.04688
+📄 P²-DPO: Grounding Hallucination in Perceptual Processing via Calibration DPO [来源:arXiv]
+👤 作者: Ruipeng Zhang, Zhihao Li, Haozhang Yuan, C. L. Philip Chen, Tong Zhang | ICLR 2026
+💡 Motivation: LVLM 的幻觉根源在感知层——注意力区域不够精准且视觉鲁棒性差；现有 DPO 的 preference pair 与视觉无关(vision-agnostic)
+🔧 方案: 模型自生成 on-policy preference pair，聚焦感知瓶颈区域的校准训练；提升 attended region 精度和图像退化下的视觉鲁棒性
+🔗 arXiv: https://arxiv.org/abs/2606.03376
+
+💬 今日总结：NVIDIA 连放 Cosmos 3 + OmniDreams 两篇重磅世界模型；Echo-Infinity 首次实现24小时实时无限视频生成；AAD-1 解决单步AR视频生成的 motion collapse；记忆机制在视频生成(Echo-Infinity)和视频理解(M³Eval)两个方向同时推进。深度/3D方向 αDepth(Disney)和 Anchor3R 分别在软边界建模和流式重建有扎实贡献。

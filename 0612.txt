@@ -1,0 +1,54 @@
+📚 HF Daily Papers 论文筛选 | 2026-06-12
+
+来源：HuggingFace Daily Papers + arXiv (cs.CV) | 合计去重55篇，精选8篇
+
+📄 World Tracing: Generative Pixel-Aligned Geometry Beyond the Visible [arXiv]
+👤 Hao Zhang, Mohamed El Banani, Jen-Hao Cheng, Paul Zhang, Yi Hua, Ben Mildenhall | World Labs
+💡 Motivation: 现有image-to-3D方法在像素对齐和几何完整性之间做妥协——depth estimator忠实于可见表面但止步于此，而3D生成模型补全了几何但与输入不对齐。本文提出同时实现两者的表示。
+🔧 方案: 提出World Tracing表示——对每个像素预测一组有序的camera-space 3D点（第一层为可见表面，后续层为前后遮挡交点）。用WT-DiT + pixel-space flow matching + mixed noise schedule训练，兼顾重建与生成。
+🔗 arXiv: https://arxiv.org/abs/2606.13652
+🌐 Project: https://haoz19.github.io/world-tracing-page/
+⭐ 注: Ben Mildenhall (NeRF一作, World Labs联合创始人) 参与
+
+📄 Modality Forcing for Scalable Spatial Generation [arXiv]
+👤 Bardienus P. Duisterhof, Deva Ramanan, Jeffrey Ichnowski, Justin Johnson, Keunhong Park | CMU
+💡 Motivation: T2I模型含丰富空间先验，但现有方法用它做depth prediction需要dense depth data和复杂流程。能否用sparse depth + 简单后训练做到joint image-depth生成？
+🔧 方案: Modality Forcing——单个DiT，per-modality分配独立噪声级别 + per-modality decoder，仅用sparse real-world depth训练。证明image generation是spatial perception的可扩展预训练目标（370M→3.3B均成立），AbsRel相比已有joint生成模型降低57%。
+🔗 arXiv: https://arxiv.org/abs/2606.13676
+🌐 Project: 见论文链接
+⭐ 注: Deva Ramanan (CMU RI, 顶级CV研究者) 领衔
+
+📄 TetherCache: Stabilizing Autoregressive Long-Form Video Generation with Gated Recall and Trusted Alignment [arXiv]
+👤 Yu Meng, Xiangyang Luo, Letian Li, Wenyuan Jiang, Chen Gao, Xinlei Chen
+💡 Motivation: 自回归视频扩散模型做分钟级长视频时面临两难：KV-cache预算有限无法保留全部历史，且反复condition on自生成帧导致context distribution shift累积——产生视觉伪影和temporal drift。
+🔧 方案: TetherCache——training-free plug-and-play cache管理策略，将cache分为sink/memory/recent三区。GRAB机制用gated score(attention relevance + temporal diversity)选择长程记忆帧；TAME机制对recalled memory做轻量统计对齐，消除分布漂移。
+🔗 arXiv: https://arxiv.org/abs/2606.13035
+
+📄 Surflo: Consistent 3D Surface Flow Model with Global State [HF+arXiv]
+👤 Antoine Guédon, Shu Nakamura, Nicolas Dufour, Jiahui Lei, Ko Nishino, Angjoo Kanazawa | UC Berkeley
+💡 Motivation: 现有feed-forward重建方法要么per-view出冗余pointmap（线性增长），要么global-latent输出分辨率固定。需要一种既能压缩多视角又能灵活解码任意数量3D点的表示。
+🔧 方案: Surflo将任意数量未标定RGB视角压缩为K个latent token（全局状态），然后通过flow matching独立地将噪声点传输到表面。同一latent可解码从数千到百万点——无需固定grid。
+🔗 arXiv: https://arxiv.org/abs/2606.13644
+🌐 Project: https://anttwo.github.io/surflo/
+⭐ 注: Angjoo Kanazawa (UC Berkeley, 3D vision领域知名研究者)
+
+📄 MoVerse: Real-Time Video World Modeling with Panoramic Gaussian Scaffold [HF+arXiv]
+👤 Yang Zhou, Ziheng Wang, Yuqin Lu, Haofeng Liu, Jun Liang, Shengfeng He, Jing Li
+💡 Motivation: 从单张窄视角图像构建可交互导航的场景——需要完整环绕世界、持久几何、可控相机运动和时序连贯的高保真观测。
+🔧 方案: 分离世界构建和观测渲染：先用topology-aware diffusion把输入扩展为gravity-aligned 360°全景，再用panoramic geometry-aware residual prediction提升为3D Gaussian scaffold，实现实时渲染+交互导航。
+🔗 arXiv: https://arxiv.org/abs/2606.13376
+
+📄 Flex4DHuman: Flexible Multi-view Video Diffusion for 4D Human Reconstruction [arXiv]
+👤 Jen-Hao Cheng, Yipeng Wang, Hao Zhang, Gengshan Yang, Jenq-Neng Hwang | World Labs/UW
+💡 Motivation: 现有4D人体方法依赖skeleton/depth/normal等显式几何先验，限制了泛化性。需要从单目视频直接生成同步多视角视频以支持4D重建。
+🔧 方案: 基于Wan 2.1 1.3B T2V backbone，扩展RoPE为5轴位置编码（时空+视角+SE(3)相机几何），三阶段课程训练。生成的多视角视频直接输入4D Gaussian Splatting重建动态splats。
+🔗 arXiv: https://arxiv.org/abs/2606.13655
+
+📄 RepWAM: World Action Modeling with Representation Visual-Action Tokenizers [HF+arXiv]
+👤 Junke Wang, Qihang Zhang, Shuai Yang, Yiming Luo, Yujun Shen, Zuxuan Wu, Yu-Gang Jiang, Yinghao Xu | Fudan/Ant Group
+💡 Motivation: 现有World Action Model继承面向重建的video tokenizer，但pixel重建对学习instruction-following dynamics帮助有限。需要语义化的visual-action latent space。
+🔧 方案: 训练representation visual-action tokenizer将视觉输入映射为对齐的visual token和latent action token，然后WAM联合建模未来视觉状态和连接它们的latent action。
+🔗 arXiv: https://arxiv.org/abs/2606.13674
+🌐 Project: https://wdrink.github.io/RepWAM
+
+📄 SG-PVR: Plan-and-Verify Video Reward Reasoning with Spatio-Temporal Scene Graph Grounding [arXiv]

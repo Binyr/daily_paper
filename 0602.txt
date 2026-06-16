@@ -1,0 +1,84 @@
+📰 Daily Paper Digest (2026-06-02)
+来源：arXiv cs.CV + HuggingFace Daily Papers | 筛选方向：世界模型/因果视频生成/记忆机制/深度估计/4D重建
+
+━━━━━━━━━━━━━━━━━━━
+
+📄 DeepVerse: 4D Autoregressive Video Generation as a World Model [arXiv]
+👤 Junyi Chen, Haoyi Zhu, Tong He, Jiangmiao Pang | 上海交大 & 上海AI Lab
+💡 Motivation: 现有交互式世界模型只预测视觉观测而忽略几何结构，导致误差累积和时序不一致
+🔧 方案: 提出4D自回归世界模型，将前一时间步的几何预测（深度）显式融入当前预测，并设计geometry-aware memory retrieval保持长程空间一致性
+🔗 arXiv: https://arxiv.org/abs/2506.01103
+🌐 Model: https://huggingface.co/SOTAMak1r/DeepVerse1.1
+⭐ 强推：直接对标我们的研究方向——世界模型+几何感知+记忆机制三合一
+
+━━━━━━━━━━━━━━━━━━━
+
+📄 LongLive-RAG: A General Retrieval-Augmented Framework for Long Video Generation [arXiv]
+👤 Qixin Hu, Shuai Yang, Wei Huang, Song Han, Yukang Chen | MIT
+💡 Motivation: 自回归视频扩散的滑动窗口注意力导致误差不可逆累积和外观漂移
+🔧 方案: 将长视频生成建模为RAG问题，把已生成的latent作为可检索历史，通过Window Temporal Delta Loss训练检索嵌入，实现非局部条件化生成
+🔗 arXiv: https://arxiv.org/abs/2606.02553
+🌐 Code: https://github.com/qixinhu11/LongLive-RAG
+⭐ 核心洞察：自回归视频生成中的「记忆」本质上是content-addressable retrieval——和我们的记忆机制方向高度相关
+
+━━━━━━━━━━━━━━━━━━━
+
+📄 COVRAG: Coverage-Maximizing Retrieval for Consistent Long Video Generation [arXiv]
+👤 Minseok Joo, Dogyun Park, Hyunwoo J. Kim | 高丽大学
+💡 Motivation: 长程自回归视频生成中如何选择历史帧以保持几何一致性？现有方法要么靠pose太粗糙，要么靠3D重建太贵
+🔧 方案: 基于深度的记忆检索框架，利用预训练3D prior构建target-view coverage map，通过最大化残差覆盖增益迭代选帧
+🔗 arXiv: https://arxiv.org/abs/2606.02479
+⭐ 深度先验+记忆检索的精巧结合，对video world model的长程一致性有启发
+
+━━━━━━━━━━━━━━━━━━━
+
+📄 From Zero to Hero: Training-Free Custom Concept Spawning in World Models [arXiv]
+👤 Kiymet Akdemir, Pinar Yanardag | Virginia Tech
+💡 Motivation: 自回归世界模型导航到未见区域时，无法让用户控制"出现什么"——缺少类似游戏引擎的spawn能力
+🔧 方案: 提出SPAWN，利用image-to-video backbone中pinned anchor的结构性质，通过swap+windowed injection将外部概念注入世界模型rollout
+🔗 arXiv: https://arxiv.org/abs/2606.02575
+⭐ Open-set interaction方向：让世界模型可控地"生成新物体"，training-free
+
+━━━━━━━━━━━━━━━━━━━
+
+📄 Modeling Depth Ambiguity: A Mixture-Density Representation for Flying-Point-Free Depth Estimation (MDA) [arXiv]
+👤 Siyuan Bian, Congrong Xu, Jun Gao | U of Toronto & NVIDIA
+💡 Motivation: 深度估计在物体边界处产生flying points的根本原因是"每像素单一深度假设"——边界像素实际横跨前背景两个面
+🔧 方案: 混合密度表示，每像素预测多个深度假设+概率，边界处不同假设对齐不同表面；同框架扩展到透明物体多层深度和天空分离
+🔗 arXiv: https://arxiv.org/abs/2606.02552
+🌐 Project: https://biansy000.github.io/mda-site/
+⭐ 深度估计核心痛点的优雅解法，Jun Gao (NVIDIA Toronto) 组出品
+
+━━━━━━━━━━━━━━━━━━━
+
+📄 MORPHOS: Autoregressive 4D Generation with Temporal Structured Latents [arXiv]
+👤 Minkyung Kwon, Seungryong Kim | KAIST
+💡 Motivation: 从视频生成动态3D资产，现有方法受限于单一表征、无法处理拓扑变化、长视频时序不一致
+🔧 方案: 提出T-SLAT统一4D表征（联合编码几何+外观沿时间维），通过causal attention自回归生成，支持mesh/3DGS/NeRF多种输出
+🔗 arXiv: https://arxiv.org/abs/2606.02491
+🌐 Project: https://cvlab-kaist.github.io/MORPHOS/
+⭐ 4D重建+因果生成的统一框架，和Crafter4D方向直接相关
+
+━━━━━━━━━━━━━━━━━━━
+
+📄 VLMs are Good Teachers for Video Reasoning via Adaptive Test-Time Optimization [arXiv]
+👤 Junhao Cheng, Xin Tao, Pengfei Wan, Jing Liao | 快手 & 城市大学
+💡 Motivation: 视频生成模型做推理时不遵循task规则，VLM作为solver也不行（文本无法捕捉时空细节）
+🔧 方案: 范式转换——VLM从solver变teacher，提取规则构造可微reward，通过test-time在线优化轻量LoRA引导VGM，+16.7点提升
+🔗 arXiv: https://arxiv.org/abs/2606.02564
+🌐 Project: https://VLM-as-Teacher.github.io/
+⭐ 后训练/test-time优化用于视频模型的新范式，和post-training方向相关
+
+━━━━━━━━━━━━━━━━━━━
+
+📄 U4D: Uncertainty-Aware 4D LiDAR Scene Synthesis [arXiv]
+👤 Xiang Xu, Lingdong Kong, Ziwei Liu | NTU & 上海AI Lab
+💡 Motivation: LiDAR 4D场景生成中对所有空间区域均匀建模不合理——远处/遮挡处难度远高于清晰结构
+🔧 方案: 基于空间不确定性的hard-to-easy扩散生成，先无条件合成高entropy区域精确几何，再条件补全其余；MoST block保时序一致
+🔗 arXiv: https://arxiv.org/abs/2606.02510
+🌐 Code: https://github.com/worldbench/U4D
+⭐ CVPR 2026 Workshop，不确定性引导的4D场景扩散生成，方法论insight好
+
+━━━━━━━━━━━━━━━━━━━
+
+💬 总结：今日最值得关注的是 DeepVerse（4D世界模型+几何记忆）和 LongLive-RAG / COVRAG（视频生成中的记忆/检索机制），以及 MDA（深度边界多假设）。世界模型+记忆机制方向持续升温。
