@@ -53,3 +53,7 @@
 💡 Motivation: Reward model 训练数据来自旧模型，无法适配新生成模型的能力提升和 RL 迭代后的质量变化。如何让 reward model 覆盖完整的 capability-iteration 光谱？
 🔧 方案: 两阶段训练：Stage 1 用 orthogonal gradient projection 融入新偏好数据同时保留原有知识；Stage 2 引入 capability-iteration conditioned signal + 标准差驱动的无监督引导。SOTA preference prediction + 可直接用于 T2I RL training 提升 GenEval。
 🔗 arXiv: https://arxiv.org/abs/2606.14657
+🌐 Code: https://github.com/PlantPotatoOnMoon/HPSv3-PlusPlus
+
+══════════════════════════════════════════
+共 7 篇。本次高相关方向：视频生成记忆机制(1)、世界模型(1)、相机控制/视频生成(1)、生成范式创新(1)、统一视觉tokenizer(1)、3D重建(1)、后训练/reward(1)。

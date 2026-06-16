@@ -1,0 +1,60 @@
+📰 HF Daily Papers 论文筛选 | 2026-06-10
+
+来源覆盖：Hugging Face Daily Papers + arXiv cs.CV（过去24h）
+HF 今日仅3篇，均为 NLP/LLM 方向，无CV相关。arXiv 共去重34篇，筛选出以下 7 篇高相关论文。
+
+📄 Next Forcing: Causal World Modeling with Multi-Chunk Prediction [来源:arXiv]
+👤 Gangwei Xu, Qihang Zhang, Yujun Shen, Yinghao Xu | HUST + Ant Group (RobbyAnt)
+💡 Motivation: 自回归视频生成训练慢且精度受限，根因是当前chunk的训练信号缺乏未来动态的显式监督；推理时逐块去噪也慢。
+🔧 方案: 提出 Multi-Chunk Prediction (MCP)，在主模型上挂轻量辅助模块同时去噪多个未来时间步(next¹, next², next³)，形成因果链提供多尺度时间监督。50fps下相对提升93.1%，RoboTwin SOTA (94.1%)，推理2x加速。
+🔗 arXiv: https://arxiv.org/abs/2606.11187
+🌐 Project: https://gangweix.github.io/next-forcing/
+⭐ 强烈推荐 — 直接命中 causal video generation + world model，multi-token prediction 思路从 LLM 迁移到视频world model，insight 深刻
+
+📄 WorldOlympiad: Can Your World Model Survive a Triathlon? [来源:arXiv]
+👤 Yuke Zhao, Wangbo Zhao, Bohan Zhuang 等 | 阿里达摩院
+💡 Motivation: 现有视频世界模型评测只关注视觉质量和语义对齐，缺乏对物理规律、3D几何一致性、长程交互的诊断。
+🔧 方案: 提出三赛道评测：Physical（物理忠实性，含力学/热学/材料）、Geometry（用 3DGS 重建评估几何一致性）、Interaction（长程动作序列交互保真），覆盖 gaming/robotics/real-world 三类场景。揭示 SOTA 模型在物理推理和3D一致性上的系统性缺陷。
+🔗 arXiv: https://arxiv.org/abs/2606.11129
+🌐 Project: https://alibaba-damo-academy.github.io/WorldOlympiad/
+⭐ 推荐 — 世界模型评测基准，用 3DGS 做几何评测的思路与你的 4D reconstruction 方向有交集
+
+📄 FadeMem: Distance-Aware Memory Consolidation for Autoregressive Video Diffusion [来源:arXiv]
+👤 Yu Lu, Junjie Yang, Piotr Koniusz, Yi Yang | Zhejiang University
+💡 Motivation: 自回归视频生成的 KV cache 随长度线性增长，现有固定窗口/sink token 方法忽略了时间距离对信息重要性的影响——细节衰减快而结构衰减慢。
+🔧 方案: 提出 frequency-dependent temporal decay 机制，用 power-law 时间分配在固定cache预算内构建 dense-near, sparse-far 的层级式 KV 记忆。无需改模型架构，即插即用提升长视频的身份一致性和时间连贯性。
+🔗 arXiv: https://arxiv.org/abs/2606.10671
+⭐ 强烈推荐 — 直接命中「视频生成中的记忆机制」，power-law temporal hierarchy 的设计思路有启发性
+
+📄 ARM: An AutoRegressive Large Multimodal Model with Unified Discrete Representations [来源:arXiv]
+👤 Junke Wang, Zuxuan Wu, Haoqi Fan, Yu-Gang Jiang 等 | 复旦大学 FVL Lab + Meta FAIR
+💡 Motivation: 多模态生成需要统一理解/生成/编辑，但离散视觉token在语义和重建之间难以兼顾。
+🔧 方案: 训练兼顾语义判别力、语言对齐和重建质量的离散视觉tokenizer，在7B自回归模型上统一图像理解+生成+编辑。关键亮点：对T2I和编辑分别做 RL 后训练，发现 RL 不仅提升目标任务，还产生跨任务正迁移(cross-task synergy)。
+🔗 arXiv: https://arxiv.org/abs/2606.11188
+🌐 Code: https://github.com/wdrink/ARM
+⭐ 推荐 — AR visual generation + RL post-training 的 cross-task synergy 值得关注
+
+📄 SCAIL-2: Unifying Controlled Character Animation with End-to-end In-Context Conditioning [来源:arXiv]
+👤 Wenhao Yan, Jie Tang 等 | 清华大学
+💡 Motivation: 角色动画依赖骨骼/mask等中间表示，信息丢失严重且无法端到端训练。
+🔧 方案: 直接拼接驱动视频做 in-context conditioning，绕过中间表示；构建 MotionPair-60K 合成数据集统一多子任务；提出 Bias-Aware DPO 处理合成数据偏差，通过构造偏好对来缓解细节区域的合成误差。
+🔗 arXiv: https://arxiv.org/abs/2606.10804
+🌐 Project: https://teal024.github.io/SCAIL-2/
+⭐ 推荐 — DPO 用于视频生成质量提升的实践，post-training 方向的好参考
+
+📄 Mean Flow Distillation: Robust and Stable Distillation for Flow Matching Models [来源:arXiv]
+👤 An Zhao, Shengyuan Zhang, Ling Yang 等 | 浙大
+💡 Motivation: Flow Matching 蒸馏方法借用 score matching 的套路，忽略了 flow 本身的几何结构，训练不稳定且方差大。
+🔧 方案: 证明 Mean Flow Matching Theorem——匹配期望平均速度场即可严格对齐分布。MFD 作为时域低通滤波器，抑制 VSD 的高频噪声。在 4D occupancy forecasting 和 T2I 上均达到 SOTA 单步生成。
+🔗 arXiv: https://arxiv.org/abs/2606.11155
+⭐ 推荐 — 理论insight扎实（低通滤波器视角），4D occupancy forecasting 实验与你的 4D 方向有关联
+
+📄 Lip Forcing: Few-Step Autoregressive Diffusion for Real-time Lip Synchronization [来源:arXiv]
+👤 Paul Hyunbin Cho, Seungryong Kim 等 | KAIST
+💡 Motivation: 扩散式唇形同步模型质量好但太慢（双向注意力+多步去噪），无法实时。
+🔧 方案: 将 14B 双向视频扩散 teacher 蒸馏为因果 student，2步去噪推理。关键发现：teacher trajectory 上存在 CFG fidelity-sync tradeoff，据此设计 Sync-Window DMD + SyncNet reward。1.3B student 达 31 FPS 实时，14B student 提速 39.8x。
+🔗 arXiv: https://arxiv.org/abs/2606.11180
+🌐 Project: https://cvlab-kaist.github.io/LipForcing/
+⭐ 值得关注 — 自回归扩散蒸馏的方法论（DMD + RL reward）对视频生成加速有参考价值
+
+📊 今日总结：7篇推荐中，Next Forcing 和 FadeMem 与你的核心方向（causal video gen、世界模型、记忆机制）最为贴合。WorldOlympiad 作为世界模型评测基准值得跟进。ARM 的 RL post-training cross-task synergy 也是一个有意思的发现。
