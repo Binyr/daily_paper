@@ -1,0 +1,78 @@
+🦞 HF Daily Papers 论文筛选 | 2026-06-18
+
+今日从 HF Daily Papers + arXiv 共扫描约 90 篇论文，筛选出以下 12 篇与研究方向本质相关的工作，按相关度排序。
+
+📄 ActWorld: From Explorable to Interactive World Model via Action-Aware Memory [来源:HF+arXiv]
+👤 Zhexiao Xiong, Yizhi Song, Liming Jiang, Nathan Jacobs | WashU, ByteDance
+💡 Motivation: 现有世界模型只能"逛"（导航），不能"碰"（物体交互）。关键瓶颈在于记忆机制：交互时需要有选择地保留历史中对物体操作至关重要的帧。
+🔧 方案: 层级 action-aware memory——按交互重要性分级压缩局部历史 + 持久记忆库，首次支持中途物体交互。
+🔗 https://arxiv.org/abs/2606.17730
+
+📄 Kairos: A Native World Model Stack for Physical AI [来源:HF]
+👤 Kairos Team (Fei Wang, Shan You, Dacheng Tao, Xiaogang Wang) | 蚂蚁/灵波科技
+💡 Motivation: 世界模型不应是视频生成器微调版——Physical AI 需要原生的世界知识获取和持久状态维护。直接挑战主流范式。
+🔧 方案: 跨具身数据原生预训练 + 双流解耦架构 + 混合推理引擎。大佬云集。
+🔗 https://arxiv.org/abs/2606.16533
+
+📄 CausalDrive: Real-time Causal World Models for Autonomous Driving [来源:arXiv]
+👤 Tianyi Yan, Huan Zheng 等 | University of Macau
+💡 Motivation: Layout-conditioned方法依赖未来轨迹；action-conditioned预测缺乏语义控制。根因：缺乏因果结构无法做反应式预测。
+🔧 方案: Causal 架构实现实时反应式世界模型，支持闭环策略学习。
+🔗 https://arxiv.org/abs/2606.15341
+
+📄 Mem-World: Memory-Augmented Action-Conditioned World Models for Persistent Robot Manipulation [来源:arXiv]
+👤 Zirui Zheng, Jiaqian Yu 等
+💡 Motivation: 操作场景频繁遮挡+剧烈运动导致模型"遗忘"场景细节。本质问题：世界模型中的记忆。
+🔧 方案: W-VMem——4D surfel索引视觉记忆，支持多视图 action-conditioned 世界模型持久保留信息。
+🔗 https://arxiv.org/abs/2606.18960
+
+📄 Track2View: 4D-Consistent Camera-Controlled Video Generation via Paired 3D Point Tracks [来源:HF]
+👤 Feng Qiao, Zhexiao Xiong, Serge Belongie, Nathan Jacobs | WashU, U Copenhagen
+💡 Motivation: 已有camera control方法缺乏source→target视角之间显式的4D联系。
+🔧 方案: 配对3D点轨迹作为video DiT条件，无参数几何操作+学习时序聚合实现4D一致新视角生成。
+🔗 https://arxiv.org/abs/2606.15534
+
+📄 Looped World Models [来源:HF]
+👤 Hongyuan Adam Lu 等（30+作者）
+💡 Motivation: 长程世界模拟的depth vs. efficiency张力。
+🔧 方案: 首次将looped architecture引入世界模型——参数共享块迭代精修潜在状态，loop次数解耦于模型深度。
+🔗 https://arxiv.org/abs/2606.18208
+
+📄 Hand-4DGS: Feed-Forward 3D Gaussian Splatting for 4D Hand Reconstruction from Egocentric Videos [来源:arXiv]
+👤 Jeongmin Bae, Marc Pollefeys, Youngjung Uh | ETH Zurich, Yonsei
+💡 Motivation: 第一视角4D手部重建：快速运动+遮挡+单视角歧义。
+🔧 方案: 首个feed-forward 4D手部高斯重建，60 FPS无需优化。
+🔗 https://arxiv.org/abs/2606.19156
+🌐 https://jeongminb.github.io/hand-4dgs/
+
+📄 The Reward Was in Your Data All Along: Correcting Flow Matching with Discriminator-Guided RL [来源:arXiv]
+👤 Nicolas Beltran-Velez, Felix Friedrich 等 | Meta FAIR
+💡 Motivation: Flow matching用偏好RL恢复逼真度，但这本该从数据学到——是匹配损失与采样质量的结构性错配。
+🔧 方案: 判别器区分真实/生成→转化为RL奖励修正flow matching。后训练的深刻反思。
+🔗 https://arxiv.org/abs/2606.19162
+
+📄 Data-Forcing Distillation: Restoring Diversity and Fidelity in Few-Step Video Generation [来源:arXiv]
+👤 Siyi Chen, Zian Wang, Huan Ling, Jun Gao | U Michigan, NVIDIA
+💡 Motivation: DMD2蒸馏视频扩散到少步，但reverse KL导致多样性坍缩+色彩过饱和。
+🔧 方案: Data-forcing——混入真实数据路径约束学生模型，保持少步效率。
+🔗 https://arxiv.org/abs/2606.18478
+
+📄 APT: Atomic Physical Transitions for Causal Video-Language Understanding [来源:arXiv]
+👤 Shang Wu, Haoran Lu 等
+💡 Motivation: 视频理解需从"标签级"深入"物理因果级"——事件的因果状态变化过程被clip标签隐藏。
+🔧 方案: APTs——最小化时间局部状态变化，绑定可见线索与物理机制。因果video理解新标注体系。
+🔗 https://arxiv.org/abs/2606.18586
+
+📄 You Don't Need Strong Assumptions: Visual Representation Learning via Temporal Differences [来源:HF]
+👤 Ninad Daithankar, Alexi Gladstone, ⭐Yann LeCun, Heng Ji | UIUC, Meta FAIR
+💡 Motivation: SSL方法仍依赖精心设计的增强和归纳偏置，能否只用连续帧的弱假设？
+🔧 方案: TDV——借鉴RL时序差分思想学习视觉表征。LeCun挂名，方法论有深度。
+🔗 https://arxiv.org/abs/2606.15956
+
+📄 PAIWorld: A 3D-Consistent World Foundation Model for Robotic Manipulation [来源:HF]
+👤 Yuhang Huang, Hang Zhao, Kai Xu 等 | NUDT, 清华
+💡 Motivation: 世界模型缺乏多视角3D一致性，简单拼接token无法编码全局几何。
+🔧 方案: DiT世界模型+几何感知+跨视角注意力，实现3D一致多视角预测。
+🔗 https://arxiv.org/abs/2606.18375
+
+💡 今日洞察：世界模型进入"原生化"时代——ActWorld、Kairos、CausalDrive不约而同挑战"视频生成器改装世界模型"范式。记忆机制（ActWorld、Mem-World）成为突破长程一致性的关键模块。4D方向Hand-4DGS和Track2View值得关注。

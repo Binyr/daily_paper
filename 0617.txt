@@ -1,0 +1,64 @@
+📰 Daily Paper Digest | 2026-06-17 (覆盖 June 15-16 提交)
+来源: HuggingFace Daily Papers + arXiv cs.CV
+
+注：HF Daily Papers 最新批次为 June 15 发布，arXiv 覆盖 June 15-16 提交。以下按相关度排序。
+
+📄 VideoWeave: Unlocking Geometric Consistency in Video Generation via Joint Geometry-Video Modeling [arXiv]
+👤 Xunzhi Xiang, Zixuan Duan, Yabo Chen, Zhengxuan Wei, ... Qi Fan, Xuelong Li
+💡 Motivation: 视频扩散模型在视角变化时容易出现几何漂移，现有方法依赖显式几何重建（深度图/点云）做监督，对上游管线误差敏感。
+🔧 方案: 提出 latent-space post-training 框架，将几何 foundation model 的隐式特征作为 geometry latents 与 video latents 在共享去噪空间联合建模。构建 GeoVid-80K 数据集。本质上是用隐式几何约束生成分布，比显式条件更鲁棒。
+🔗 arXiv: https://arxiv.org/abs/2606.14162
+🌐 Project: https://videoweave.github.io/
+
+📄 FR3D: Future Dynamic 3D Reconstruction — A 3D World Model with Disentangled Ego-Motion [arXiv+HF]
+👤 Nils Morbitzer, ... Nassir Navab, Federico Tombari, Stefano Gasperini | TUM + Google
+💡 Motivation: 生成式世界模型在2D视频合成中混合ego-motion和环境动态，长时序下出现物体变形/消失等物理不一致。
+🔧 方案: 显式解耦自运动与世界运动，预测持久3D latent表示做未来动态3D重建。用teacher-student蒸馏引入空间常识先验，实现zero-shot泛化。ICML 2026。
+🔗 arXiv: https://arxiv.org/abs/2606.18250
+🌐 Project: https://fr3d-wm.github.io
+
+📄 ActWorld: From Explorable to Interactive World Model via Action-Aware Memory [arXiv+HF]
+👤 Zhexiao Xiong, Yizhi Song, Hao Kang, Qing Yan, Liming Jiang, Jenson Yang, ... Nathan Jacobs
+💡 Motivation: 当前交互式世界模型的动作词表局限于导航（走、转、看），缺乏对物体的真正交互（拿盘子、开门），世界可探索但不可操作。
+🔧 方案: 提出分层 action-aware memory 设计——按交互重要性路由历史压缩，配合持久记忆库维护事件更新和物体身份token。构建100K交互视频数据集。直接命中「世界模型中的记忆机制 + Open-set interaction」。
+🔗 arXiv: https://arxiv.org/abs/2606.17730
+🌐 Project: https://interactwm.github.io/ActWorld
+
+📄 CausalDrive: Real-time Causal World Models for Autonomous Driving [arXiv]
+👤 Tianyi Yan, Huan Zheng, ... Jianbing Shen | 澳门大学等
+💡 Motivation: 布局条件渲染器依赖"oracle"未来轨迹（非反应式），纯动作条件预测器缺乏语义控制且diffusion太慢。
+🔧 方案: 仅需初始帧+ego轨迹+文本prompt，强制模型内禀预测因果交互。提出Context-Forced DMD架构，结合continuous flow-matching和自校正蒸馏，达12FPS实时。支持RL post-training（Video2Reward）和人机在环仿真。直接命中「Causal video generation + 后训练」。
+🔗 arXiv: https://arxiv.org/abs/2606.15341
+
+📄 Looped World Models (LoopWM) [arXiv+HF]
+👤 Hongyuan Adam Lu, Z. L. Victor Wei, Qun Zhang, ... (30+ authors) | 大团队
+💡 Motivation: 世界模型面临根本张力——忠实长时序仿真需要深计算，但深模型部署昂贵且误差累积。
+🔧 方案: 首个 looped architecture for world modelling——通过参数共享transformer block迭代精炼latent环境状态，实现100x参数效率，自适应计算深度匹配预测复杂度。建立「迭代latent深度」作为世界仿真新scaling维度。方法论洞察深刻。
+🔗 arXiv: https://arxiv.org/abs/2606.18208
+
+📄 MoonSplat: Monocular Online Gaussian Splatting with Sim(3) Global Optimization [arXiv]
+👤 Guo Pu, Yixuan Han, Haofeng Li, Yao Zhang, Hui Zhou, Zhouhui Lian | 北大
+💡 Motivation: 单目序列在线3D重建中，现有online 3DGS缺乏全局优化，相机位姿估计脆弱（无尺度恢复）。
+🔧 方案: 在3DGS框架中引入Sim(3)全局优化，处理单目尺度模糊。SIGGRAPH 2026。直接相关「单目深度/3D重建」。
+🔗 arXiv: https://arxiv.org/abs/2606.17935
+
+📄 MaineCoon: Pursuing A Real-Time Audio-Visual Social World Model [arXiv]
+👤 Lichen Bai, Tianhao Zhang, Shitong Shao, ... | 大团队
+💡 Motivation: 现有世界模型模拟物理环境或游戏，但忽视了社交世界——全球多数视频消费发生在社交平台上，以人际互动为核心。
+🔧 方案: 定义并构建「社交世界模型」原型，实时音视频生成。虽然不是核心方向，但作为世界模型新应用域有思路启发。
+🔗 arXiv: https://arxiv.org/abs/2606.17800
+
+📄 OmniDrive (DRIVE-CHOREO): LLM-Choreographed Multi-Agent World Model [arXiv]
+👤 Zijie Meng, Yufei Liu, ... Miao Zhang
+💡 Motivation: 自动驾驶世界模型面临异构控制注入和跨视角融合两个未解张力。
+🔧 方案: 用3个Qwen2.5-VL agent分工（Director/Cartographer/Auditor）编排统一位置感知token序列，通过3D VAE做多视角时序共压缩。nuScenes SOTA，纯合成数据训练检测器+2.4 NDS。
+🔗 arXiv: https://arxiv.org/abs/2606.17536
+
+📄 RealityBridge: Bridging Editable 3D Gaussian Splatting Driving Simulations and Real-World Videos [arXiv]
+👤 Zhenhua Wu, Yun Pang, ... Guanbin Li | 中山大学
+💡 Motivation: 可编辑3DGS仿真渲染存在显著sim-to-real gap（伪影、前景退化、光照不一致、时序闪烁）。
+🔧 方案: 多模态控制+GateNet自适应条件分配，配合 reward-guided post-training 提升修复质量和时序稳定性。命中「3DGS + 后训练」。
+🔗 arXiv: https://arxiv.org/abs/2606.16278
+
+📄 EgoCS-400K: An Egocentric Gameplay Dataset for World Models [arXiv]
+👤 Rongjin Guo, Dong Liang, ... Rynson W. H. Lau | CityU HK
