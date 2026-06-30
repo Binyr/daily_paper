@@ -1,0 +1,78 @@
+📰 HF Daily Papers 论文筛选 | 2026-06-19
+来源: HuggingFace Daily Papers + arXiv (cs.CV)
+筛选方向: 世界模型 / 视频生成 / 3D-4D视觉 / 后训练
+
+📄 Current World Models Lack a Persistent State Core [来源:HF+arXiv]
+👤 作者: Jinpeng Lu, Dexu Zhu, Haoyuan Shi, Guo Tang, Yinda Chen, Duyu Tang 等
+💡 Motivation: 现有世界模型只是"tracking shot"——摄像头移开后世界就冻结了，回来时目标停留在被遗弃的状态。论文提出世界模型需要一个持续演化的内部状态，与观测解耦。
+🔧 方案: 提出 WRBench，首个以相机运动作为可观测性干预的诊断 benchmark，对 23 个模型/9600 视频进行系统评估，验证"persistent state"能力的缺失。
+🔗 arXiv: https://arxiv.org/abs/2606.20545
+⭐ 强烈推荐：与"世界模型中的记忆机制"方向高度契合，观点新颖且实验扎实
+
+📄 Holo-World: Unified Camera, Object and Weather Control for Video World Model [来源:HF+arXiv]
+👤 作者: Xiangchen Yin, Wenzhang Sun, Jiahui Yuan, Zijie Liu, Yinda Chen, Wei Li 等
+💡 Motivation: 视频世界模型中相机、物体、天气控制仍然是孤立的。本文统一三者，从单帧出发生成可控视频。
+🔧 方案: 构建 HoloStateData 统一控制数据集；提出 Unified Scene Adapter 将世界保持与天气转移分解到不同参数子空间；Scene-Weather Decomposed CFG 分离引导场景与天气残差。
+🔗 arXiv: https://arxiv.org/abs/2606.20083
+🌐 Project: https://xiangchenyin.github.io/Holo-World/
+
+📄 ImageWAM: Do World Action Models Really Need Video Generation, or Just Image Editing? [来源:HF+arXiv]
+👤 作者: Yuyang Zhang, Wenyao Zhang, Zekun Qi, He Zhang, Haitao Lin 等
+💡 Motivation: 视频生成式 WAM 面临三重耦合瓶颈：密集多帧 token 推理昂贵，预测与动作无关的时间/外观变化浪费算力，视频数据与机器人数据域差距大。
+🔧 方案: 提出 ImageWAM，将预训练图像编辑模型重定向用于机器人动作预测，单帧 next-state 预测替代视频生成。
+🔗 arXiv: https://arxiv.org/abs/2606.19531
+⭐ 值得关注：对"视频生成是否是世界模型的必要形式"提出有价值的反思
+
+📄 MolmoMotion: Forecasting Point Trajectories in 3D with Language Instruction [来源:HF+arXiv]
+👤 作者: Jianing Zhang, Chenhao Zheng, Yajun Yang, Max Argus, Rustin Soraki 等 | Allen AI
+💡 Motivation: 运动预测是视觉智能的核心，3D 点轨迹提供了类别无关、视角不变的通用表示。论文将语言指令引入 3D 点轨迹预测。
+🔧 方案: 4B VLM 接收 RGB 历史+2D 查询点+语言动作指令，预测 3D 点轨迹。可应用于机器人规划和视频生成引导。
+🔗 arXiv: https://arxiv.org/abs/2606.18558
+🌐 Project: https://github.com/allenai/molmo-motion
+⭐ 与 point map diffusion 方向关联：3D 点轨迹作为通用运动表示
+
+📄 The Reward Was in Your Data All Along: Correcting Flow Matching with Discriminator-Guided RL [来源:HF+arXiv]
+👤 作者: Nicolas Beltran-Velez, Felix Friedrich, Zhang Xiaofeng, Reyhane Askari-Hemmat, Xiaochuang Han, Adriana Romero-Soriano | Meta FAIR
+💡 Motivation: Flow matching 的 ℓ2 回归损失与推理时样本质量之间存在结构性不匹配。现有模型依赖 preference-based RL 来恢复本该由训练学到的视觉真实性——这说明损失函数本身有问题。
+🔧 方案: 提出 DRL (Discriminator-Guided RL)：在预训练表示空间训练判别器区分真实/生成样本，logit 作为 KL-正则化 RL 的 reward。无需人类偏好标注。
+🔗 arXiv: https://arxiv.org/abs/2606.19162
+⭐ 后训练方向重要工作：提供了比 DPO/RLHF 更原理性的 flow matching 后训练方案
+
+📄 FlowBender: Feedback-Aware Training for Self-Correcting Conditional Flows [来源:arXiv]
+👤 作者: Daniel Gilo, Sven Elflein, Ido Sobol, Or Litany | Technion
+💡 Motivation: 条件扩散/flow 模型经常违反定义任务的约束（如 depth-conditioned 模型生成的图像 re-extract depth 与输入不一致），而前向算子在训练和推理时都可用。
+🔧 方案: 将前向算子反馈整合到训练中，使模型学会自校正——生成满足约束的样本而非仅最小化匹配损失。
+🔗 arXiv: https://arxiv.org/abs/2606.20404
+🌐 Project: https://flow-bender.github.io/
+⭐ 对 depth-conditioned generation 有直接启发：如何让生成结果在几何上自洽
+
+📄 LooseControlVideo: Directorial Video Control using Spatial Blocking [来源:HF+arXiv]
+👤 作者: Shariq Farooq Bhat, Niloy J. Mitra, Kalyan Sunkavalli | Adobe Research
+💡 Motivation: 文本和 2D 条件对视频中的空间变换控制力弱且模糊，密集 depth conditioning 又过度约束。
+🔧 方案: 用稀疏带方向的 3D box 作为"spatial blocking"代理，平衡控制力与生成灵活性。
+🔗 arXiv: https://arxiv.org/abs/2606.19495
+🌐 Project: https://github.com/shariqfarooq123/LooseControlVideo
+⭐ Shariq Farooq Bhat (ZoeDepth/Marigold) 新作，depth-conditioned video 的轻量替代方案
+
+📄 SSD: Spatially Speculative Decoding Accelerates Autoregressive Image Generation [来源:arXiv]
+👤 作者: Shilong Xiang, Zirui Zhang, Lijun Yu, Chengzhi Mao
+💡 Motivation: 自回归视觉生成将图像展平为 1D token 序列，丢弃了 2D 空间局部性，推理瓶颈严重。
+🔧 方案: Spatially Speculative Decoding——将预测目标对齐图像的自然几何结构，利用空间局部性进行推测式并行解码加速。
+🔗 arXiv: https://arxiv.org/abs/2606.20543
+⭐ 对 causal/autoregressive video generation 的推理加速有参考价值
+
+📄 EventVLA: Event-Driven Visual Evidence Memory for Long-Horizon VLA Policies [来源:arXiv]
+👤 作者: Ganlin Yang, Zhangzheng Tu, Yuqiang Yang, Sitong Mao, Junyi Dong, Tianxing Chen 等
+💡 Motivation: VLA 策略在长时序操作中因关键线索被遮挡或不可观测而失败。现有记忆方法要么信息瓶颈严重，要么延迟高，要么非选择性缓存。
+🔧 方案: 事件驱动的视觉证据记忆——只在关键事件发生时选择性存储视觉证据，轻量集成到 VLA 中。
+🔗 arXiv: https://arxiv.org/abs/2606.20092
+⭐ "记忆机制"方向：虽然是 embodied 场景，但事件驱动的选择性记忆思路对视频世界模型有启发
+
+📄 Physics-IQ Verified [来源:HF+arXiv]
+👤 作者: Tim Rädsch, Yuki M Asano, Hilde Kuehne, Stefan Bauer, Priyank Jaini
+💡 Motivation: Physics-IQ benchmark 在评估视频生成模型的物理理解能力时存在 prompt 质量、伪影和评分方式等系统性问题。
+🔧 方案: 系统审计 Physics-IQ，改进 prompt/ground-truth 质量，引入样本级评分聚合。为世界模型的物理理解评估提供更可靠标准。
+🔗 arXiv: https://arxiv.org/abs/2606.18943
+🌐 Project: https://physics-iq.github.io/
+
+今日总结：世界模型方向有两篇重磅——"Persistent State Core"直击当前世界模型的核心缺陷（观测解耦），Holo-World 统一多维控制；后训练方向 DRL 提供了比 RLHF 更 principled 的 flow matching 纠正方案；FlowBender 对 depth-conditioned generation 的约束自洽问题有直接启发。

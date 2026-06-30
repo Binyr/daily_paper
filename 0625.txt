@@ -1,0 +1,80 @@
+🗞️ Daily Paper Digest (2026-06-25) — World Models / Video Gen / 3D-4D
+
+📄 Causal-rCM: A Unified Teacher-Forcing and Self-Forcing Open Recipe for Autoregressive Diffusion Distillation in Streaming Video Generation and Interactive World Models [来源:HF+arXiv]
+👤 作者: Kaiwen Zheng et al. | NVIDIA
+💡 Motivation: Autoregressive causal扩散蒸馏缺乏统一范式——teacher-forcing (forward divergence) 和 self-forcing (reverse divergence) 各有优劣但未有效结合。
+🔧 方案: 将 rCM 扩展到 autoregressive video diffusion，首次实现 teacher-forcing 连续时间 CM (sCM/MeanFlow)，配合自研 custom-mask FlashAttention-2 JVP kernel 加速 10×；蒸馏后 2-step causal Wan2.1-1.3B 达 VBench-T2V 84.63，并应用于 Cosmos 3 interactive world model。
+🔗 arXiv: https://arxiv.org/abs/2606.25473
+🌐 Project: 暂无
+
+📄 Wan-Streamer v0.1: End-to-end Real-time Interactive Foundation Models [来源:HF]
+👤 作者: Lianghua Huang, Wei Wang, Jingren Zhou et al. | 阿里巴巴通义万相
+💡 Motivation: 现有交互式视频系统是级联管线（VAD→ASR→LLM→TTS→avatar），延迟高且误差累积，缺乏原生流式多模态交互能力。
+🔧 方案: 单一 Transformer 统一建模 language/audio/video 的输入输出，block-causal attention + 160ms streaming unit 实现 ~200ms 模型响应延迟，full-duplex 音视频交互。本质上是 streaming world model + embodied interaction 的统一。
+🔗 arXiv: https://arxiv.org/abs/2606.25041
+🌐 Project: https://wan-streamer.com
+
+📄 MVTrack4Gen: Multi-View Point Tracking as Geometric Supervision for 4D Video Generation [来源:arXiv]
+👤 作者: JoungBin Lee, Seungryong Kim et al. | KAIST + Sony
+💡 Motivation: Novel-view video 生成中，camera-conditioning-only 方法虽视觉质量好但几何/运动一致性差；关键发现是 attention layer 中对应关系的 misalignment 导致运动不一致。
+🔧 方案: 将 attention feature 路由到辅助 multi-view tracking head，以点跟踪目标联合训练 diffusion model，显式强化 motion-aware correspondences。SOTA geometric consistency。
+🔗 arXiv: https://arxiv.org/abs/2606.26087
+🌐 Project: https://cvlab-kaist.github.io/MVTrack4Gen/
+
+📄 CausalMem: Dynamic Fixed-budget Memory Bank for Efficient Streaming Video Understanding [来源:arXiv]
+👤 作者: Baiyang Song, Rongrong Ji et al. | 厦门大学
+💡 Motivation: 流式视频理解需要在固定 memory budget 下最大化信息保留，现有 MLLM 无法处理不断增长的帧序列。
+🔧 方案: Training-free 的动态视觉 memory 更新机制，通过 online semantic basis 估计 visual token 冗余度并更新 memory bank。12k token 即可记忆小时级流式视频（20× 压缩），+3.2% streaming / +3.0% offline 准确率。直接关联 world model 中的记忆机制问题。
+🔗 arXiv: https://arxiv.org/abs/2606.25658
+🌐 Project: https://github.com/hktk07/CausalMem
+
+📄 Lift4D: Harmonizing Single-View 3D Estimation for 4D Reconstruction In-the-Wild [来源:HF]
+👤 作者: Yehonathan Litman et al.
+💡 Motivation: 单目视频 4D 重建面临训练数据稀缺和复杂遮挡/大变形场景的双重挑战——直接预测 4D 受限于数据，test-time 优化又难以处理 unseen region。
+🔧 方案: 改造 single-view 3D 重建模型使其通过 causal latent conditioning 产生时序一致的逐帧预测，再用 occlusion-aware optimization + view-conditioned diffusion prior 对 deformable 3DGS 进行 sculpting。
+🔗 arXiv: https://arxiv.org/abs/2606.23688
+🌐 Project: https://lift4d.github.io
+
+📄 Multi4D: High-Fidelity Dynamic Gaussian Splatting via Multi-Level Competitive Allocation [来源:HF] ⭐ ECCV 2026
+👤 作者: Rui Wang et al.
+💡 Motivation: 动态 3DGS 的根本矛盾——deformation-based 方法保持时序对应但过度平滑高频动态，4D-primitive 方法捕捉细节但破坏物体 identity 且存储开销巨大。
+🔧 方案: 三层结构（静态结构/持续动态几何/瞬态外观），通过 shared rasterization + residual-driven optimization 让各层竞争解释光度误差，自适应特化。同时支持 4D 分割，10× 加速。
+🔗 arXiv: https://arxiv.org/abs/2606.22197
+🌐 Project: https://batfacewayne.github.io/Multi4D.io/
+
+📄 In-Context World Modeling (ICWM) for Robotic Control [来源:arXiv]
+👤 作者: Siyin Wang et al.
+💡 Motivation: VLA 模型只 condition on 当前观测+指令，隐含假设训练时的固定执行环境，换 viewpoint/morphology 就需要 fine-tune。
+🔧 方案: 把 system identification 变成 in-context adaptation 问题——利用 context window 处理一段 task-agnostic 自探索 interaction history 来理解 world dynamics，无需参数更新即可适应新配置。概念上是 world model 的 in-context learning。
+🔗 arXiv: https://arxiv.org/abs/2606.26025
+🌐 Project: 暂无
+
+📄 TryOnCrafter: Camera-controllable Video Virtual Try-on via Renderable 4D Try-on Proxy [来源:HF+arXiv]
+👤 作者: Hao Sun et al.
+💡 Motivation: 视频虚拟试穿被动依赖源 camera trajectory，无法自由探索全方位视角。
+🔧 方案: 构建 Renderable 4D Try-on Proxy（3DGS avatar + SMPL-X + background point cloud），用 Proxy-Anchored Video DiT 确保几何约束下的真实感视频合成。支持 bullet-time 和 360° 观看。4D 表示 + 视频扩散的有趣结合。
+🔗 arXiv: https://arxiv.org/abs/2606.26092
+🌐 Project: https://sunhao242.github.io/TryOnCrafter_web.github.io/
+
+📄 FLAT: Feedforward Latent Triangle Splatting for Geometrically Accurate Scene Generation [来源:HF]
+👤 作者: Orest Kupyn et al.
+💡 Motivation: 现有 feedforward 3D 生成输出 volumetric Gaussians 没有明确表面，难以用于仿真/标准图形管线。能否从 video diffusion latent 直接解码出 explicit surface primitive？
+🔧 方案: 首次证明 triangle splats 可以从 video diffusion latents 直接解码。提出 ray-centered rotation parameterization 和 product window function 改善梯度流。几何精度显著优于 3DGS/2DGS baseline，可转为 game-engine-ready 表示。
+🔗 arXiv: https://arxiv.org/abs/2606.24876
+🌐 Project: https://flat-splat.github.io
+
+📄 FLUX3D: High-Fidelity 3D Gaussian Generation with Diffusion-Aligned Sparse Representation [来源:HF+arXiv]
+👤 作者: Haorui Ji, Hongdong Li et al. | ByteDance + ANU
+💡 Motivation: 稀疏体素 3DGS 生成的两个瓶颈：语义抽象的 2D feature 抑制重建信号；标准 DiT 无法有效对齐 dense 2D token 与 sparse 3D voxel。
+🔧 方案: Diffusion-Aligned Structured Latents (DA-SLAT) 改善表示学习；Sparse-structure Multimodal DiT (SMDiT) + Modal-Aware RoPE (MARoPE) 实现 geometry-agnostic 2D-3D 对齐。全面超越 SOTA。
+🔗 arXiv: https://arxiv.org/abs/2606.24874
+🌐 Project: 暂无
+
+📄 DivRL: Disentangled Self-Similarity Rewards for Diverse Subject-Driven Generation [来源:arXiv] ⭐ ECCV 2026
+👤 作者: Qian Wang et al.
+💡 Motivation: Subject-driven 生成的 "Identity-Diversity Paradox"——强 identity 保持导致输出僵化低多样性。
+🔧 方案: 后训练框架，用 Negative Self-Similarity (nSSM) 量化结构多样性 + Visual Semantic Matching (VSM) 评估 identity。"Explore-and-Suppress" 策略将 identity 从竞争目标转为约束，使多样性和一致性联合提升。RL-based post-training for generation 的好案例。
+🔗 arXiv: https://arxiv.org/abs/2606.23950
+🌐 Project: https://qianwangx.github.io/DivRL/
+
+⏰ 数据来源: HuggingFace Daily Papers + arXiv (cs.CV) | 筛选时间: 2026-06-25 13:00 CST

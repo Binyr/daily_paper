@@ -1,0 +1,87 @@
+📰 HF Daily Papers 论文筛选 | 2026-06-30
+
+今日筛选覆盖 Hugging Face Daily Papers + arXiv，聚焦世界模型、视频生成、3D/深度估计、后训练方向。
+
+📄 RayPE: Ray-Space Positional Encoding for 3D-Aware Video Generation [来源:arXiv]
+👤 Minghao Yin et al.
+💡 Motivation: 现有视频DiT用(u,v,t) RoPE编码token位置，完全不包含3D场景结构信息。作者观察到Plücker reciprocal product天然是双线性的——与attention的dot product形式一致。
+🔧 方案: 提出RayPE，将6D Plücker ray坐标加性注入Q/K，使attention score自然分解为content、geometry及交叉项。仅增加0.1%参数，zero-init从预训练权重起步，显著提升相机可控性和跨帧3D一致性。
+🔗 arXiv: https://arxiv.org/abs/2606.27345
+🌐 Project: https://raype-project.github.io/
+
+📄 Orca: The World is in Your Mind [来源:HF]
+👤 Yihao Wang, Yuheng Ji, Mingyu Cao et al. | 大团队
+💡 Motivation: 现有方法各自优化next-token/frame/action，缺乏统一的world state建模。Orca提出Next-State-Prediction作为统一建模路径。
+🔧 方案: 双范式学习——unconscious learning从连续视频捕获稠密状态转移，conscious learning建模语言描述的稀疏事件。125K小时视频+160M事件标注预训练，冻结backbone后轻量decoder即可读出text/image/action。
+🔗 arXiv: https://arxiv.org/abs/2606.30534
+
+📄 Walking in the Implicit: Interactive World Exploration via Neural Scene Representation (NeuWorld) [来源:HF+arXiv]
+👤 Zhiqi Li et al.
+💡 Motivation: 交互式视频生成将state transition与高频observation synthesis耦合在frame latent中，不利于长程一致性。
+🔧 方案: 提出Neural Implicit Scene (NIS)——固定长度可渲染的隐式状态。将交互生成分解为紧凑场景状态的stochastic transition + 确定性pose-conditioned rendering。无需预训练视频backbone或外部3D重建器，从scratch训练即可获得强长程一致性。ECCV 2026。
+🔗 arXiv: https://arxiv.org/abs/2606.30045
+
+📄 FlowWM: Flow Matching in Feature Space for Stochastic World Modeling [来源:arXiv]
+👤 Francois Porcher, Nicolas Carion, Karteek Alahari, Shizhe Chen
+💡 Motivation: VAE-based stochastic world model在低维重建latent操作，限制感知性能；确定性predictor用pretrained features但collapse多模态未来为单一模糊均值。
+🔧 方案: 在pretrained feature space (DINOv3)中直接做flow matching。针对高维特征空间设计differentiable one-step projection机制，实现temporal consistency和task-driven训练。兼顾diversity和perception performance。
+🔗 arXiv: https://arxiv.org/abs/2606.29059
+
+📄 TempAct: Advancing Temporal Plausibility in Autoregressive Video Generation via Planner-Executor RL [来源:arXiv]
+👤 Jing Wang, Xiangxin Zhou et al. | Xiaodan Liang组
+💡 Motivation: AR视频扩散模型chunk-wise生成时，单一全局prompt无法指定每个chunk该实现哪个sub-event，导致动作延迟、语义混合和错误传播。SFT有exposure bias，distillation也不直接enforce temporal correctness。
+🔧 方案: Planner-Executor RL框架——LLM planner探索span-aware step prompts，AR diffusion executor在自身生成历史下学习follow prompts。Hierarchical group exploration实现plan-level和executor-level credit assignment。在Self-Forcing和LongLive上验证。
+🔗 arXiv: https://arxiv.org/abs/2606.28016
+
+📄 Directing the World: Fast Autoregressive Video Generation with Compositional Human-Camera Control [来源:arXiv]
+👤 Haoyuan Wang, Yabo Chen, Haibin Huang, Chi Zhang, Xuelong Li
+💡 Motivation: 交互式世界模型需要同时控制human motion和camera trajectory，但异质控制信号会干扰pretrained video prior，且AR生成的error accumulation问题在长horizon下加剧。
+🔧 方案: 解耦控制学习+统一AR video prior。Fast-Slow Memory训练策略稳定长程rollout；t-guided Dynamic Projection + Motion-CFG实现精确运动对齐；两阶段学习先motion后camera。
+🔗 arXiv: https://arxiv.org/abs/2606.27964
+🌐 Project: https://whydahuzi.github.io/Directing-the-World.github.io/
+
+📄 Shell-LCC: Your Data Manifold is Secretly a Reward Model for Text-to-Video Generation [来源:arXiv]
+👤 Shihao Zhang, Yuguang Yan et al. | Hanwang Zhang组
+💡 Motivation: T2V模型依赖reward model或DPO做alignment，计算开销大且对fine-grained细节改善有限。核心洞察：高质量SFT数据的manifold结构本身就是reward信号。
+🔧 方案: Shell Local Coordinate Coding——建模data manifold的"表面"而非"骨架"，避免mean regression，得到dense、differentiable、几乎零成本的reward信号。改善realness、高频细节，减少over-smoothing和motion blur。ECCV 2026。
+🔗 arXiv: https://arxiv.org/abs/2606.30248
+
+📄 NormGuard: Reward-Preserving Norm Constraints in Flow-Matching RL [来源:HF]
+👤 Tianlin Pan et al.
+💡 Motivation: RL后训练flow-based生成器时，velocity norm膨胀5-15%导致感知质量下降。推理时rescale无效（膨胀已co-adapted进权重），但sensitivity分析表明抑制norm膨胀不会损失reward。
+🔧 方案: 训练时hinge penalty，仅在velocity norm超过reference时激活。跨NFT/AWM/DPO三种后训练方法、两个base model一致提升质量且保持reward。
+🔗 arXiv: https://arxiv.org/abs/2606.27771
+📄 MemoBench: Benchmarking World Modeling in Dynamically Changing Environments [来源:HF]
+👤 Haoyu Chen, Kaichen Zhou et al. | Alan Yuille, Yilun Du
+💡 Motivation: 现有视频生成memory一致性benchmark仅评估目标在画面内的情况，或仅处理静态场景。缺乏对"动态变化环境中disappear-and-reappear"范式的系统评估。
+🔧 方案: 360个ground-truth clips覆盖合成+真实场景，设计四维诊断评估。揭示当前SOTA模型在物体"消失后以更新状态重现"时的显著不足——直接关联world model的memory机制能力。
+🔗 arXiv: https://arxiv.org/abs/2606.27537
+
+📄 AerialMetric: Benchmarking UAV Monocular Metric Depth Estimation [来源:arXiv]
+👤 Zhongqiang Song, Guanying Chen et al. | Xiaochun Cao
+💡 Motivation: 当前depth估计模型主要在street-view/indoor数据训练，应用于aerial viewpoints时存在显著domain gap。
+🔧 方案: 52K真实+16K合成aerial image-depth pairs，系统评估viewpoint/altitude/camera参数对metric depth的影响。Fine-tune后在diverse aerial imagery上SOTA。ECCV 2026。
+🔗 arXiv: https://arxiv.org/abs/2606.29716
+🌐 Project: https://kuieless.github.io/AerialMetric-ECCV2026-page/
+
+📄 DreamForge-World 0.1 Preview: Low-Compute Real-Time Controllable World Model [来源:HF+arXiv]
+👤 Daniyel Ayupov, Artur Markov-Tsoy
+💡 Motivation: 前沿世界模拟器计算量极大，缺乏consumer-GPU实时方案。
+🔧 方案: 基于Wan2.1-1.3B + LongLive AR stack，加入residual action pathway。单卡4090实现480p 14-15FPS实时交互，支持键鼠控制、多模态初始化、分钟级rollout。验证低算力路线的可行性。
+🔗 arXiv: https://arxiv.org/abs/2606.30292
+🌐 Project: https://trydreamforge.com/
+
+📄 ViPSim: Collaborating Visual and Parameter Spaces for Consistent Long-Horizon Embodied World Models [来源:arXiv]
+👤 Longyu Chen, Heng Li et al. | RSS 2026
+💡 Motivation: Embodied World Model中低维action与高维video synthesis的representation gap导致几何不对应，长horizon下轨迹漂移严重。
+🔧 方案: Visual Space提供pixel-aligned geometric priors（末端姿态投影、深度几何、形态mask），Parameter Space注入精确数值action/camera。双空间协同确保生成同时被geometric boundaries锚定、被numerical commands驱动。
+🔗 arXiv: https://arxiv.org/abs/2606.28804
+
+📄 Egocentric 3D Hand-Object Pose Estimation [来源:arXiv] ⚠️ Michael Black参与
+👤 Siddhant Bansal, Zhifan Zhu, Shashank Tripathi, Jiahe Zhao, Michael J. Black, Dima Damen
+💡 Motivation: 野外egocentric RGB下手-物交互的3D pose估计面临严重遮挡和接触歧义。
+🔧 方案: EPIC-Contact数据集(2.3K clips, 62.3K frames)提供dense双射3D hand-object contact对应。HOPformer单前向预估双手+物体pose，cross-attention将物体特征条件化于手先验。ARCTIC +6.2% SOTA。ECCV 2026。
+🔗 arXiv: https://arxiv.org/abs/2606.30598
+🌐 Project: https://sid2697.github.io/epic-contact
+
+以上为今日筛选结果，按与世界模型/视频生成/3D视觉的相关度排序。

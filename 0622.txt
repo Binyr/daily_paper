@@ -1,0 +1,81 @@
+📰 HF Daily Papers 论文筛选 | 2026-06-22 (周一)
+来源: HuggingFace Daily Papers + arXiv (cs.CV)
+
+📄 Current World Models Lack a Persistent State Core [来源:两者]
+👤 作者: Jinpeng Lu, Dexu Zhu, Haoyuan Shi, Yinda Chen, Duyu Tang, Yi Zhang | 腾讯
+💡 Motivation: 当前世界模型只是"渲染当前帧"，缺乏真正的内部持久状态——当相机移开再回来时，场景应该按物理规律持续演化，而非冻结。这篇提出了这个被benchmarks完全忽略的盲区。
+🔧 方案: 提出 WRBench，首个系统诊断"viewpoint intervention下world-state persistence"的benchmark。评估23个模型/9600视频，揭示所有现有系统都只是tracking shot而非真正维持world state。
+🔗 arXiv: https://arxiv.org/abs/2606.20545
+🌐 Project: 暂无
+
+📄 Holo-World: Unified Camera, Object and Weather Control for Video World Model [来源:两者]
+👤 作者: Xiangchen Yin, Wenzhang Sun, Jiahui Yuan, Yinda Chen, Chunfeng Wang, Xiaoyan Sun | NUST/腾讯
+💡 Motivation: 视频世界模型的相机/物体/天气控制目前是割裂的，且天气生成依赖source video。本文首次统一三种控制，从单帧出发实现完整场景操控。
+🔧 方案: 构建 HoloStateData 统一控制数据集；Unified Scene Adapter 将world preservation和weather transfer解耦到不同参数子空间，用渲染背景+geometry buffers+物体控制保持结构，同时建模天气外观。
+🔗 arXiv: https://arxiv.org/abs/2606.20083
+🌐 Project: https://github.com/XiangchenYin/Holo-World
+
+📄 ImageWAM: Do World Action Models Really Need Video Generation, or Just Image Editing? [来源:HF]
+👤 作者: Yuyang Zhang, Wenyao Zhang, Zekun Qi, Yao Mu, Xiaokang Yang, Wenjun Zeng, Xin Jin | 上交/浙大
+💡 Motivation: 视频生成型WAM有三个耦合问题：推理昂贵（dense multi-frame tokens）、浪费capacity在action-irrelevant的时序细节上、长程想象引入误差。核心质问：世界动作模型真的需要视频生成吗？
+🔧 方案: 用pretrained image editing model替代video generation，只建模current-to-target的视觉变化。推理时不实际decode目标帧，而是将image-editing denoising的KV cache作为compact world-action context送入flow-matching action expert。
+🔗 arXiv: https://arxiv.org/abs/2606.19531
+🌐 Project: https://github.com/yuyangalin/ImageWAM
+
+📄 MaineCoon: Pursuing A Real-Time Audio-Visual Social World Model [来源:HF]
+👤 作者: Lichen Bai, Tianhao Zhang, Shitong Shao, Zeke Xie 等 | Catnip AI
+💡 Motivation: 现有世界模型只模拟物理环境/游戏探索，与人类社交动态完全脱节。社交视频（占全球视频消费主体）需要实时、音视频联合的交互式生成。
+🔧 方案: 22B参数的实时audio-visual AR模型，单GPU达47.5 FPS流式生成+亚秒交互。引入self-resampling、cross-modal alignment、domain-aware preference optimization、reinforced online learning等新技术。
+🔗 arXiv: https://arxiv.org/abs/2606.17800
+🌐 Project: 暂无
+
+📄 MolmoMotion: Forecasting Point Trajectories in 3D with Language Instruction [来源:HF]
+👤 作者: Jianing Zhang, Chenhao Zheng, Chun-Liang Li, Ranjay Krishna 等 | Allen AI/UW
+💡 Motivation: 运动预测需要一种通用、类别无关的表示。3D点轨迹在世界坐标系下view-stable且compact，可直接用于下游任务。将语言指令引入3D点运动预测是个elegant的形式化。
+🔧 方案: 构建MolmoMotion-1M（116万视频的action-described 3D point trajectories）；PointMotionBench（111类物体/61种运动）；4B VLM模型支持AR坐标预测和flow-matching轨迹生成。
+🔗 arXiv: https://arxiv.org/abs/2606.18558
+🌐 Project: https://molmomotion.github.io/
+
+📄 LooseControlVideo: Directorial Video Control using Spatial Blocking [来源:HF]
+👤 作者: Shariq Farooq Bhat, Niloy J. Mitra, Kalyan Sunkavalli | Adobe Research
+💡 Motivation: 视频生成中精确3D空间编排（多物体场景）极具挑战。depth-conditioned方法需要dense逐帧guidance，对动态可变形物体太heavy。用"导演式blocking"概念来做稀疏控制是个很好的切入点。
+🔧 方案: 用稀疏3D oriented boxes作为"blocking proxy"，fine-tune Wan 2.2骨架+DNOCS（一种新编码，表达3D尺寸/朝向/depth-ordered遮挡）。支持局部精修（如调整跳跃轨迹）而不破坏全局场景。
+🔗 arXiv: https://arxiv.org/abs/2606.19495
+🌐 Project: https://github.com/shariqfarooq123/LooseControlVideo
+
+📄 FlowBender: Feedback-Aware Training for Self-Correcting Conditional Flows [来源:HF]
+👤 作者: Daniel Gilo, Sven Elflein, Ido Sobol, Or Litany | Technion/NVIDIA
+💡 Motivation: Conditional diffusion/flow模型经常违反自身约束（如depth-conditioned生成的图re-extract depth后不一致）。核心问题：模型从未被训练去利用自身的alignment error。
+🔧 方案: FlowBender将alignment error作为一等输入，训练网络学习correction policy。每步先unguided look-ahead估计clean signal，计算deviation，再conditioned on feedback做refinement。对depth estimation/generation直接相关。
+🔗 arXiv: https://arxiv.org/abs/2606.20404
+🌐 Project: 暂无
+
+📄 The Reward Was in Your Data All Along: Correcting Flow Matching with Discriminator-Guided RL [来源:HF]
+👤 作者: Nicolas Beltran-Velez, Felix Friedrich, Adriana Romero-Soriano, Michal Drozdzal | Meta FAIR
+💡 Motivation: Flow matching模型的L2 regression loss与推理时的视觉语义质量严重misalign。现有解决方案依赖昂贵的人类偏好标注。核心insight：reward其实已经在你的数据里了。
+🔧 方案: Discriminator-Guided RL (DRL)：在pretrained representation space训练discriminator区分data和model samples，用其logit作为reward做KL-regularized RL。无需人类标注，将后训练重新定义为"纠正训练目标的structural mismatch"。
+🔗 arXiv: https://arxiv.org/abs/2606.19162
+🌐 Project: 暂无
+
+📄 PRISM: Preference Representation in Intermediate States of Video Diffusion Models [来源:arXiv]
+👤 作者: Haoxuan Wu, Lai Man Po, Mengyang Liu, Kun Li 等
+💡 Motivation: 视频生成的reward model都在clean pixel空间工作，与noisy diffusion过程脱节且需要巨大VAE decoding开销。能否直接从noisy latent判断偏好？
+🔧 方案: PRISM用冻结的video diffusion模型+轻量Query-based Aggregation head，直接在中间noisy latent states上做preference判别。省去VAE decoding，可无缝集成到训练循环中做在线reward。
+🔗 arXiv: https://arxiv.org/abs/2606.20310
+🌐 Project: 暂无
+
+📄 EventVLA: Event-Driven Visual Evidence Memory for Long-Horizon VLA [来源:arXiv]
+👤 作者: Ganlin Yang, Zhangzheng Tu, Jifeng Dai, Yao Mu, Tai Wang 等 | 上交/北大
+💡 Motivation: 长程机器人操作中记忆是关键瓶颈——task-relevant线索被遮挡后标准VLA即失败。现有memory方法要么信息瓶颈严重，要么延迟高，要么无选择性地堆积视觉冗余。
+🔧 方案: 提出"稀疏视觉证据记忆"概念：foundational visual anchors保持初始/短期上下文 + 动态Keyframe Evidence Memory (KEM)模块预测未来keyframe概率，只存事件驱动的关键帧。⚠️ Jifeng Dai (戴继峰) 参与。
+🔗 arXiv: https://arxiv.org/abs/2606.20092
+🌐 Project: 暂无
+
+📄 SSD: Spatially Speculative Decoding Accelerates Autoregressive Image Generation [来源:arXiv]
+👤 作者: Shilong Xiang, Zirui Zhang, Lijun Yu, Chengzhi Mao
+💡 Motivation: AR视觉生成将图像展平为1D序列，丢弃了图像内在的2D空间局部性，造成严重计算瓶颈。能否让推理过程与图像的空间几何对齐？
+🔧 方案: Spatially Speculative Decoding利用图像2D空间局部性做speculative parallel decoding，让预测目标从"1D下一个token"变为"空间邻域"。对AR视频/图像生成的加速有直接意义。
+🔗 arXiv: https://arxiv.org/abs/2606.20543
+🌐 Project: 暂无
+
+共筛选 10 篇，按与世界模型/视频生成研究的相关度排序。今日亮点：World State Persistence (2606.20545) 直击世界模型核心缺陷，值得深入阅读。

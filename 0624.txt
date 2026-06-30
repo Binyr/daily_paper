@@ -1,0 +1,53 @@
+📰 HF Daily Papers + arXiv 每日论文筛选 | 2026-06-24
+
+📄 FLAT: Feedforward Latent Triangle Splatting for Geometrically Accurate Scene Generation [来源: 两者]
+👤 Orest Kupyn, Goutam Bhat, Philipp Henzler, Fabian Manhardt, Christian Rupprecht, Federico Tombari | Oxford VGG + Google Research
+💡 Motivation: 当前视频扩散模型虽然隐含了多视图几何结构，但解码出的3D Gaussians缺乏well-defined surface，无法直接用于仿真和图形流水线。核心问题是：能否从压缩的视频扩散latents直接映射到显式surface primitives？
+🔧 方案: 首次证明视频扩散latents可以single-pass解码为triangle mesh primitives。提出FLAT框架，结合frozen video prior和per-prompt GS重建优化，将单个生成视频转为可渲染的surface-aligned 3D资产。
+🔗 arXiv: https://arxiv.org/abs/2606.24876
+
+📄 FLUX3D: High-Fidelity 3D Gaussian Generation with Diffusion-Aligned Sparse Representation [来源: 两者]
+👤 Haorui Ji, Weizhe Liu, Hongdong Li, Hengkai Guo | ANU + ByteDance
+💡 Motivation: 现有image-to-3DGS方法存在两个瓶颈：用判别式2D特征构建sparse voxel latents会丢失重建线索（representation bottleneck），标准DiT缺乏2D-3D跨模态对齐机制（correspondence bottleneck）。
+🔧 方案: 提出FLUX3D，用diffusion-aligned的表征学习替代判别式特征提取，并设计新的cross-modal alignment机制在生成阶段对齐dense 2D image tokens和sparse 3D voxel latents，显著提升高频细节保真度。
+🔗 arXiv: https://arxiv.org/abs/2606.24874
+
+📄 World Value Models for Robotic Manipulation [来源: 两者]
+👤 Zhihao Wang, Jianxiong Li, Yu Cui, Yuan Gao, Xianyuan Zhan, Junzhi Yu | Tsinghua AIR + PKU
+💡 Motivation: 准确的value estimation需要深度时序理解——既要用历史上下文grounding当前belief，又要规划未来outcome。现有基于VLM的value model缺乏时序建模能力。World model天然擅长时序建模和未来预测，是学习通用value function的理想基础。
+🔧 方案: 将world model与value estimation结合，构建World Value Model (WVM)。利用world model的时序预测能力为value estimation提供准确的task progression信号。
+🔗 arXiv: https://arxiv.org/abs/2606.24742
+🌐 Project: https://zh1hao.wang/wvm/
+
+📄 GeoT2V-Bench: Benchmarking 3D Consistency in Text-to-Video Models via 3D Reconstruction [来源: arXiv]
+👤 Chenrui Fan, Paolo Favaro | University of Bern
+💡 Motivation: Camera-prompted T2V模型越来越多地被用于合成虚拟相机捕获，但视觉上看似合理不等于几何一致。核心问题是：T2V生成的clips能否支撑真正的刚体3D重建？
+🔧 方案: 提出基于重建的诊断benchmark。用VGGT估计相机pose，拟合DeformableGS，通过temporal-median聚合导出静态MedianGS代理，提供结构化的几何诊断报告。
+🔗 arXiv: https://arxiv.org/abs/2606.24829
+
+📄 OrbitForge: Text-to-3D Scene Generation via Reconstruction-Anchored Video Synthesis [来源: arXiv]
+👤 Chenrui Fan, Paolo Favaro | University of Bern
+💡 Motivation: 通用T2V模型是丰富的open-world场景先验，但生成视频相机运动难控制、视角覆盖不全、帧间存在不一致。
+🔧 方案: 用3D重建作为anchor来提升生成视频的3D一致性。先从初始视频通过DeformableGS+MedianGS获得初步3D重建，再沿规定orbit渲染视图检测不一致区域，迭代优化。
+🔗 arXiv: https://arxiv.org/abs/2606.24799
+
+📄 ArtiTwinSplat: Interactable Digital Twin Reconstruction via Gaussian Splatting from RGB-D videos [来源: arXiv]
+👤 Pranjal Mishra, René Zurbrügg, Max Wilder-Smith, Marco Hutter, Marc Pollefeys, Zuria Bauer | ETH Zurich
+💡 Motivation: 机器人在非结构化环境中部署需要准确的interactive模型，但大规模构建这些模型是关键瓶颈。
+🔧 方案: 基于3DGS构建保持几何保真度和光度真实性的数字孪生，结合无监督articulation discovery pipeline从观察到的运动中恢复part structure和joint kinematics。无需CAD模型或手工标注。
+🔗 arXiv: https://arxiv.org/abs/2606.24628
+
+📄 DivRL: Disentangled Self-Similarity Rewards for Diverse Subject-Driven Generation [来源: 两者]
+👤 Qian Wang, Zhenyu Li, Abdelrahman Eldesokey, Peter Wonka | KAUST
+💡 Motivation: Subject-driven生成面临"Identity-Diversity Paradox"——强identity保持导致输出僵化、缺乏多样性。这是生成模型post-training的核心矛盾。
+🔧 方案: 提出后训练框架DivRL，利用解耦的视觉特征同时优化identity consistency和structural diversity。通过"Explore-and-Suppress" RL策略联合优化。对视觉生成模型RLHF有方法论启发。
+🔗 arXiv: https://arxiv.org/abs/2606.23950
+
+📄 DiffusionBench: On Holistic Evaluation of Diffusion Transformers [来源: 两者]
+👤 Xingjian Leng, Jaskirat Singh, Zhanhao Liang et al.
+💡 Motivation: DiT研究过度收敛于ImageNet上的class-conditional generation单一评估范式，FID等指标的提升是否真正反映生成建模进步？
+🔧 方案: 提出NanoGen统一DiT训练评估框架，仅需12行配置改动即可从ImageNet切换到T2I训练。支持RAE/VAE/pixel-space/MeanFlow等多种diffusion方法。
+🔗 arXiv: https://arxiv.org/abs/2606.24888
+🌐 Project: https://github.com/End2End-Diffusion/diffusion-bench
+
+⭐ 今日重点: FLAT（视频扩散latents→triangle mesh）、World Value Models（world model赋能value estimation）、GeoT2V-Bench/OrbitForge（用3D重建anchor视频生成的几何一致性）、DivRL（视觉生成模型的post-training RL）

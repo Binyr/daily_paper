@@ -1,0 +1,77 @@
+🗞️ HF Daily Papers 论文筛选 | 2026-06-26
+来源: HuggingFace Daily Papers + arXiv (cs.CV)
+筛选方向: 世界模型 / Causal视频生成 / 3D-4D视觉 / 后训练 / 几何感知生成
+
+📄 RayPE: Ray-Space Positional Encoding for 3D-Aware Video Generation [来源:arXiv+HF]
+👤 作者: Minghao Yin, Jiahao Lu, Wenbo Hu, Wang Zhao, Shan Ying, Kai Han
+💡 Motivation: 当前视频DiT用(u,v,t) RoPE做位置编码，完全不携带3D结构信息。两条camera ray的几何关系天然由Plücker reciprocal product刻画——而这恰好是bilinear形式，与attention的dot product同构。
+🔧 方案: 提出RayPE，将6D Plücker坐标加性注入Q/K，用Q/K flip使identity配置恰好对应reciprocal product。attention score分解为content项、geometry项和两个交叉项。设计log-magnitude gating + RMSNorm处理异质尺度相机数据。
+🔗 arXiv: https://arxiv.org/abs/2606.27345
+🌐 Project: https://raype-project.github.io
+
+📄 Causal-rCM: A Unified Teacher-Forcing and Self-Forcing Open Recipe for AR Diffusion Distillation in Streaming Video Generation and Interactive World Models [来源:HF]
+👤 作者: Kaiwen Zheng, Guande He, ..., Chen-Hsuan Lin, Ming-Yu Liu, Jun Zhu, Qianli Ma | NVIDIA + 清华
+💡 Motivation: 自回归视频扩散已成为流式视频生成和交互式世界模型的主流范式，但蒸馏方案（teacher-forcing vs self-forcing）各有局限，缺乏统一框架。
+🔧 方案: 将rCM扩展到因果自回归设定：teacher-forcing CM提供离线前向散度初始化，self-forcing DMD做在线逆向散度精调。实现首个teacher-forcing连续时间CM（sCM/MeanFlow），含自研FlashAttention-2 JVP kernel，收敛速度提升10x。开源代码。
+🔗 arXiv: https://arxiv.org/abs/2606.25473
+🌐 Code: https://github.com/NVlabs/rcm
+
+📄 Hallucination in World Models is Predictable and Preventable [来源:HF+arXiv]
+👤 作者: Nicklas Hansen, Xiaolong Wang | UC San Diego
+💡 Motivation: 世界模型生成视觉连贯但动态偏离真实的"幻觉"，本质问题是什么？作者假设幻觉集中在state-action空间的低覆盖区域。
+🔧 方案: 提出MMBench2（427h, 210任务），识别出三类幻觉模式（perceptual/action-marginalized/scene-diverging）。开发覆盖感知采样 + 幻觉预测器作为curiosity reward做定向数据采集，仅50条真实轨迹即可适配到全新环境。核心发现：幻觉本质上是数据覆盖问题。
+🔗 arXiv: https://arxiv.org/abs/2606.27326
+🌐 Project: https://www.nicklashansen.com/mmbench2
+
+📄 MVTrack4Gen: Multi-View Point Tracking as Geometric Supervision for 4D Video Generation [来源:HF]
+👤 作者: JoungBin Lee, ..., Takuya Narihira, ..., Seungryong Kim | KAIST + Sony
+💡 Motivation: 新视角视频生成中，camera-conditioning方法视觉质量好但几何/运动一致性差；显式3D方法受限于重建精度。如何在不依赖显式3D的前提下注入几何约束？
+🔧 方案: 发现特定attention层天然编码了跨视角几何对应关系。将这些特征路由到辅助multi-view tracking head做联合训练，以multi-view point tracking作为几何+运动监督信号。
+🔗 arXiv: https://arxiv.org/abs/2606.26087
+
+📄 PhysiFormer: Learning to Simulate Mechanics in World Space [来源:HF+arXiv]
+👤 作者: Yiming Chen, Yushi Lan, Andrea Vedaldi | Oxford VGG
+💡 Motivation: 视频世界模型在view-dependent像素空间操作，无法真正建模物理。能否直接在3D世界坐标下用DiT做物理模拟？
+🔧 方案: 用扩散Transformer直接预测3D mesh顶点轨迹，无需rigidity/causality等归纳偏置。时间-空间-物体分解注意力实现高效多物体推理。在10万+模拟轨迹上训练，泛化到真实几何和混合材料场景。
+🔗 arXiv: https://arxiv.org/abs/2606.27364
+🌐 Code: https://github.com/yimingc9/PhysiFormer
+
+📄 DexAC-WM: Not All Actions Are Equal: Rethinking Conditioning for Dexterous World Model [来源:arXiv]
+👤 作者: Zizhao Yuan, Zhengtu Liang, Taowen Wang et al.
+💡 Motivation: 现有世界模型将整个动作序列压缩为单一表示，在高自由度灵巧操作中，不同维度动作的量级差异可达数量级，均匀聚合导致优化不平衡。
+🔧 方案: 提出结构化action conditioning：action tokenization保留维度级语义，通过local refinement + global modulation对齐动作信号与视觉动态。引入语义锚定提升世界模型的高层理解。
+🔗 arXiv: https://arxiv.org/abs/2606.27325
+
+📄 Fast LeWorldModel [来源:HF]
+👤 作者: Yuntian Gao, Xiangyu Xu
+💡 Motivation: JEPA世界模型（LeWM）做视觉规划时需要逐步自回归rollout，计算昂贵且误差累积。
+🔧 方案: 用action-prefix prediction替代逐步rollout——给定当前latent和动作序列，并行编码所有前缀并直接预测对应的未来latent。前缀级监督迫使模型学习不同时间尺度下的状态连续演化。
+🔗 arXiv: https://arxiv.org/abs/2606.26217
+
+📄 PhysRAG: Enhancing Physics-Awareness in Video Generation via Retrieval-Augmented Generation [来源:arXiv]
+👤 作者: Kexu Cheng, Zicheng Liu, Mingju Gao, Chunhe Song, Hao Tang
+💡 Motivation: 视频生成模型难以捕捉多样物理现象（热力学、力学、光学），高质量物理视频数据稀缺。
+🔧 方案: 构建物理视频数据库，用RAG机制通过learnable queries将检索到的物理知识注入视频扩散模型。在PhyGenBench和VBench上达到SOTA。
+🔗 arXiv: https://arxiv.org/abs/2606.26916
+🌐 Code: https://github.com/sediment1024/PhysRAG
+
+📄 REGEN: World Action Models Enable Continual Imitation Learning with Recurrent Generative Replays [来源:arXiv]
+👤 作者: Manish Kumar Govind, Dominick Reilly, Smit Patel, Hieu Le, Srijan Das
+💡 Motivation: 机器人学习新任务时会灾难性遗忘旧任务，但存储所有历史演示不现实。世界动作模型(WAM)本身就能生成未来观测——能否用它生成"伪重放"？
+🔧 方案: 递归查询WAM合成伪重放轨迹，仅需任务指令+当前观测即可。遗忘减少50%，接近使用真实重放数据的上界。
+🔗 arXiv: https://arxiv.org/abs/2606.27374
+
+📄 In-Context World Modeling for Robotic Control (ICWM) [来源:HF]
+👤 作者: Siyin Wang, ..., Xipeng Qiu | 复旦大学
+💡 Motivation: VLA模型假设固定执行环境，换相机/换机器人就需要重新微调。能否让模型自主推断系统动力学？
+🔧 方案: 将系统辨识转化为in-context学习问题——用一小段自生成的task-agnostic交互作为context，让模型隐式捕获当前系统的世界动力学，无需参数更新即可适配新配置。
+🔗 arXiv: https://arxiv.org/abs/2606.26025
+
+📄 Physics Question Scene Graph: Fine-grained Evaluation of Physical Plausibility in T2V Generation [来源:HF]
+👤 作者: Atin Pothiraj, Jaemin Cho, Yue Zhang, Elias Stengel-Eskin, Mohit Bansal | UNC Chapel Hill
+💡 Motivation: 现有视频生成物理评估指标粗糙，无法区分不同层次的物理违规。
+🔧 方案: 提出Physics Question Scene Graph (PQSG)——层次化、依赖感知的问题图结构，对T2V生成结果做细粒度物理合理性诊断。
+🔗 arXiv: https://arxiv.org/abs/2606.25306
+
+⏰ 筛选时间: 2026-06-26 13:00 CST
+📊 来源统计: HF Daily Papers 22篇 + arXiv 34篇 → 去重合并 → 筛选出 10 篇高相关论文

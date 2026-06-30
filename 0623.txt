@@ -1,0 +1,112 @@
+📰 每日论文筛选 | 2026-06-23
+
+今日从 HF Daily Papers + arXiv 筛选出以下与世界模型/视频生成/4D视觉高度相关的论文：
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 Compression and Retrieval: Implicit Memory Retrieval for Video World Models [arXiv]
+👤 Zhan Peng, Jie Ma, Huiqiang Sun, Zhiguo Cao | HUST
+💡 Motivation: 视频世界模型在长程相机轨迹下维持一致记忆是核心瓶颈——现有方法要么暴力扩context要么用启发式检索，泛化性差。
+🔧 方案: 提出 CaR——通过位置编码注入视角信息实现注意力驱动的隐式记忆检索，配合轻量上下文压缩网络高效处理长序列。构建 SceneFly 大规模合成数据集（真实相机轨迹+帧级标注）训练和评测长程世界模型。
+🔗 arXiv: https://arxiv.org/abs/2606.23105
+🌐 Project: 暂无
+
+⭐ 与我们的 "Memories for World Models" 方向直接相关，implicit memory + compression 的思路值得关注。
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 Lift4D: Harmonizing Single-View 3D Estimation for 4D Reconstruction In-the-Wild [arXiv]
+👤 Yehonathan Litman, Xiaoxuan Ma, Shubham Tulsiani | CMU
+💡 Motivation: 单目视频4D重建的两大范式（直接预测4D vs 初始化后变形优化）分别受限于4D训练数据稀缺和仅用video supervision，无法处理大变形和遮挡。
+🔧 方案: 测试时优化框架——先用causal latent conditioning让单视图3D模型产生时序一致的逐帧预测作为初始化，再用遮挡感知优化+view-conditioned diffusion prior "雕刻"可变形3D Gaussian，同时保证可见区域细节和遮挡区域补全。
+🔗 arXiv: https://arxiv.org/abs/2606.23688
+🌐 Project: https://github.com/yehonathanlitman/Lift4D
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 IMAGIN-4D: Image-Guided Controllable Interaction Generation [arXiv]
+👤 Sai Kumar Dwivedi, Michael J. Black, Dimitrios Tzionas | MPI / Microsoft
+💡 Motivation: 文本+轨迹不足以完全指定人-物交互的细节（同样的prompt可产生不同抓取、接触和姿态），需要更具象的视觉条件来消歧。
+🔧 方案: 用参考图像作为交互快照的视觉规格说明，通过时空解耦的图像条件化——空间上提取交互状态token（体态/物体姿态/接触/空间关系），时间上为每帧生成frame-aware token。role-aware conditioning 平衡多模态信号。
+🔗 arXiv: https://arxiv.org/abs/2606.23675
+🌐 Project: https://imagin4d.github.io
+
+⭐ Michael Black 组的工作，4D交互生成方向，与 open-set interaction 相关。
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 ScalingAttention: Discovering Intrinsic Sparse Attention Topology for Video Diffusion Transformers [arXiv]
+👤 Ruiliang Zhou, Xuecheng Wu, Qingjie Zhao | 北交 / ByteDance
+💡 Motivation: Video DiT的3D全注意力计算瓶颈，动态剪枝开销大，静态启发式不够精细——需要一种高效且准确的稀疏方案。
+🔧 方案: 核心发现：每个head的高注意力区域会快速收敛到一个稳定的、与输入无关的"内在稀疏拓扑"（权重编码的、尺度不变的）。据此提出 WEST（离线提取block-sparse先验）+ FAST（根据扩散保真度需求自适应调整head粒度稀疏率）。在 Wan2.1 上实现 1.9x 端到端加速且保真度更优。
+🔗 arXiv: https://arxiv.org/abs/2606.23019
+🌐 Project: 暂无
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 Data-Forcing Distillation: Restoring Diversity and Fidelity in Few-Step Video Generation [arXiv]
+👤 Siyi Chen, Zian Wang, Huan Ling, Jun Gao | U of Michigan / NVIDIA / U of Toronto
+💡 Motivation: DMD系列蒸馏方法因反向KL目标存在模式坍塌和过饱和两个顽疾——diversity和fidelity双降。
+🔧 方案: 提出 DFD——一个极简的后训练框架（仅需一行代码改动），利用 teacher score discrepancy 引导student向真实数据分布靠拢（拉向缺失模式、推离伪模式）。在 Wan2.1-1.3B 和 Cosmos-Predict2.5-2B 上，100-300步微调即显著恢复多样性和视觉质量，甚至超越teacher。
+🔗 arXiv: https://arxiv.org/abs/2606.18478
+🌐 Project: 暂无
+
+⭐ 视频生成后训练/蒸馏方向的实用工作，方法极简但效果显著。
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 The Reward Was in Your Data All Along: Correcting Flow Matching with Discriminator-Guided RL [arXiv]
+👤 Nicolas Beltran-Velez, Adriana Romero-Soriano, Michal Drozdzal | Meta FAIR
+💡 Motivation: Flow matching模型依赖preference RL来恢复视觉真实性——但这本该是匹配训练本身就能学到的。根因是L2 regression loss与感知质量之间存在结构性错配。
+🔧 方案: 提出 DRL——在预训练表征空间训练判别器区分真实/生成样本，用其logit作为KL-regularized RL的reward（理论上是数据分布与模型分布的最优对数似然比）。无需人工偏好标注即可大幅降低FID（SiT: 9.38→2.62），且为后续preference RL提供更好起点。
+🔗 arXiv: https://arxiv.org/abs/2606.19162
+🌐 Project: 暂无
+
+⭐ 后训练方向的深刻insight——用数据本身而非人工偏好来纠正生成模型，对视频生成同样适用。
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 Vera: A Layered Diffusion Model for Content-Preserving Video Editing [arXiv]
+👤 Hongkai Zheng, Ta-Ying Cheng, Yisong Yue, Zhuoning Yuan | Caltech / Netflix
+💡 Motivation: 现有视频编辑方法逐像素重新生成，无法保证不该改的内容不变。
+🔧 方案: 提出分层扩散框架——生成编辑层+alpha matte用于与源视频合成，将创意编辑与内容保持在架构层面解耦。用 MoT（Mixture-of-Transformers）架构让各层通过joint self-attention交互。
+🔗 arXiv: https://arxiv.org/abs/2606.23610
+🌐 Project: https://netflixtechblog.com/toward-more-controllable-ai-video-editing-an-early-research-exploration-at-netflix-eb8160ed60a2
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 Temporally Aware Densification for Dynamic 3D Gaussian Splatting [arXiv]
+👤 Vikram Sandu, Mayurdeep Pathak, Rajiv Soundararajan | IISc Bangalore
+💡 Motivation: 动态3DGS方法仍沿用静态场景的densification策略，对短生命周期的高斯体监督不足导致动态区域模糊。
+🔧 方案: 提出 VAD 框架——将时序可见性整合进densification过程；TAT根据每个高斯体的时间生命周期自适应调节densification阈值；TOW增强时间中心附近的形变能力以延长高动态高斯体的有效寿命。通用即插即用组件，跨多种动态3DGS方法一致提升。
+🔗 arXiv: https://arxiv.org/abs/2606.23212
+🌐 Project: 暂无
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 DrivingVoxels: Compositional Sparse Voxel Rasterization for Dynamic Driving Scene Reconstruction [arXiv]
+👤 Tania Aguirre, Luis Roldão, Pietro Michiardi | EURECOM / Stellantis
+💡 Motivation: 动态城市场景重建中，3DGS方法虽高保真但训练慢且内存不可控；稀疏体素方法高效但仅限静态。
+🔧 方案: 提出组合式稀疏体素渲染框架——每个刚性动态物体用局部坐标系下的octree表示，静态背景用独立octree，在单次渲染pass中联合光栅化。全显式无神经网络表示+LiDAR引导结构初始化，训练速度优于3DGS方法且结构指标更优。
+🔗 arXiv: https://arxiv.org/abs/2606.23031
+🌐 Project: 暂无
+
+━━━━━━━━━━━━━━━━━━━━
+
+📄 Rethinking Object-Centric Representations for Video Dynamics Modeling [arXiv]
+👤 Amaury Wei, Ismail Nejjar, Olga Fink | EPFL
+💡 Motivation: Slot-based视频表征通过强制时序一致性保持物体身份，但appearance和pose耦合时一致性目标与运动冲突——slot倾向锁定静态区域。
+🔧 方案: 提出 STAITUS——显式解耦每个slot为外观+几何位姿，在外观空间而非全embedding上做时序对齐，帧内施加空间分离约束。自适应门控动态调节活跃slot数量匹配场景复杂度。
+🔗 arXiv: https://arxiv.org/abs/2606.23436
+🌐 Project: 暂无
+
+⭐ 与世界模型的object-centric representation方向相关，disentangle appearance/pose的思路有启发。
+
+━━━━━━━━━━━━━━━━━━━━
+
+💡 今日总结：
+· 世界模型记忆机制: CaR (implicit memory retrieval) 直接击中我们的方向
+· 后训练: DFD (蒸馏) + DRL (Meta FAIR, 无需偏好的RL纠正) 两篇在后训练范式上有深刻insight
+· 4D重建: Lift4D (CMU, monocular 4D) + Temporally Aware Densification (dynamic 3DGS plug-in)
+· 视频生成加速: ScalingAttention (内在稀疏拓扑 for Video DiT)
+· 交互生成: IMAGIN-4D (Michael Black组, image-guided HOI)
